@@ -1,0 +1,112 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Visual Studio Solution",
+	"scopeName": "text.sln",
+	"patterns": [
+		{ "include": "#header" },
+		{ "include": "#comments" },
+		{ "include": "#keywords" }
+	],
+	"repository": {
+		"header": {
+			"patterns": [{
+				"name": "meta.preprocessor.text.sln",
+				"match": "\\bMinimumVisualStudioVersion\\b"
+			},
+			{
+				"name": "meta.preprocessor.text.sln",
+				"match": "\\bVisualStudioVersion\\b"
+			},
+		 	{
+				"name": "meta.preprocessor.text.sln",
+				"match": "\\bMicrosoft Visual Studio Solution File, Format Version"
+				
+		 	}]
+		},
+		"keywords": {
+			"patterns": [{
+				"name": "entity.project.text.sln",
+				"begin": "\\bProject\\b",
+				"end": "\\bEndProject\\b",
+				"beginCaptures": { "0": { "name": "keyword.project.begin.text.sln" }},
+				"endCaptures": { "0": { "name": "keyword.project.end.text.sln" }},
+				"patterns" : [{  "include": "#strings" }, { "include": "#guid" }, { "include": "#projectsection" }]
+			},
+			{
+				"name": "entity.global.text.sln",
+				"begin": "\\bGlobal\\b",
+				"end": "\\bEndGlobal\\b",
+				"beginCaptures": { "0": { "name": "keyword.global.begin.text.sln" }},
+				"endCaptures": { "0": { "name": "keyword.global.end.text.sln" }},
+			 	"patterns" : [{ "include": "#globalsection" }]
+			}]
+		},
+		"globalsection": {
+			"patterns": [{
+				"name": "entity.section.text.sln",
+				"begin": "\\bGlobalSection\\b",
+				"end": "\\bEndGlobalSection\\b",
+				"beginCaptures": { "0": { "name": "keyword.section.begin.text.sln" }},
+				"endCaptures": { "0": { "name": "keyword.section.end.text.sln" }},
+				"patterns" : [{ "include": "#parameter" }, { "include": "#guid" }, { "include": "#properties" }]
+			}]
+		},
+		"projectsection": {
+			"patterns": [{
+				"name": "entity.section.text.sln",
+				"begin": "\\bProjectSection\\b",
+				"end": "\\bEndProjectSection\\b",
+				"beginCaptures": { "0": { "name": "keyword.section.begin.text.sln" }},
+				"endCaptures": { "0": { "name": "keyword.section.end.text.sln" }},
+				"patterns" : [{ "include": "#parameter" }, { "include": "#guid" }, { "include": "#properties" }]
+			}]
+		},
+		"parameter": {
+			"patterns": [{
+				"name" : "support.type.property-name",
+				"match": "SolutionConfigurationPlatforms|ProjectConfigurationPlatforms|SolutionProperties|ProjectDependencies|SolutionItems|ExtensibilityGlobals|NestedProjects"
+			}]
+		},
+		"properties": {
+			"patterns": [{
+				"name" : "variable.name.text.sln",
+				"match": "HideSolutionNode|SolutionGuid|RESX_SortFileContentOnSave"
+			},
+			{
+				"name" : "variable.name.text.sln",
+				"match": "Debug|Release|Any CPU|x64|ActiveCfg|Build"
+			},
+			{
+				"name" : "variable.parameter.text.sln",
+				"match": "preSolution|postSolution|postProject|preProject"
+			},
+			{
+				"name" : "variable.parameter.text.sln",
+				"match": "TRUE|FALSE|True|False"
+			}]
+		},
+		"comments": {
+			"patterns": [{
+				"name": "comment",
+				"match": "#.*"
+			}]
+		},
+		"strings": {
+			"patterns": [{
+				"name": "string.quoted.double.text.sln",
+				"begin": "\"[a-zA-z]",
+				"end": "\""
+			}]
+		},
+		"guid": {
+			"patterns": [{
+				"name": "support.type.text.sln",
+				"match": "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}|{2150E333-8FDC-42A3-9474-1A3956D46DE8}|{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}|{9A19103F-16F7-4668-BE54-9A1E7A4F7556}"
+			},
+			{
+				"name": "string.other.text.sln",
+				"match": "{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}}"
+			}]
+		}
+	}
+}
