@@ -1,12 +1,98 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import { CancellationToken, ExtensionContext, Hover, HoverProvider, languages, MarkdownString, Position, Range, TextDocument } from 'vscode';
+'use strict';
+import * as vscode from 'vscode';
+import * as path from 'path';
 
-class GoHoverProvider implements HoverProvider
+export function activate(context: vscode.ExtensionContext): void
 {
-    public provideHover(document: TextDocument, position: Position, token: CancellationToken): Thenable<Hover>
+    context.subscriptions.push(vscode.languages.registerHoverProvider("sln", new GoHoverProvider()));
+
+    const collection = vscode.languages.createDiagnosticCollection('sln');
+
+    if (vscode.window.activeTextEditor)
     {
-        return new Promise<Hover>((resolve, reject) =>
+        updateDiagnostics(vscode.window.activeTextEditor.document, collection);
+    }
+
+    context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(editor =>
+    {
+        if (editor)
+        {
+            updateDiagnostics(editor.document, collection);
+        }
+    }));
+
+}
+
+function updateDiagnostics(document: vscode.TextDocument, collection: vscode.DiagnosticCollection): void
+{
+    if (!document)
+    {
+        collection.clear();
+    }
+
+    const diagnostics = new Array<vscode.Diagnostic>();
+
+    const guidList = CollectAllProjectGuid(document);
+
+    for (let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
+    {
+        const line = document.lineAt(lineNumber);
+        const lineText = line.text;
+
+        // ignore lines with projects and line solution guid
+        if(lineText.startsWith("Project(") || lineText.indexOf("SolutionGuid") > -1)
+        {
+            continue;
+        }
+
+        // ignore lines than don't contain a guid
+        if(lineText.indexOf("{") < 0 || lineText.indexOf("}") < 0)
+        {
+            continue;
+        }
+
+        let textPosition = 0;
+
+        do
+        {
+            const guidStart = lineText.indexOf("{", textPosition) + 1;
+            const guidEnd = lineText.indexOf("}", textPosition);
+
+            if(guidStart == -1 || guidEnd == -1)
+            {
+                break;
+            }
+
+            const guidToCheck = lineText.substr(guidStart, guidEnd - guidStart);
+
+            if(!guidList.includes(guidToCheck))
+            {
+                const startPosition = new vscode.Position(lineNumber, guidStart);
+                const endPosition = new vscode.Position(lineNumber, guidEnd)
+
+                const diagnostic = new vscode.Diagnostic(
+                    new vscode.Range(startPosition, endPosition),
+                    "Guid " + guidToCheck + " is not a project guid",
+                    vscode.DiagnosticSeverity.Error)
+
+                    diagnostics.push(diagnostic);
+            }
+
+            textPosition = guidEnd + 1;
+        }
+        while(textPosition < lineText.length)
+    }
+
+    collection.set(document.uri, diagnostics);
+}
+
+
+class GoHoverProvider implements vscode.HoverProvider
+{
+    public provideHover(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken)
+    : Thenable<vscode.Hover>
+    {
+        return new Promise<vscode.Hover>((resolve, reject) =>
         {
             const result = analyzeText(document, position);
             if(result === "")
@@ -14,17 +100,39 @@ class GoHoverProvider implements HoverProvider
                 reject();
             }
 
-            resolve(new Hover(new MarkdownString(result)));
+            resolve(new vscode.Hover(new vscode.MarkdownString(result)));
         });
     }
 }
 
-export function activate(ctx: ExtensionContext): void
+/**
+ * Collect all use guid in the solution file
+ * @param document The Textdocument of the complete solution file
+ */
+function CollectAllProjectGuid(document: vscode.TextDocument): Array<string>
 {
-    ctx.subscriptions.push(languages.registerHoverProvider("sln", new GoHoverProvider()));
+    const guidList = new Array<string>();
+
+    for (let line = 0; line < document.lineCount; line++)
+    {
+        const lineText = document.lineAt(line).text.trim();
+
+        if (!lineText.startsWith("Project("))
+        {
+            continue;
+        }
+
+        const lineSplit = lineText.split("\"");
+
+        const guid = lineSplit[lineSplit.length - 2].replace("{", "").replace("}", "");
+
+        guidList.push(guid);
+    }
+
+    return guidList;
 }
 
-function analyzeText(document: TextDocument, position: Position): string
+function analyzeText(document: vscode.TextDocument, position: vscode.Position): string
 {
     if(contains(document, position, "\"{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}}\""))
     {
@@ -69,7 +177,7 @@ function analyzeText(document: TextDocument, position: Position): string
     return "";
 }
 
-function contains(document: TextDocument, position: Position, pattern: string): boolean
+function contains(document: vscode.TextDocument, position: vscode.Position, pattern: string): boolean
 {
     const regEx = new RegExp(pattern);
     const range = document.getWordRangeAtPosition(position, regEx);
@@ -82,7 +190,7 @@ function contains(document: TextDocument, position: Position, pattern: string): 
     return true;
 }
 
-function getText(document: TextDocument, position: Position, pattern: string): string
+function getText(document: vscode.TextDocument, position: vscode.Position, pattern: string): string
 {
     const regEx = new RegExp(pattern);
     const range = document.getWordRangeAtPosition(position, regEx);
