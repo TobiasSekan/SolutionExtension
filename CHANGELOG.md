@@ -4,6 +4,16 @@ All notable changes to the "solutionextension" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [1.0.0]
 
-- Initial release
+* Syntax highlight
+* Hover
+  * For the first four lines (version)
+  * For keyword `Project`
+* Diagnostic
+  * Show error for GUIDs that are not project GUIDs
+  * Show warning for GUIDs that are used several times in "Nested Project" declaration
+* CodeLens
+  * For project type (GUIDs)
+  * For `ProjectSection` (`ProjectDependencies`)
+  * For `GlobalSelection` (`ProjectConfigurationPlatforms` and `NestedProjects`)

@@ -20,7 +20,7 @@ VScode extension for Visual Studio solution files (*.sln)
 
 ## Known Issues
 
-* only a few keywords have tooltips, because the official documentation doesn't contain more information.
+* Only a few keywords have tooltips, because the official documentation doesn't contain more information.
 
 ## Missing a feature or found a bug?
 
@@ -28,6 +28,4 @@ VScode extension for Visual Studio solution files (*.sln)
 
 ## Release Notes
 
-### 1.0.0
-
-Initial release
+* See ![changelog.md](https://github.com/TobiasSekan/SolutionExtension/blob/main/changelog.md)
