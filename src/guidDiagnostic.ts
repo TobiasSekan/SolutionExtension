@@ -70,7 +70,7 @@ export class guidDiagnostic
 
                 const guidToCheck = lineText.substr(guidStart, guidEnd - guidStart);
 
-                if(!guidProjectList.includes(guidToCheck))
+                if(guidProjectList.findIndex(found => found.guid == guidToCheck) < 0)
                 {
                     const startPosition = new vscode.Position(lineNumber, guidStart);
                     const endPosition = new vscode.Position(lineNumber, guidEnd)
@@ -80,7 +80,7 @@ export class guidDiagnostic
                         "Guid " + guidToCheck + " is not a project guid",
                         vscode.DiagnosticSeverity.Error)
 
-                        this.diagnostics.push(diagnostic);
+                    this.diagnostics.push(diagnostic);
                 }
 
                 textPosition = guidEnd + 1;
@@ -134,7 +134,7 @@ export class guidDiagnostic
                 
                 const diagnostic = new vscode.Diagnostic(
                     new vscode.Range(startPosition, endPosition),
-                    "Guid " + guidToCheck + " is already used, this assignment will ignored",
+                    "Guid " + guidToCheck + " is already used",
                     vscode.DiagnosticSeverity.Warning)
                     
                     this.diagnostics.push(diagnostic);

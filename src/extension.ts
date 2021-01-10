@@ -2,12 +2,16 @@
 import * as vscode from 'vscode';
 import { guidDiagnostic } from './guidDiagnostic';
 import { solutionHover } from './solutionHover';
+import { codelensProvider } from './codelensProvider';
+
+let disposables: vscode.Disposable[] = [];
 
 export function activate(context: vscode.ExtensionContext): void
 {
     const collection = vscode.languages.createDiagnosticCollection('sln');
     const diagnostic = new guidDiagnostic(collection);
     const hover = new solutionHover();
+    const codelens = new codelensProvider();
 
     // Update diagnostic when a document is restored on startup
     if (vscode.window.activeTextEditor)
@@ -27,6 +31,20 @@ export function activate(context: vscode.ExtensionContext): void
         onChangeTextDocument(diagnostic),
         null,
         context.subscriptions)
+
+    vscode.languages.registerCodeLensProvider("*", codelens);
+
+    vscode.commands.registerCommand("codelens.enableCodeLens", () => {
+        vscode.workspace.getConfiguration("codelens").update("enableCodeLens", true, true);
+    });
+
+    vscode.commands.registerCommand("codelens.disableCodeLens", () => {
+        vscode.workspace.getConfiguration("codelens").update("enableCodeLens", false, true);
+    });
+
+    vscode.commands.registerCommand("codelens.codelensAction", (args: any) => {
+        vscode.window.showInformationMessage(`CodeLens action clicked with args=${args}`);
+    });
 }
 
 function onChangeTextDocument(diagnostic: guidDiagnostic): (e: vscode.TextDocumentChangeEvent) => any
@@ -55,4 +73,13 @@ function onChangeActiveTextEditor(diagnostic: guidDiagnostic): (e: vscode.TextEd
     };
 }
 
+// this method is called when your extension is deactivated
+export function deactivate()
+{
+    if (disposables)
+    {
+        disposables.forEach(item => item.dispose());
+    }
 
+    disposables = [];
+}

@@ -24,6 +24,18 @@
                 "configuration": "./language-configuration.json"
             }
         ],
+        "commands": [
+            {
+                "title": "Enable CodeLens",
+                "command": "codelens.enableCodeLens",
+                "category": "CodeLens for solution files (*.sln)"
+            },
+            {
+                "title": "Disable Codelens",
+                "command": "codelens.disableCodeLens",
+                "category": "CodeLens for solution files (*.sln)"
+            }
+        ],
         "grammars": [
             {
                 "language": "sln",
@@ -31,6 +43,14 @@
                 "path": "./syntaxes/sln.tmLanguage.json"
             }
         ]
+    },
+    "configuration": {
+        "properties": {
+            "codelens.enableCodeLens": {
+                "type": "boolean",
+                "default": true
+            }
+        }
     },
     "activationEvents": [
         "*"

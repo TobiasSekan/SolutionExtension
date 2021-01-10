@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { Project } from './Project';
 
 export class guidCollector
 {
@@ -10,9 +11,9 @@ export class guidCollector
      * Collect all use guid in the solution file
      * @param document The Textdocument of the complete solution file
      */
-    public CollectAllProjectGuid(document: vscode.TextDocument): Array<string>
+    public CollectAllProjectGuid(document: vscode.TextDocument): Array<Project>
     {
-        const guidList = new Array<string>();
+        const guidList = new Array<Project>();
 
         for (let line = 0; line < document.lineCount; line++)
         {
@@ -23,11 +24,7 @@ export class guidCollector
                 continue;
             }
 
-            const lineSplit = lineText.split("\"");
-
-            const guid = lineSplit[lineSplit.length - 2].replace("{", "").replace("}", "");
-
-            guidList.push(guid);
+            guidList.push(new Project(lineText));
         }
 
         return guidList;
