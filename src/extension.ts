@@ -32,19 +32,7 @@ export function activate(context: vscode.ExtensionContext): void
         null,
         context.subscriptions)
 
-    vscode.languages.registerCodeLensProvider("*", codelens);
-
-    vscode.commands.registerCommand("codelens.enableCodeLens", () => {
-        vscode.workspace.getConfiguration("codelens").update("enableCodeLens", true, true);
-    });
-
-    vscode.commands.registerCommand("codelens.disableCodeLens", () => {
-        vscode.workspace.getConfiguration("codelens").update("enableCodeLens", false, true);
-    });
-
-    vscode.commands.registerCommand("codelens.codelensAction", (args: any) => {
-        vscode.window.showInformationMessage(`CodeLens action clicked with args=${args}`);
-    });
+    vscode.languages.registerCodeLensProvider("sln", codelens);
 }
 
 function onChangeTextDocument(diagnostic: guidDiagnostic): (e: vscode.TextDocumentChangeEvent) => any
