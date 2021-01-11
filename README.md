@@ -28,4 +28,4 @@ VScode extension for Visual Studio solution files (*.sln)
 
 ## Release Notes
 
-* See ![changelog.md](https://github.com/TobiasSekan/SolutionExtension/blob/main/CHANGELOG.md)
+* See ![changelog.md](https://raw.githubusercontent.com/TobiasSekan/SolutionExtension/main/CHANGELOG.md)
