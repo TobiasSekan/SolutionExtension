@@ -2,7 +2,7 @@
 
 VScode extension for Visual Studio solution files (*.sln)
 
-![picture](https://github.com/TobiasSekan/SolutionExtension/blob/main/docs/readme.png)
+![picture](https://raw.githubusercontent.com/TobiasSekan/SolutionExtension/main/docs/readme.png)
 
 ## Features
 
