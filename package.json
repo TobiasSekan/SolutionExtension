@@ -3,7 +3,7 @@
     "displayName": "SolutionExtension",
     "description": "Support for Visual Studio Solution Files (*.sln)",
     "publisher": "Tobias-Sekan",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "repository": {
         "url": "https://github.com/TobiasSekan/SolutionExtension"
     },
