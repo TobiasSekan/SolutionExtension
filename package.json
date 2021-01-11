@@ -2,8 +2,11 @@
     "name": "solutionextension",
     "displayName": "SolutionExtension",
     "description": "Support for Visual Studio Solution Files (*.sln)",
-    "publisher": "Tobias Sekan",
+    "publisher": "Tobias-Sekan",
     "version": "1.0.0",
+    "repository": {
+        "url": "https://github.com/TobiasSekan/SolutionExtension"
+    },
     "engines": {
         "vscode": "^1.52.0"
     },
