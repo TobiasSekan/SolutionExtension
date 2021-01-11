@@ -4,6 +4,13 @@ All notable changes to the "solutionextension" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.2]
+
+Fixes:
+
+* Fix file trigger was not set to "*.sln" files.
+* Fix not wrong link to changelog file
+
 ## [1.0.1]
 
 Fixes:
