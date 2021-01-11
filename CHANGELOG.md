@@ -4,7 +4,16 @@ All notable changes to the "solutionextension" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.1]
+
+Fixes:
+
+* Fix not wrong picture link in readme
+* Add `VSIX` to `.gitignore`
+
 ## [1.0.0]
+
+New:
 
 * Syntax highlight
 * Hover
