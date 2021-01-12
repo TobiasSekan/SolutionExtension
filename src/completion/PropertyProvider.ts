@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-export class ValueProvider implements vscode.CompletionItemProvider
+export class PropertyProvider implements vscode.CompletionItemProvider
 {
     private _valueList: Array<string>;
 
@@ -8,11 +8,8 @@ export class ValueProvider implements vscode.CompletionItemProvider
     {
         this._valueList = 
         [
-            'postProject',
-            'preProject',
-            'Any|x64',
-            'Debug|x64',
-            'Release|x64',
+            'HideSolutionNode',
+            'SolutionGuid',
         ]
     }
 
@@ -26,13 +23,10 @@ export class ValueProvider implements vscode.CompletionItemProvider
 
         for(const name of this._valueList)
         {
-            const completionItem = new vscode.CompletionItem(name, vscode.CompletionItemKind.Value);
+            const completionItem = new vscode.CompletionItem(name, vscode.CompletionItemKind.Property);
+            completionItem.commitCharacters = ["="];
             list.push(completionItem);
         }
-
-
-        list.push(new vscode.CompletionItem('TRUE', vscode.CompletionItemKind.Constant));
-        list.push(new vscode.CompletionItem('FALSE', vscode.CompletionItemKind.Constant));
 
         return list;
     }

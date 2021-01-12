@@ -4,6 +4,12 @@ All notable changes to the "SolutionExtension" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.1.0]
+
+New:
+
+* Code completion
+
 ## [1.0.3]
 
 Fixes:

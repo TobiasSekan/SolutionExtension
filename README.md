@@ -7,6 +7,7 @@ vsCode extension for Visual Studio solution files (*.sln)
 ## Features
 
 * Syntax highlight
+* Code completion
 * Hover
   * For the first four lines (version)
   * For keyword `Project`

@@ -8,13 +8,13 @@ export class KeywordProvider implements vscode.CompletionItemProvider
     {
         this._keywordList = 
         [
-            'postProject',
-            'preProject',
-            'Any|x64',
-            'Debug|x64',
-            'Release|x64',
-            'FALSE',
-            'TRUE',
+            'ProjectDependencies',
+            'SolutionItems',
+            'SolutionConfigurationPlatforms',
+            'ProjectConfigurationPlatforms',
+            'SolutionProperties',
+            'NestedProjects',
+            'ExtensibilityGlobals',
         ]
     }
 
@@ -29,6 +29,7 @@ export class KeywordProvider implements vscode.CompletionItemProvider
         for(const name of this._keywordList)
         {
             const completionItem = new vscode.CompletionItem(name, vscode.CompletionItemKind.Keyword);
+            completionItem.commitCharacters = [")"];
             list.push(completionItem);
         }
 
