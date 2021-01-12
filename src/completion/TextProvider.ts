@@ -20,10 +20,8 @@ export class TextProvider implements vscode.CompletionItemProvider
         for(const project of guidList)
         {
             const completionItem = new vscode.CompletionItem(project.guid, vscode.CompletionItemKind.Reference);
-            completionItem.commitCharacters = ["\""];
             completionItem.detail = project.name
             completionItem.documentation = project.getProjectType() + "\n\n" + project.path;
-            completionItem.insertText = "{" + project.guid + "}"
 
             list.push(completionItem);
         }
