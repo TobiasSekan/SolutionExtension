@@ -3,11 +3,16 @@
 vsCode extension for Visual Studio solution files (*.sln)
 
 ![picture](https://raw.githubusercontent.com/TobiasSekan/SolutionExtension/main/docs/readme.png)
+_Color Theme: Dark+ (default dark)_
 
 ## Features
 
 * Syntax highlight
 * Code completion
+  * Project GUIDs and Project type GUIDs
+  * Module and snippets
+  * Keywords and Properties
+  * Values and constant
 * Hover
   * For the first four lines (version)
   * For keyword `Project`
