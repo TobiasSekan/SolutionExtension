@@ -33,7 +33,8 @@ Triggered by `(` and auto completion by `)`.
 Auto completion by `=`
 
 1. `HideSolutionNode`
-2. `SolutionGuid`
+2. `RESX_SortFileContentOnSave`
+3. `SolutionGuid`
 
 ## Values
 
