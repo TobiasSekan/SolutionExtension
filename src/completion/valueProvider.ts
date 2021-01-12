@@ -8,10 +8,12 @@ export class ValueProvider implements vscode.CompletionItemProvider
     {
         this._valueList = 
         [
-            'postProject',
-            'preProject',
             'Any|x64',
             'Debug|x64',
+            'postProject',
+            'postSolution',
+            'preProject',
+            'preSolution',
             'Release|x64',
         ]
     }
