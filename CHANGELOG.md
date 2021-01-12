@@ -10,6 +10,10 @@ New:
 
 * Code completion
 
+Fixes:
+
+* Fix crash on lines with incomplete project information
+
 ## [1.0.3]
 
 Fixes:
