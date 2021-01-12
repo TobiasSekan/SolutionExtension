@@ -8,6 +8,7 @@ import { ModuleProvider } from './completion/ModuleProvider';
 import { ValueProvider } from './completion/ValueProvider';
 import { PropertyProvider } from './completion/PropertyProvider';
 import { KeywordProvider } from './completion/KeywordProvider';
+import { TextProvider } from './completion/TextProvider';
 
 const languageId = 'sln';
 
@@ -53,6 +54,11 @@ export function activate(context: vscode.ExtensionContext): void
     context.subscriptions.push(
         vscode.languages.registerCompletionItemProvider(languageId, new KeywordProvider(), "("));
 
+    context.subscriptions.push(
+        vscode.languages.registerCompletionItemProvider(languageId, new TextProvider(true), "\""));
+
+    context.subscriptions.push(
+        vscode.languages.registerCompletionItemProvider(languageId, new TextProvider(false), "{"));
 }
 
 function onChangeTextDocument(diagnostic: guidDiagnostic): (e: vscode.TextDocumentChangeEvent) => any

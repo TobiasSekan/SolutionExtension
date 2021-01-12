@@ -24,6 +24,7 @@ export class PropertyProvider implements vscode.CompletionItemProvider
         for(const name of this._valueList)
         {
             const completionItem = new vscode.CompletionItem(name, vscode.CompletionItemKind.Property);
+            completionItem.insertText = `${name} = `
             completionItem.commitCharacters = ["="];
             list.push(completionItem);
         }
