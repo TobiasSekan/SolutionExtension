@@ -75,17 +75,4 @@ export class solutionHover implements vscode.HoverProvider
 
         return true;
     }
-
-    private getText(document: vscode.TextDocument, position: vscode.Position, pattern: string): string
-    {
-        const regEx = new RegExp(pattern);
-        const range = document.getWordRangeAtPosition(position, regEx);
-
-        if(range === undefined)
-        {
-            return "";
-        }
-
-        return document.getText(range)
-    }
 }

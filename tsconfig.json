@@ -6,7 +6,25 @@
 		"outDir": "out",
 		"sourceMap": true,
 		"strict": true,
-		"rootDir": "src"
+		"rootDir": "src",
+
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		//"noUnusedParameters": true,
+		"noUnusedLocals": true,
+		
+		"alwaysStrict": true,
+		"strictFunctionTypes": true,
+		"strictBindCallApply": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		"noStrictGenericChecks": false,
+		
+		"keyofStringsOnly": false,
 	},
 	"exclude": ["node_modules"]
 }

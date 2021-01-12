@@ -21,7 +21,7 @@ export class TextProvider implements vscode.CompletionItemProvider
         {
             const completionItem = new vscode.CompletionItem(project.guid, vscode.CompletionItemKind.Reference);
             completionItem.detail = project.name
-            completionItem.documentation = project.getProjectType() + "\n\n" + project.path;
+            completionItem.documentation = project.getProjectTypeName() + "\n\n" + project.path;
 
             list.push(completionItem);
         }

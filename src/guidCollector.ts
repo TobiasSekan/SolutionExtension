@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Project } from './Project';
+import { Project } from './projects/Project';
 
 export class guidCollector
 {
@@ -15,22 +15,21 @@ export class guidCollector
     {
         const guidList = new Array<Project>();
 
-        for (let line = 0; line < document.lineCount; line++)
+        for(let line = 0; line < document.lineCount; line++)
         {
             const lineText = document.lineAt(line).text.trim();
 
-            if (!lineText.startsWith("Project("))
+            if(!lineText.startsWith("Project("))
             {
                 continue;
             }
 
-            const lineSplit = lineText.split("\"");
-            if(lineSplit.length < 8)
+            if(lineText.split("\"").length < 8)
             {
                 continue;
             }
 
-            guidList.push(new Project(lineSplit));
+            guidList.push(new Project(lineText));
         }
 
         return guidList;

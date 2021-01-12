@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { guidCollector } from './guidCollector';
-import { Project } from './project';
-import { projectTypes } from './projectTypes';
+import { Project } from './projects/Project';
+import { ProjectTypes } from './projects/ProjectTypes';
 
 export class codelensProvider implements vscode.CodeLensProvider
 {
@@ -103,11 +103,6 @@ export class codelensProvider implements vscode.CodeLensProvider
             return;
         }
 
-        if(project.guid == "D1D6BC88-09AE-4FB4-AD24-5DED46A791DD")
-        {
-            let test = 1200;
-        }
-
         const codeLens = this.getCodeLensForSolutionGuids(project, textLine, guidStart, guidEnd)
 
         this.codeLensList.push(codeLens);
@@ -132,12 +127,7 @@ export class codelensProvider implements vscode.CodeLensProvider
     {
         const projectGuid = textLine.text.substr(guidStart, guidEnd - guidStart);
 
-        if(projectGuid == "D1D6BC88-09AE-4FB4-AD24-5DED46A791DD")
-        {
-            let test = 1200;
-        }
-
-        const type = projectTypes.getProjectType(projectGuid);
+        const type = ProjectTypes.getProjectTypeName(projectGuid);
 
         const codeLens = this.getCodeLensForProjectType(type, textLine, guidStart, guidEnd)
 
