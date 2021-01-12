@@ -54,4 +54,28 @@ export class Project
     {
         return "{" + this.guid + "}"
     }
+
+    /**
+     * Return the project path as multi-line text
+     */
+    public getProjectPath(): string
+    {
+        let result = "";
+        let first = true;
+
+        for(const folder of this.path.split("\\"))
+        {
+            if(first)
+            {
+                result += `${folder}`;
+                first = false;
+            }
+            else
+            {
+                result += `\n\\${folder}`;
+            }
+        }
+
+        return result;
+    }
 }

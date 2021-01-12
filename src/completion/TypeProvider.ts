@@ -24,9 +24,9 @@ export class TypeProvider implements vscode.CompletionItemProvider
             var countOfUses = projectList.filter(found => found.typeGuid ==  typeGuid).length;
 
             const completionItem = new vscode.CompletionItem(typeName, vscode.CompletionItemKind.TypeParameter);
-            completionItem.detail = typeGuid
+            completionItem.detail = `Guid: ${typeGuid}`;
             completionItem.insertText = `{${typeGuid}}`;
-            completionItem.documentation = `${countOfUses} projects use this type`;
+            completionItem.documentation = `${countOfUses} projects with this type in this file`;
 
             list.push(completionItem);
         }
