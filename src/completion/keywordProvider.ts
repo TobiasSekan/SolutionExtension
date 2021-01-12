@@ -8,13 +8,15 @@ export class KeywordProvider implements vscode.CompletionItemProvider
     {
         this._keywordList = 
         [
-            'ProjectDependencies',
-            'SolutionItems',
-            'SolutionConfigurationPlatforms',
-            'ProjectConfigurationPlatforms',
-            'SolutionProperties',
-            'NestedProjects',
+            `ExtensibilityAddIns`,
             'ExtensibilityGlobals',
+            'NestedProjects',
+            'ProjectConfigurationPlatforms',
+            'ProjectDependencies',
+            'SolutionConfigurationPlatforms',
+            'SolutionItems',
+            `SolutionNotes`,
+            'SolutionProperties',
         ]
     }
 
