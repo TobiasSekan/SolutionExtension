@@ -45,10 +45,10 @@ export function activate(context: vscode.ExtensionContext): void
         vscode.languages.registerCompletionItemProvider(languageId, new ModuleProvider()));
 
     context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider(languageId, new PropertyProvider(), "="));
+        vscode.languages.registerCompletionItemProvider(languageId, new PropertyProvider()));
     
     context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider(languageId, new ValueProvider()));
+        vscode.languages.registerCompletionItemProvider(languageId, new ValueProvider(), "="));
 
     context.subscriptions.push(
         vscode.languages.registerCompletionItemProvider(languageId, new KeywordProvider(), "("));
