@@ -4,6 +4,13 @@ All notable changes to the "solutionextension" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [1.0.3]
+
+Fixes:
+
+* More fixes for file trigger was not set to "*.sln" files.
+* Remove not working changlog.md link in redme.md (vscode and marketplace)
+
 ## [1.0.2]
 
 Fixes:
