@@ -24,7 +24,13 @@ export class guidCollector
                 continue;
             }
 
-            guidList.push(new Project(lineText));
+            const lineSplit = lineText.split("\"");
+            if(lineSplit.length < 8)
+            {
+                continue;
+            }
+
+            guidList.push(new Project(lineSplit));
         }
 
         return guidList;
