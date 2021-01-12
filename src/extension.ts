@@ -4,49 +4,47 @@ import { guidDiagnostic } from './guidDiagnostic';
 import { solutionHover } from './solutionHover';
 import { codelensProvider } from './codelensProvider';
 
-let disposables: vscode.Disposable[] = [];
-
 export function activate(context: vscode.ExtensionContext): void
 {
-    const collection = vscode.languages.createDiagnosticCollection('sln');
-    const diagnostic = new guidDiagnostic(collection);
+    const diagnostic = new guidDiagnostic(vscode.languages.createDiagnosticCollection('sln'));
     const hover = new solutionHover();
     const codelens = new codelensProvider();
 
     // Update diagnostic when a document is restored on startup
     if (vscode.window.activeTextEditor)
     {
-        diagnostic.updateDiagnostics(vscode.window.activeTextEditor.document);
+        updateDiagnostics(diagnostic, vscode.window.activeTextEditor.document);
     }
-
-    context.subscriptions.push(
-        vscode.languages.registerHoverProvider("sln", hover));
-
+    
     // Update diagnostic when a new document will open
-    context.subscriptions.push(
-        vscode.window.onDidChangeActiveTextEditor(onChangeActiveTextEditor(diagnostic)));
-
+    vscode.window.onDidChangeActiveTextEditor(
+        onChangeActiveTextEditor(diagnostic),
+        null,
+        context.subscriptions);
+        
     // Update diagnostic when a document was changed
     vscode.workspace.onDidChangeTextDocument(
         onChangeTextDocument(diagnostic),
         null,
-        context.subscriptions)
+        context.subscriptions);
+            
+    context.subscriptions.push(
+        vscode.languages.registerHoverProvider("sln", hover));
 
-    vscode.languages.registerCodeLensProvider("sln", codelens);
+    context.subscriptions.push(
+        vscode.languages.registerCodeLensProvider("sln", codelens));
 }
 
 function onChangeTextDocument(diagnostic: guidDiagnostic): (e: vscode.TextDocumentChangeEvent) => any
 {
     return textDocumentChangeEvent =>
     {
-        if(textDocumentChangeEvent)
+        if(!textDocumentChangeEvent)
         {
-            const textDocument = textDocumentChangeEvent.document;
-            if(textDocument && textDocument.languageId == "sln")
-            {
-                diagnostic.updateDiagnostics(textDocument);
-            }
+            return;
         }
+
+        updateDiagnostics(diagnostic, textDocumentChangeEvent.document);
     }
 }
 
@@ -54,20 +52,21 @@ function onChangeActiveTextEditor(diagnostic: guidDiagnostic): (e: vscode.TextEd
 {
     return textEditor =>
     {
-        if (textEditor)
+        if (!textEditor)
         {
-            diagnostic.updateDiagnostics(textEditor.document);
+            return;
         }
+
+        updateDiagnostics(diagnostic, textEditor.document);
     };
 }
 
-// this method is called when your extension is deactivated
-export function deactivate()
+function updateDiagnostics(diagnostic: guidDiagnostic, textDocument: vscode.TextDocument): void
 {
-    if (disposables)
+    if(!textDocument || textDocument.languageId !== "sln")
     {
-        disposables.forEach(item => item.dispose());
+        return;
     }
 
-    disposables = [];
+    diagnostic.updateDiagnostics(textDocument);
 }
