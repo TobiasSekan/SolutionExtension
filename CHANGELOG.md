@@ -4,6 +4,19 @@ All notable changes to the "SolutionExtension" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## Next
+
+New:
+
+* Code completion for project types
+* Code completion for keywords `SolutionNotes` and `ExtensibilityAddIns`
+* Code completion for values `preSolution` and `postSolution`
+* Code completion for property `RESX_SortFileContentOnSave`
+
+Changes:
+
+* Show project names instead of project GUIDs in the completion list
+
 ## [1.1.0]
 
 New:
