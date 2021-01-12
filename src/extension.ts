@@ -1,8 +1,12 @@
 'use strict';
+
 import * as vscode from 'vscode';
 import { guidDiagnostic } from './guidDiagnostic';
 import { solutionHover } from './solutionHover';
 import { codelensProvider } from './codelensProvider';
+import { ModuleProvider } from './completion/moduleProvider';
+import { ValueProvider } from './completion/valueProvider';
+import { KeywordProvider } from './completion/keywordProvider';
 
 export function activate(context: vscode.ExtensionContext): void
 {
@@ -33,6 +37,15 @@ export function activate(context: vscode.ExtensionContext): void
 
     context.subscriptions.push(
         vscode.languages.registerCodeLensProvider("sln", codelens));
+
+    context.subscriptions.push(
+        vscode.languages.registerCompletionItemProvider("sln", new ModuleProvider()));
+
+    context.subscriptions.push(
+        vscode.languages.registerCompletionItemProvider("sln", new ValueProvider(), "("));
+
+    context.subscriptions.push(
+        vscode.languages.registerCompletionItemProvider("sln", new KeywordProvider(), "="));
 }
 
 function onChangeTextDocument(diagnostic: guidDiagnostic): (e: vscode.TextDocumentChangeEvent) => any
