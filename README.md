@@ -1,6 +1,6 @@
-# solutionextension README
+# SolutionExtension
 
-VScode extension for Visual Studio solution files (*.sln)
+vsCode extension for Visual Studio solution files (*.sln)
 
 ![picture](https://raw.githubusercontent.com/TobiasSekan/SolutionExtension/main/docs/readme.png)
 
@@ -25,7 +25,3 @@ VScode extension for Visual Studio solution files (*.sln)
 ## Missing a feature or found a bug?
 
 * Please open a **new issues** under the [SolutionExtension](https://github.com/TobiasSekan/SolutionExtension/issues) repository
-
-## Release Notes
-
-* See ![changelog.md](https://raw.githubusercontent.com/TobiasSekan/SolutionExtension/main/CHANGELOG.md)
