@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { guidCollector } from '../guidCollector';
 
-export class TextProvider implements vscode.CompletionItemProvider
+export class ReferenceProvider implements vscode.CompletionItemProvider
 {
     constructor()
     {

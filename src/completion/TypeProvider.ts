@@ -1,0 +1,36 @@
+import * as vscode from 'vscode';
+import { guidCollector } from '../guidCollector';
+import { ProjectTypes } from '../projects/ProjectTypes';
+
+export class TypeProvider implements vscode.CompletionItemProvider
+{
+    constructor()
+    {
+    }
+
+    provideCompletionItems(
+        document: vscode.TextDocument,
+        position: vscode.Position,
+        token: vscode.CancellationToken,
+        context: vscode.CompletionContext): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList>
+    {
+        var projectList = new guidCollector().CollectAllProjectGuid(document);
+        var projectTypeList = ProjectTypes.getAllProjectTypes();
+
+        var list = new Array<vscode.CompletionItem>();
+
+        for(const [typeGuid, typeName] of projectTypeList)
+        {
+            var countOfUses = projectList.filter(found => found.typeGuid ==  typeGuid).length;
+
+            const completionItem = new vscode.CompletionItem(typeName, vscode.CompletionItemKind.TypeParameter);
+            completionItem.detail = typeGuid
+            completionItem.insertText = `{${typeGuid}}`;
+            completionItem.documentation = `${countOfUses} projects use this type`;
+
+            list.push(completionItem);
+        }
+
+        return list;
+    }
+}
