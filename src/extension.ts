@@ -54,11 +54,10 @@ export function activate(context: vscode.ExtensionContext): void
     context.subscriptions.push(
         vscode.languages.registerCompletionItemProvider(languageId, new KeywordProvider(), "("));
 
-    context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider(languageId, new TextProvider(true), "\""));
+    const trigger = [ "\"", "{"];
 
     context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider(languageId, new TextProvider(false), "{"));
+        vscode.languages.registerCompletionItemProvider(languageId, new TextProvider(), ...trigger));
 }
 
 function onChangeTextDocument(diagnostic: guidDiagnostic): (e: vscode.TextDocumentChangeEvent) => any

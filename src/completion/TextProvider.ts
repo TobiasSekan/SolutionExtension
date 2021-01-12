@@ -3,11 +3,8 @@ import { guidCollector } from '../guidCollector';
 
 export class TextProvider implements vscode.CompletionItemProvider
 {
-    private _surroundedWithQuotes: boolean;
-
-    constructor(surroundedWithQuotes : boolean)
+    constructor()
     {
-        this._surroundedWithQuotes = surroundedWithQuotes;
     }
 
     provideCompletionItems(
@@ -26,15 +23,7 @@ export class TextProvider implements vscode.CompletionItemProvider
             completionItem.commitCharacters = ["\""];
             completionItem.detail = project.name
             completionItem.documentation = project.getProjectType() + "\n\n" + project.path;
-
-            if(this._surroundedWithQuotes)
-            {
-                completionItem.insertText = "{" + project.guid + "}\""
-            }
-            else
-            {
-                completionItem.insertText = project.guid + "}"
-            }
+            completionItem.insertText = "{" + project.guid + "}"
 
             list.push(completionItem);
         }
