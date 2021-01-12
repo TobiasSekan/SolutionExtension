@@ -9,6 +9,7 @@ export class PropertyProvider implements vscode.CompletionItemProvider
         this._valueList = 
         [
             'HideSolutionNode',
+            'RESX_SortFileContentOnSave',
             'SolutionGuid',
         ]
     }
