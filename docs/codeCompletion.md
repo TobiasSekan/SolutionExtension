@@ -18,13 +18,15 @@
 
 Triggered by `(` and auto completion by `)`.
 
-1. `ProjectDependencies`
-2. `SolutionItems`
-3. `SolutionConfigurationPlatforms`
+1. `ExtensibilityAddIns`
+2. `ExtensibilityGlobals`
+3. `NestedProjects`
 4. `ProjectConfigurationPlatforms`
-5. `SolutionProperties`
-6. `NestedProjects`
-7. `ExtensibilityGlobals`
+5. `ProjectDependencies`
+6. `SolutionConfigurationPlatforms`
+7. `SolutionItems`
+8. `SolutionNotes`
+9. `SolutionProperties`
 
 ## Properties
 
@@ -37,11 +39,13 @@ Auto completion by `=`
 
 Triggered by `=`
 
-1. `postProject`
-2. `preProject`
-3. `Any|x64`
-4. `Debug|x64`
-5. `Release|x64`
+1. `Any|x64`
+2. `Debug|x64`
+3. `postProject`
+4. `postSolution`
+5. `preProject`
+6. `preSolution`
+7. `Release|x64`
 
 ## Constant
 
