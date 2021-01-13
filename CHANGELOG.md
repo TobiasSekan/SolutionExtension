@@ -4,10 +4,11 @@ All notable changes to the "SolutionExtension" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## Next
+## [1.2.0]
 
 New:
 
+* Clink on CodeLens of a project GUID jump to project line.
 * Code completion for project types
 * Code completion for keywords `SolutionNotes` and `ExtensibilityAddIns`
 * Code completion for values `preSolution` and `postSolution`

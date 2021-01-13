@@ -10,6 +10,7 @@ import { PropertyProvider } from './completion/PropertyProvider';
 import { KeywordProvider } from './completion/KeywordProvider';
 import { ReferenceProvider } from './completion/ReferenceProvider';
 import { TypeProvider } from './completion/TypeProvider';
+import { Project } from './projects/Project';
 
 const languageId = 'sln';
 
@@ -60,6 +61,13 @@ export function activate(context: vscode.ExtensionContext): void
 
     context.subscriptions.push(
         vscode.languages.registerCompletionItemProvider(languageId, new TypeProvider(), "\""));
+
+    vscode.commands.registerCommand("solutionExtension.gotoProjectLine", (args: Project) =>
+    {
+        vscode.window.activeTextEditor?.revealRange(
+            args.line.range,
+            vscode.TextEditorRevealType.InCenter);
+    });
 }
 
 function onChangeTextDocument(diagnostic: guidDiagnostic): (e: vscode.TextDocumentChangeEvent) => any

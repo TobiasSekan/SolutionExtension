@@ -114,10 +114,12 @@ export class codelensProvider implements vscode.CodeLensProvider
         const endPosition = new vscode.Position(textLine.lineNumber, guidEnd);
         const range = new vscode.Range(startPosition, endPosition)
 
-        const command =
+        const command: vscode.Command =
         {
-            command: "",
+            command: "solutionExtension.gotoProjectLine",
+            tooltip: "Jump to project line",
             title: project.name,
+            arguments: [project],
         }
 
         return new vscode.CodeLens(range, command);
@@ -140,7 +142,7 @@ export class codelensProvider implements vscode.CodeLensProvider
         const endPosition = new vscode.Position(textLine.lineNumber, guidEnd);
         const range = new vscode.Range(startPosition, endPosition)
 
-        const command =
+        const command: vscode.Command =
         {
             command: "",
             title: type,

@@ -15,9 +15,10 @@ export class guidCollector
     {
         const guidList = new Array<Project>();
 
-        for(let line = 0; line < document.lineCount; line++)
+        for(let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
         {
-            const lineText = document.lineAt(line).text.trim();
+            const line = document.lineAt(lineNumber)
+            const lineText = line.text.trim();
 
             if(!lineText.startsWith("Project("))
             {
@@ -29,7 +30,7 @@ export class guidCollector
                 continue;
             }
 
-            guidList.push(new Project(lineText));
+            guidList.push(new Project(line));
         }
 
         return guidList;

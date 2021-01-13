@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import { ProjectTypes } from "./ProjectTypes";
 
 /**
@@ -7,17 +8,25 @@ export class Project
 {
     /**
      * Crate a new project, based on the given (raw) project line string.
-     * @param rawProjectLine The (raw) project line string.
+     * @param line The line that contains the project information.
      */
-    public constructor(rawProjectLine: string)
+    public constructor(line: vscode.TextLine)
     {
-        const lineSplit = rawProjectLine.split("\"");
+        this.line = line;
+
+        const lineSplit = line.text.trim().split("\"");
 
         this.typeGuid = lineSplit[1].replace("{", "").replace("}", "");;
         this.name = lineSplit[3];
         this.path = lineSplit[5];
         this.guid = lineSplit[7].replace("{", "").replace("}", "");
+
     }
+
+    /** 
+     * The text line that contains the project information.
+     */
+    public line: vscode.TextLine;
 
     /**
      * The project type (GUID).
