@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { guidCollector } from '../guidCollector';
+import { ProjectCollector } from '../projects/ProjectCollector';
 import { ProjectTypes } from '../projects/ProjectTypes';
 
 export class TypeProvider implements vscode.CompletionItemProvider
@@ -14,7 +14,7 @@ export class TypeProvider implements vscode.CompletionItemProvider
         token: vscode.CancellationToken,
         context: vscode.CompletionContext): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList>
     {
-        var projectList = new guidCollector().CollectAllProjectGuid(document);
+        var projectList = new ProjectCollector().CollectAllProjectGuid(document);
         var projectTypeList = ProjectTypes.getAllProjectTypes();
 
         var list = new Array<vscode.CompletionItem>();

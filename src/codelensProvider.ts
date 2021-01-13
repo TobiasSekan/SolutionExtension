@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { guidCollector } from './guidCollector';
+import { ProjectCollector } from './projects/ProjectCollector';
 import { Project } from './projects/Project';
 import { ProjectTypes } from './projects/ProjectTypes';
 
@@ -24,7 +24,7 @@ export class codelensProvider implements vscode.CodeLensProvider
 
             this.codeLensList.length = 0;
 
-            const projectList = new guidCollector().CollectAllProjectGuid(document);
+            const projectList = new ProjectCollector().CollectAllProjectGuid(document);
 
             let insideSelections = false;
 

@@ -1,5 +1,8 @@
+import * as fs from 'fs';
+import { constants } from 'fs';
 import * as vscode from 'vscode';
-import { guidCollector } from './guidCollector';
+import { Project } from './projects/Project';
+import { ProjectCollector } from './projects/ProjectCollector';
 
 export class guidDiagnostic
 {
@@ -28,17 +31,18 @@ export class guidDiagnostic
 
         this.diagnostics.length = 0;
 
-        this.CheckForMissingProjectGuid(document);
+        const projectList = new ProjectCollector().CollectAllProjectGuid(document);
+
         this.CheckForDoubleUsedProjectGuid(document);
-
+        this.CheckForMissingProjectGuid(document, projectList);
+        
         this.collection.set(document.uri, this.diagnostics);
-
+        
+        this.CheckForNotFoundProjectFiles(document, projectList);
     }
 
-    private CheckForMissingProjectGuid(document: vscode.TextDocument): void
+    private CheckForMissingProjectGuid(document: vscode.TextDocument, projectList: Array<Project>): void
     {
-        const guidProjectList = new guidCollector().CollectAllProjectGuid(document);
-
         for (let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
         {
             const line = document.lineAt(lineNumber);
@@ -70,7 +74,7 @@ export class guidDiagnostic
 
                 const guidToCheck = lineText.substr(guidStart, guidEnd - guidStart);
 
-                if(guidProjectList.findIndex(found => found.guid == guidToCheck) < 0)
+                if(projectList.findIndex(found => found.guid == guidToCheck) < 0)
                 {
                     const startPosition = new vscode.Position(lineNumber, guidStart);
                     const endPosition = new vscode.Position(lineNumber, guidEnd)
@@ -141,6 +145,33 @@ export class guidDiagnostic
             }
 
             guidList.push(guidToCheck);
+        }
+    }
+
+    private CheckForNotFoundProjectFiles(document: vscode.TextDocument, projectList: Array<Project>): void
+    {
+        for (const project of projectList)
+        {
+            if(project.IsSolutionFolder())
+            {
+                continue;
+            }
+
+            fs.access(project.absolutePath, constants.R_OK, (error) =>
+            {
+                if(!error)
+                {
+                    return;
+                }
+
+                const diagnostic = new vscode.Diagnostic(
+                    project.getPathRange(),
+                    "File " +  project.relativePath + " not found",
+                    vscode.DiagnosticSeverity.Error);
+                    
+                this.diagnostics.push(diagnostic);
+                this.collection.set(document.uri, this.diagnostics);
+            });
         }
     }
 }

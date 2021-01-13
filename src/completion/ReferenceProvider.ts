@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { guidCollector } from '../guidCollector';
+import { ProjectCollector } from '../projects/ProjectCollector';
 
 export class ReferenceProvider implements vscode.CompletionItemProvider
 {
@@ -13,7 +13,7 @@ export class ReferenceProvider implements vscode.CompletionItemProvider
         token: vscode.CancellationToken,
         context: vscode.CompletionContext): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList>
     {
-        var guidList = new guidCollector().CollectAllProjectGuid(document);
+        var guidList = new ProjectCollector().CollectAllProjectGuid(document);
 
         var list = new Array<vscode.CompletionItem>();
 
