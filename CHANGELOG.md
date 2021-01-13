@@ -4,6 +4,12 @@ All notable changes to the "SolutionExtension" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## NEXT
+
+New:
+
+* Show diagnostics for not found project files
+
 ## [1.2.0]
 
 New:
