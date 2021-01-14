@@ -11,6 +11,9 @@ New:
 * Show error for project GUIDs that used by another projects.
 * Show error for unknown project type GUIDs.
 * Show warning for project names that used by another projects.
+* Show warning when modules words have not correct PascalCase
+  * For `Project`, `EndProject`, `ProjectSection`, `EndProjectSection`
+  * And `Global`, `EndGlobal`, `GlobalSection`, `EndGlobalSection`
 * Show info for solution folders, when name is used by another projects.
 
 Improvements:

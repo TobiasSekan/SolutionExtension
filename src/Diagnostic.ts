@@ -39,17 +39,19 @@ export class Diagnostic
 
         for(let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
         {
-            var textLine = document.lineAt(lineNumber);
+            const textLine = document.lineAt(lineNumber);
+            const lowerCase = textLine.text.toLowerCase();
 
             this.CheckForMissingProjectGuid(textLine, projectList);
+            this.CheckForWrongPascalCase(textLine);
 
-            if(textLine.text.indexOf("GlobalSection(NestedProjects)") > -1)
+            if(lowerCase.indexOf("globalsection(nestedprojects)") > -1)
             {
                 insideNestedProjects = true;
                 continue;
             }
             
-            if(textLine.text.indexOf("EndGlobalSection") > -1)
+            if(lowerCase.indexOf("endglobalsection") > -1)
             {
                 insideNestedProjects = false;
                 continue;
@@ -84,8 +86,10 @@ export class Diagnostic
 
     private CheckForMissingProjectGuid(textLine: vscode.TextLine, projectList: Array<Project>): void
     {
+        const lowerCase = textLine.text.toLowerCase();
+
         // ignore lines with projects and line solution guid
-        if(textLine.text.startsWith("Project(") || textLine.text.indexOf("SolutionGuid") > -1)
+        if(lowerCase.startsWith("project(") || lowerCase.indexOf("solutionguid") > -1)
         {
             return;
         }
@@ -291,7 +295,7 @@ export class Diagnostic
         }
     }
 
-    private CheckForUnknownProjectTypes(project: Project)
+    private CheckForUnknownProjectTypes(project: Project): void
     {
         if(ProjectTypes.IsKnownProjectType(project.ProjectType))
         {
@@ -304,5 +308,92 @@ export class Diagnostic
             vscode.DiagnosticSeverity.Error);
 
         this.diagnostics.push(diagnostic);
+    }
+
+    private CheckForWrongPascalCase(textLine: vscode.TextLine): void
+    {
+        const textToCheck = textLine.text.trimLeft();
+
+        // ignore all lines that start with a brace
+        if(textToCheck.indexOf("{") == 0)
+        {
+            return;
+        }
+
+        const lowerCaseText = textToCheck.toLowerCase();
+
+        if(this.CheckWord(textLine, textToCheck, lowerCaseText, "EndGlobalSection"))
+        {
+            return;
+        }
+
+        if(this.CheckWord(textLine, textToCheck, lowerCaseText, "EndGlobal"))
+        {
+            return;
+        }
+
+        if(this.CheckWord(textLine, textToCheck, lowerCaseText, "EndProjectSection"))
+        {
+            return;
+        }
+
+        if(this.CheckWord(textLine, textToCheck, lowerCaseText, "EndProject"))
+        {
+            return;
+        }
+
+        if(this.CheckWord(textLine, textToCheck, lowerCaseText, "GlobalSection"))
+        {
+            return;
+        }
+
+        if(this.CheckWord(textLine, textToCheck, lowerCaseText, "Global"))
+        {
+            return;
+        }
+
+        if(this.CheckWord(textLine, textToCheck, lowerCaseText, "ProjectSection"))
+        {
+            return;
+        }
+
+        if(this.CheckWord(textLine, textToCheck, lowerCaseText, "Project"))
+        {
+            return;
+        }
+    }
+
+    private CheckWord(textLine: vscode.TextLine, textToCheck: string, lowerCaseText: string, wordToCheck: string): boolean
+    {
+        if(!lowerCaseText.startsWith(wordToCheck.toLowerCase()))
+        {
+            return false;
+        }
+
+        if(textToCheck.startsWith(wordToCheck))
+        {
+            return true;
+        }
+
+        const characterStart = textLine.text.indexOf(textToCheck);
+        const notCorrectWord = textLine.text.substr(characterStart, wordToCheck.length)
+
+        const diagnostic = new vscode.Diagnostic(
+            this.GetRange(textLine, characterStart, wordToCheck),
+            `The world "${notCorrectWord}" should be correct write in PascalCase as "${wordToCheck}".`,
+            vscode.DiagnosticSeverity.Warning);
+
+        this.diagnostics.push(diagnostic);
+        return true;
+    }
+
+    private GetRange(textLine: vscode.TextLine, characterStart: number, word: string): vscode.Range
+    {
+        var characterEnd = characterStart + word.length;
+
+        var start = new vscode.Position(textLine.lineNumber, characterStart);
+        var end = new vscode.Position(textLine.lineNumber, characterEnd);
+
+        return new vscode.Range(start, end);
     }
 }
