@@ -56,6 +56,8 @@ export class ProjectTypes
         [ "F8810EC1-6754-47FC-A15F-DFABD2E3FA90", "SharePoint Workflow" ],
         [ "FAE04EC0-301F-11D3-BF4B-00C04F79EFBC", "C#" ],
         [ "9A19103F-16F7-4668-BE54-9A1E7A4F7556", "C# SDK-style" ],
+        [ "778DAE3C-4631-46EA-AA77-85C1314464D9", "VB.NET SDK-style" ],
+        [ "D954291E-2A0B-460D-934E-DC6B0785DB48", "Shared Project SDK-style" ]
     ];
 
     public static getProjectTypeName(guid: string): string
