@@ -63,6 +63,9 @@ export class Diagnostic
 
         for(const project of projectList)
         {
+            this.CheckForDoubleUsedProjectGuids(project, projectList);
+            this.CheckForDoubleUsedProjectNames(project, projectList);
+
             if(project.IsSolutionFolder())
             {
                 continue;
@@ -72,7 +75,6 @@ export class Diagnostic
             this.CheckForDifferentProjectTypeAndFileExtension(project);
             this.CheckForDifferentProjectNameAndProjectPath(project);
             this.CheckForNotFoundProjectFiles(project);
-            this.CheckForDoubleUsedProjectGuids(project, projectList);
         }
 
         this.collection.set(document.uri, this.diagnostics);
@@ -223,24 +225,61 @@ export class Diagnostic
 
     private CheckForDoubleUsedProjectGuids(project: Project, projectList: Array<Project>): void
     {
-        const foundProjects = projectList.filter(found => found.Guid === project.Guid);
-        if(foundProjects.length < 2)
+        const doubleProjectEntries = projectList.filter(found => found.Guid === project.Guid);
+        if(doubleProjectEntries.length < 2)
         {
             return;
         }
 
-        for (const doubleProject of foundProjects)
+        for (const doubleProjectEntry of doubleProjectEntries)
         {
-            if(doubleProject.Name == project.Name)
+            if(doubleProjectEntry.Line.lineNumber == project.Line.lineNumber)
             {
                 // avoid double diagnostic entires
                 continue;
             }
 
             const diagnostic = new vscode.Diagnostic(
-                doubleProject.GetProjectGuidRange(),
-                `The project guid {"${project.Guid}"} is already used by project "${project.Name}" in line ${project.Line.lineNumber}.`,
+                doubleProjectEntry.GetProjectGuidRange(),
+                `The project guid {${project.Guid}} is already used in line ${project.Line.lineNumber + 1} by project with name "${project.Name}".`,
                 vscode.DiagnosticSeverity.Error);
+
+            this.diagnostics.push(diagnostic);
+        }
+    }
+
+    private CheckForDoubleUsedProjectNames(project: Project, projectList: Array<Project>): void
+    {
+        const doubleProjectEntries = projectList.filter(found => found.Name === project.Name);
+        if(doubleProjectEntries.length < 2)
+        {
+            return;
+        }
+
+        for (const doubleProjectEntry of doubleProjectEntries)
+        {
+            if(doubleProjectEntry.Line.lineNumber == project.Line.lineNumber)
+            {
+                // avoid double diagnostic entires
+                continue;
+            }
+
+            let diagnostic: vscode.Diagnostic;
+
+            if(doubleProjectEntry.IsSolutionFolder())
+            {
+                diagnostic = new vscode.Diagnostic(
+                    doubleProjectEntry.GetProjectNameRange(),
+                    `The solution folder "${doubleProjectEntry.Name}" has the same name as the project in line ${project.Line.lineNumber + 1} with Guid {${project.Guid}}.`,
+                    vscode.DiagnosticSeverity.Information);
+            }
+            else
+            {
+                diagnostic = new vscode.Diagnostic(
+                    doubleProjectEntry.GetProjectNameRange(),
+                    `The project name "${doubleProjectEntry.Name}" is already used by project in line ${project.Line.lineNumber + 1} with Guid {${project.Guid}}.`,
+                    vscode.DiagnosticSeverity.Warning);
+            }
 
             this.diagnostics.push(diagnostic);
         }
