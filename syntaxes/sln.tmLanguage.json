@@ -74,7 +74,7 @@
 			},
 			{
 				"name" : "variable.name.text.sln",
-				"match": "Debug|Release|Any CPU|x64|ActiveCfg|Build"
+				"match": "Debug|Release|Any CPU|x64|x86|ActiveCfg|Build"
 			},
 			{
 				"name" : "variable.parameter.text.sln",

@@ -10,11 +10,13 @@ export class ValueProvider implements vscode.CompletionItemProvider
         [
             'Any|x64',
             'Debug|x64',
+            'Debug|x86',
             'postProject',
             'postSolution',
             'preProject',
             'preSolution',
             'Release|x64',
+            'Release|x86',
         ]
     }
 

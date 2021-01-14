@@ -10,6 +10,7 @@ New:
 
 * Show diagnostics for not found project files
 * Show diagnostics when filename differ from project name
+* Code completion for values `Debug|x86` and `Release|x86`
 
 ## [1.2.0]
 
