@@ -19,9 +19,9 @@ export class ReferenceProvider implements vscode.CompletionItemProvider
 
         for(const project of guidList)
         {
-            const completionItem = new vscode.CompletionItem(project.name, vscode.CompletionItemKind.Reference);
-            completionItem.detail = `Guid: ${project.guid}`
-            completionItem.documentation = `Project type: ${project.getProjectTypeName()}\n\nPath:\n${project.getProjectPath()}`;
+            const completionItem = new vscode.CompletionItem(project.Name, vscode.CompletionItemKind.Reference);
+            completionItem.detail = `Guid: ${project.Guid}`
+            completionItem.documentation = `Project type: ${project.GetProjectTypeName()}\n\nPath:\n${project.GetProjectPath()}`;
 
             list.push(completionItem);
         }

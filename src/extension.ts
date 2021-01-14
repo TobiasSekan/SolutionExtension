@@ -1,7 +1,7 @@
 'use strict';
 
 import * as vscode from 'vscode';
-import { guidDiagnostic } from './guidDiagnostic';
+import { Diagnostic } from './Diagnostic';
 import { solutionHover } from './solutionHover';
 import { codelensProvider } from './codelensProvider';
 import { ModuleProvider } from './completion/ModuleProvider';
@@ -16,7 +16,7 @@ const languageId = 'sln';
 
 export function activate(context: vscode.ExtensionContext): void
 {
-    const diagnostic = new guidDiagnostic(vscode.languages.createDiagnosticCollection(languageId));
+    const diagnostic = new Diagnostic(vscode.languages.createDiagnosticCollection(languageId));
     const hover = new solutionHover();
     const codelens = new codelensProvider();
 
@@ -70,7 +70,7 @@ export function activate(context: vscode.ExtensionContext): void
     });
 }
 
-function onChangeTextDocument(diagnostic: guidDiagnostic): (e: vscode.TextDocumentChangeEvent) => any
+function onChangeTextDocument(diagnostic: Diagnostic): (e: vscode.TextDocumentChangeEvent) => any
 {
     return textDocumentChangeEvent =>
     {
@@ -83,7 +83,7 @@ function onChangeTextDocument(diagnostic: guidDiagnostic): (e: vscode.TextDocume
     }
 }
 
-function onChangeActiveTextEditor(diagnostic: guidDiagnostic): (e: vscode.TextEditor | undefined) => any
+function onChangeActiveTextEditor(diagnostic: Diagnostic): (e: vscode.TextEditor | undefined) => any
 {
     return textEditor =>
     {
@@ -96,12 +96,12 @@ function onChangeActiveTextEditor(diagnostic: guidDiagnostic): (e: vscode.TextEd
     };
 }
 
-function updateDiagnostics(diagnostic: guidDiagnostic, textDocument: vscode.TextDocument): void
+function updateDiagnostics(diagnostic: Diagnostic, textDocument: vscode.TextDocument): void
 {
     if(!textDocument || textDocument.languageId !== languageId)
     {
         return;
     }
 
-    diagnostic.updateDiagnostics(textDocument);
+    diagnostic.UpdateDiagnostics(textDocument);
 }

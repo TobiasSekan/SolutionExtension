@@ -19,18 +19,18 @@ export class Project
 
         const lineSplit = line.text.trim().split("\"");
 
-        this.typeGuid = lineSplit[1].replace("{", "").replace("}", "");;
-        this.name = lineSplit[3];
-        this.relativePath = lineSplit[5];
-        this.guid = lineSplit[7].replace("{", "").replace("}", "");
+        this.ProjectType = lineSplit[1].replace("{", "").replace("}", "");;
+        this.Name = lineSplit[3];
+        this.RelativePath = lineSplit[5];
+        this.Guid = lineSplit[7].replace("{", "").replace("}", "");
 
-        if(this.relativePath.indexOf(":") > -1)
+        if(this.RelativePath.indexOf(":") > -1)
         {
-            this.absolutePath = this.relativePath;
+            this.AbsolutePath = this.RelativePath;
         }
         else
         {
-            this.absolutePath = dir + "\\" + this.relativePath;
+            this.AbsolutePath = dir + "\\" + this.RelativePath;
 
         }
 
@@ -44,63 +44,63 @@ export class Project
     /**
      * The project type (GUID).
      */
-    public typeGuid: string;
+    public ProjectType: string;
 
     /**
      * The name of the project.
      */
-    public name: string;
+    public Name: string;
 
     /**
      * The relative path to the project.
      */
-    public relativePath: string;
+    public RelativePath: string;
 
     /**
      * The relative path to the project.
      */
-    public absolutePath: string;
+    public AbsolutePath: string;
 
     /**
      * The GUID of the project that is used in another places inside the solution.
      */
-    public guid: string;
+    public Guid: string;
 
     //#region Public Methods
 
     /**
      * Indicate if the project is a solution folder
      */
-    public isSolutionFolder() : boolean
+    public IsSolutionFolder() : boolean
     {
-        return this.typeGuid === "2150E333-8FDC-42A3-9474-1A3956D46DE8";
+        return this.ProjectType === "2150E333-8FDC-42A3-9474-1A3956D46DE8";
     }
 
     /**
      * Return the project type name of this project.
      */
-    public getProjectTypeName(): string
+    public GetProjectTypeName(): string
     {
-        return ProjectTypes.getProjectTypeName(this.typeGuid);
+        return ProjectTypes.GetProjectTypeName(this.ProjectType);
     }
 
     /**
      * Return a project guid with surrounding braces.
      */
-    public getGuidWithBraces(): string
+    public GetGuidWithBraces(): string
     {
-        return "{" + this.guid + "}"
+        return "{" + this.Guid + "}"
     }
 
     /**
      * Return the project path as multi-line text
      */
-    public getProjectPath(): string
+    public GetProjectPath(): string
     {
         let result = "";
         let first = true;
 
-        for(const folder of this.relativePath.split("\\"))
+        for(const folder of this.RelativePath.split("\\"))
         {
             if(first)
             {
@@ -119,17 +119,17 @@ export class Project
     /**
      * Return the filename of the project with the extension
      */
-    public getProjectFileName()
+    public GetProjectFileName(): string
     {
-        return path.basename(this.relativePath);
+        return path.basename(this.RelativePath);
     }
 
     /**
      * Return the filename of the project without an extension
      */
-    public getProjectFileNameWithoutExtension()
+    public GetProjectFileNameWithoutExtension(): string
     {
-        const fileName = this.getProjectFileName();
+        const fileName = this.GetProjectFileName();
 
         const lastPointPosition = fileName.lastIndexOf(".");
         if(lastPointPosition < 1)
@@ -140,6 +140,22 @@ export class Project
         return fileName.substring(0, lastPointPosition);
     }
 
+    /**
+     * Return the file extension of the project file
+     */
+    public GetProjectFileNameExtension()
+    {
+        const fileName = this.GetProjectFileName();
+
+        const lastPointPosition = fileName.lastIndexOf(".");
+        if(lastPointPosition < 1)
+        {
+            return "";
+        }
+
+        return fileName.substring(lastPointPosition);      
+    }
+
     //#endregion Public Methods
 
     //#region Public Methods - Ranges
@@ -147,26 +163,39 @@ export class Project
     /**
      * Return the range of the path of the project line
      */
-    public getPathRange(): vscode.Range
+    public GetPathRange(): vscode.Range
     {
-        const characterStart = this.line.text.indexOf(this.relativePath);
-        const characterEnd = characterStart + this.relativePath.length;
+        const characterStart = this.line.text.indexOf(this.RelativePath);
+        const characterEnd = characterStart + this.RelativePath.length;
         
-        return this.getRange(characterStart, characterEnd);
+        return this.GetRange(characterStart, characterEnd);
     }
 
     /**
      * Return the range of the filename without extension of the project line
      */
-    public getFileNameWithoutExtensionRange(): vscode.Range
+    public GetFileNameWithoutExtensionRange(): vscode.Range
     {
-        const fileName = this.getProjectFileName();
-        const fileNameWithoutExtension = this.getProjectFileNameWithoutExtension();
+        const fileName = this.GetProjectFileName();
+        const fileNameWithoutExtension = this.GetProjectFileNameWithoutExtension();
 
         const characterStart = this.line.text.indexOf(fileName);
         const characterEnd = characterStart + fileNameWithoutExtension.length;
 
-        return this.getRange(characterStart, characterEnd);
+        return this.GetRange(characterStart, characterEnd);
+    }
+
+    /**
+     * Return the range of the file extension of the project line
+     */
+    public GetFileExtensionRange(): vscode.Range
+    {
+        const fileNameExtension = this.GetProjectFileNameExtension();
+
+        const characterStart = this.line.text.indexOf(fileNameExtension);
+        const characterEnd = characterStart + fileNameExtension.length;
+
+        return this.GetRange(characterStart, characterEnd);
     }
 
     //#endregion Public Methods - Ranges
@@ -178,7 +207,7 @@ export class Project
      * @param characterStart The first character of the range
      * @param characterEnd The last character of the range
      */
-    private getRange(characterStart: number, characterEnd: number): vscode.Range
+    private GetRange(characterStart: number, characterEnd: number): vscode.Range
     {
         const start = new vscode.Position(this.line.lineNumber, characterStart);
         const end = new vscode.Position(this.line.lineNumber, characterEnd)

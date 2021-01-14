@@ -9,7 +9,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 New:
 
 * Show diagnostics for not found project files
-* Show diagnostics when filename differ from project name
+* Show diagnostics when project filename differ from project name
+* Show diagnostics when project file extension differ from project type
+  * For `.csproj`, `.vcxproj`, `.vbproj` and `.shproj`
 * Code completion for values `Debug|x86` and `Release|x86`
 * CodeLens and code completion for project types
   * VB.NET SDK-style (`{778DAE3C-4631-46EA-AA77-85C1314464D9}`)

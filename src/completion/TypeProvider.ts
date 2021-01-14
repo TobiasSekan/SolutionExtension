@@ -15,13 +15,13 @@ export class TypeProvider implements vscode.CompletionItemProvider
         context: vscode.CompletionContext): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList>
     {
         var projectList = new ProjectCollector().CollectAllProjectGuid(document);
-        var projectTypeList = ProjectTypes.getAllProjectTypes();
+        var projectTypeList = ProjectTypes.GetAllProjectTypes();
 
         var list = new Array<vscode.CompletionItem>();
 
         for(const [typeGuid, typeName] of projectTypeList)
         {
-            var countOfUses = projectList.filter(found => found.typeGuid ==  typeGuid).length;
+            var countOfUses = projectList.filter(found => found.ProjectType ==  typeGuid).length;
 
             const completionItem = new vscode.CompletionItem(typeName, vscode.CompletionItemKind.TypeParameter);
             completionItem.detail = `Guid: ${typeGuid}`;

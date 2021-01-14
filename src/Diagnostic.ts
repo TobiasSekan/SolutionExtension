@@ -3,8 +3,9 @@ import * as vscode from 'vscode';
 import { constants } from 'fs';
 import { Project } from './projects/Project';
 import { ProjectCollector } from './projects/ProjectCollector';
+import { ProjectTypes } from './projects/ProjectTypes';
 
-export class guidDiagnostic
+export class Diagnostic
 {
     /**
      * List that contains all diagnostics of all documents
@@ -22,7 +23,7 @@ export class guidDiagnostic
         this.diagnostics = new Array<vscode.Diagnostic>();
     }
 
-    public updateDiagnostics(document: vscode.TextDocument): void
+    public UpdateDiagnostics(document: vscode.TextDocument): void
     {
         if (!document)
         {
@@ -35,7 +36,8 @@ export class guidDiagnostic
 
         this.CheckForDoubleUsedProjectGuid(document);
         this.CheckForMissingProjectGuid(document, projectList);
-        this.checkForDifferentProjectNameAndProjectFile(projectList);
+        this.CheckForDifferentProjectNameAndProjectFile(projectList);
+        this.CheckForDifferentProjectTypeAndFileExtension(projectList);
         
         this.collection.set(document.uri, this.diagnostics);
         
@@ -75,7 +77,7 @@ export class guidDiagnostic
 
                 const guidToCheck = lineText.substr(guidStart, guidEnd - guidStart);
 
-                if(projectList.findIndex(found => found.guid == guidToCheck) < 0)
+                if(projectList.findIndex(found => found.Guid == guidToCheck) < 0)
                 {
                     const startPosition = new vscode.Position(lineNumber, guidStart);
                     const endPosition = new vscode.Position(lineNumber, guidEnd)
@@ -153,12 +155,12 @@ export class guidDiagnostic
     {
         for (const project of projectList)
         {
-            if(project.isSolutionFolder())
+            if(project.IsSolutionFolder())
             {
                 continue;
             }
 
-            fs.access(project.absolutePath, constants.R_OK, (error) =>
+            fs.access(project.AbsolutePath, constants.R_OK, (error) =>
             {
                 if(!error)
                 {
@@ -166,8 +168,8 @@ export class guidDiagnostic
                 }
 
                 const diagnostic = new vscode.Diagnostic(
-                    project.getPathRange(),
-                    `File "${project.relativePath}" not found`,
+                    project.GetPathRange(),
+                    `File "${project.RelativePath}" not found`,
                     vscode.DiagnosticSeverity.Error);
                     
                 this.diagnostics.push(diagnostic);
@@ -176,25 +178,50 @@ export class guidDiagnostic
         }
     }
 
-    private checkForDifferentProjectNameAndProjectFile(projectList: Array<Project>): void
+    private CheckForDifferentProjectNameAndProjectFile(projectList: Array<Project>): void
     {
         for(const project of projectList)
         {
-            if(project.isSolutionFolder())
+            if(project.IsSolutionFolder())
             {
                 continue;
             }
 
-            const filleName = project.getProjectFileNameWithoutExtension();
+            const filleName = project.GetProjectFileNameWithoutExtension();
 
-            if(project.name === filleName)
+            if(project.Name === filleName)
             {
                 continue;
             }
 
             const diagnostic = new vscode.Diagnostic(
-                project.getFileNameWithoutExtensionRange(),
-                `Filename "${filleName}" differ from project name "${project.name}"`,
+                project.GetFileNameWithoutExtensionRange(),
+                `Filename "${filleName}" differ from project name "${project.Name}"`,
+                vscode.DiagnosticSeverity.Warning);
+                
+            this.diagnostics.push(diagnostic);
+        }
+    }
+
+    private CheckForDifferentProjectTypeAndFileExtension(projectList: Array<Project>) : void
+    {
+        for(const project of projectList)
+        {
+            if(project.IsSolutionFolder())
+            {
+                continue;
+            }
+
+            const fileExtension = project.GetProjectFileNameExtension();
+
+            if(ProjectTypes.FileExtensionMatchProjectType(fileExtension, project.ProjectType))
+            {
+                continue;
+            }
+
+            const diagnostic = new vscode.Diagnostic(
+                project.GetFileExtensionRange(),
+                `File extension "${fileExtension}" differ from project type "${ProjectTypes.GetProjectTypeName(project.ProjectType)}"`,
                 vscode.DiagnosticSeverity.Warning);
                 
             this.diagnostics.push(diagnostic);

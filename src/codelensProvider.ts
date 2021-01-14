@@ -97,7 +97,7 @@ export class codelensProvider implements vscode.CodeLensProvider
     {
         const guidToCheck = textLine.text.substr(guidStart, guidEnd - guidStart);
 
-        const project = projectList.find(found => found.guid == guidToCheck);
+        const project = projectList.find(found => found.Guid == guidToCheck);
         if(!project)
         {
             return;
@@ -118,7 +118,7 @@ export class codelensProvider implements vscode.CodeLensProvider
         {
             command: "solutionExtension.gotoProjectLine",
             tooltip: "Jump to project line",
-            title: project.name,
+            title: project.Name,
             arguments: [project],
         }
 
@@ -129,7 +129,7 @@ export class codelensProvider implements vscode.CodeLensProvider
     {
         const projectGuid = textLine.text.substr(guidStart, guidEnd - guidStart);
 
-        const type = ProjectTypes.getProjectTypeName(projectGuid);
+        const type = ProjectTypes.GetProjectTypeName(projectGuid);
 
         const codeLens = this.getCodeLensForProjectType(type, textLine, guidStart, guidEnd)
 
