@@ -1,6 +1,6 @@
 import * as fs from 'fs';
-import { constants } from 'fs';
 import * as vscode from 'vscode';
+import { constants } from 'fs';
 import { Project } from './projects/Project';
 import { ProjectCollector } from './projects/ProjectCollector';
 
@@ -35,6 +35,7 @@ export class guidDiagnostic
 
         this.CheckForDoubleUsedProjectGuid(document);
         this.CheckForMissingProjectGuid(document, projectList);
+        this.checkForDifferentProjectNameAndProjectFile(projectList);
         
         this.collection.set(document.uri, this.diagnostics);
         
@@ -81,7 +82,7 @@ export class guidDiagnostic
 
                     const diagnostic = new vscode.Diagnostic(
                         new vscode.Range(startPosition, endPosition),
-                        "Guid " + guidToCheck + " is not a project guid",
+                        `Project with Guid {${guidToCheck}} not found in solution`,
                         vscode.DiagnosticSeverity.Error)
 
                     this.diagnostics.push(diagnostic);
@@ -138,7 +139,7 @@ export class guidDiagnostic
                 
                 const diagnostic = new vscode.Diagnostic(
                     new vscode.Range(startPosition, endPosition),
-                    "Guid " + guidToCheck + " is already used",
+                    `Guid {${guidToCheck}} is already used`,
                     vscode.DiagnosticSeverity.Warning)
                     
                     this.diagnostics.push(diagnostic);
@@ -152,7 +153,7 @@ export class guidDiagnostic
     {
         for (const project of projectList)
         {
-            if(project.IsSolutionFolder())
+            if(project.isSolutionFolder())
             {
                 continue;
             }
@@ -166,12 +167,37 @@ export class guidDiagnostic
 
                 const diagnostic = new vscode.Diagnostic(
                     project.getPathRange(),
-                    "File " +  project.relativePath + " not found",
+                    `File "${project.relativePath}" not found`,
                     vscode.DiagnosticSeverity.Error);
                     
                 this.diagnostics.push(diagnostic);
                 this.collection.set(document.uri, this.diagnostics);
             });
+        }
+    }
+
+    private checkForDifferentProjectNameAndProjectFile(projectList: Array<Project>): void
+    {
+        for(const project of projectList)
+        {
+            if(project.isSolutionFolder())
+            {
+                continue;
+            }
+
+            const filleName = project.getProjectFileNameWithoutExtension();
+
+            if(project.name === filleName)
+            {
+                continue;
+            }
+
+            const diagnostic = new vscode.Diagnostic(
+                project.getFileNameWithoutExtensionRange(),
+                `Filename "${filleName}" differ from project name "${project.name}"`,
+                vscode.DiagnosticSeverity.Warning);
+                
+            this.diagnostics.push(diagnostic);
         }
     }
 }

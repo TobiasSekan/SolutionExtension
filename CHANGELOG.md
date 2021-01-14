@@ -9,6 +9,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 New:
 
 * Show diagnostics for not found project files
+* Show diagnostics when filename differ from project name
 
 ## [1.2.0]
 

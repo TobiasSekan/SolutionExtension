@@ -66,6 +66,16 @@ export class Project
      */
     public guid: string;
 
+    //#region Public Methods
+
+    /**
+     * Indicate if the project is a solution folder
+     */
+    public isSolutionFolder() : boolean
+    {
+        return this.typeGuid === "2150E333-8FDC-42A3-9474-1A3956D46DE8";
+    }
+
     /**
      * Return the project type name of this project.
      */
@@ -106,21 +116,75 @@ export class Project
         return result;
     }
 
+    /**
+     * Return the filename of the project with the extension
+     */
+    public getProjectFileName()
+    {
+        return path.basename(this.relativePath);
+    }
+
+    /**
+     * Return the filename of the project without an extension
+     */
+    public getProjectFileNameWithoutExtension()
+    {
+        const fileName = this.getProjectFileName();
+
+        const lastPointPosition = fileName.lastIndexOf(".");
+        if(lastPointPosition < 1)
+        {
+            return fileName;
+        }
+
+        return fileName.substring(0, lastPointPosition);
+    }
+
+    //#endregion Public Methods
+
+    //#region Public Methods - Ranges
+
+    /**
+     * Return the range of the path of the project line
+     */
     public getPathRange(): vscode.Range
     {
         const characterStart = this.line.text.indexOf(this.relativePath);
         const characterEnd = characterStart + this.relativePath.length;
         
+        return this.getRange(characterStart, characterEnd);
+    }
+
+    /**
+     * Return the range of the filename without extension of the project line
+     */
+    public getFileNameWithoutExtensionRange(): vscode.Range
+    {
+        const fileName = this.getProjectFileName();
+        const fileNameWithoutExtension = this.getProjectFileNameWithoutExtension();
+
+        const characterStart = this.line.text.indexOf(fileName);
+        const characterEnd = characterStart + fileNameWithoutExtension.length;
+
+        return this.getRange(characterStart, characterEnd);
+    }
+
+    //#endregion Public Methods - Ranges
+
+    //#region Private Methods
+
+    /**
+     * Return a range for the given character range
+     * @param characterStart The first character of the range
+     * @param characterEnd The last character of the range
+     */
+    private getRange(characterStart: number, characterEnd: number): vscode.Range
+    {
         const start = new vscode.Position(this.line.lineNumber, characterStart);
         const end = new vscode.Position(this.line.lineNumber, characterEnd)
 
-        const range = new vscode.Range(start, end);
-
-        return range;
+        return new vscode.Range(start, end);
     }
 
-    public IsSolutionFolder() : boolean
-    {
-        return this.typeGuid === "2150E333-8FDC-42A3-9474-1A3956D46DE8";
-    }
+    //#endregion Private Methods
 }
