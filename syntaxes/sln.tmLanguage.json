@@ -64,7 +64,7 @@
 		"parameter": {
 			"patterns": [{
 				"name" : "support.type.property-name",
-				"match": "SolutionConfigurationPlatforms|ProjectConfigurationPlatforms|SolutionProperties|ProjectDependencies|SolutionItems|ExtensibilityGlobals|NestedProjects"
+				"match": "ExtensibilityAddIns|ExtensibilityGlobals|NestedProjects|ProjectConfigurationPlatforms|ProjectDependencies|SharedMSBuildProjectFiles|SolutionConfigurationPlatforms|SolutionItems|SolutionNotes|SolutionProperties"
 			}]
 		},
 		"properties": {

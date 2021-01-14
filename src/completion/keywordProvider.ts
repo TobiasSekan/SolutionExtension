@@ -13,6 +13,7 @@ export class KeywordProvider implements vscode.CompletionItemProvider
             'NestedProjects',
             'ProjectConfigurationPlatforms',
             'ProjectDependencies',
+            'SharedMSBuildProjectFiles',
             'SolutionConfigurationPlatforms',
             'SolutionItems',
             `SolutionNotes`,

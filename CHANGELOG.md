@@ -11,12 +11,13 @@ New:
 * Show error for project GUIDs that used by another projects.
 * Show waring for project names that used by another projects.
 * Show info for solution folders, when name is used by another projects.
+* Code completion and Syntax Highlight for keyword `SharedMSBuildProjectFiles`.
 
 Changes:
 
-* don't longer underline between file name and file extension
-  * Make simultaneously warnings from file name and file extension more clear
-* Internal: reduce diagnostic loops
+* don't longer underline between file name and file extension.
+  * Make simultaneously warnings from file name and file extension more clear.
+* Internal: reduce diagnostic loops.
 
 ## [1.3.0]
 
