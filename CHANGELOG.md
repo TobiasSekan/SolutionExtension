@@ -8,9 +8,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 New:
 
-* Show diagnostics for not found project files
-* Show diagnostics when project filename differ from project name
-* Show diagnostics when project file extension differ from project type
+* Show error for project files that was not found
+* Show waring for project filename that differ from project name
+* Show waring for project folders that differ from project name
+* Show waring for project file extension that differ from project type
   * For `.csproj`, `.vcxproj`, `.vbproj` and `.shproj`
 * Code completion for values `Debug|x86` and `Release|x86`
 * CodeLens and code completion for project types

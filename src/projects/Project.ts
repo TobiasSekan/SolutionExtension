@@ -15,7 +15,7 @@ export class Project
     {
         const dir = path.dirname(textDocument.fileName)
 
-        this.line = line;
+        this.Line = line;
 
         const lineSplit = line.text.trim().split("\"");
 
@@ -24,22 +24,20 @@ export class Project
         this.RelativePath = lineSplit[5];
         this.Guid = lineSplit[7].replace("{", "").replace("}", "");
 
-        if(this.RelativePath.indexOf(":") > -1)
+        if(path.isAbsolute(this.RelativePath))
         {
             this.AbsolutePath = this.RelativePath;
         }
         else
         {
-            this.AbsolutePath = dir + "\\" + this.RelativePath;
-
+            this.AbsolutePath = dir + path.sep + this.RelativePath;
         }
-
     }
 
     /** 
      * The text line that contains the project information.
      */
-    public line: vscode.TextLine;
+    public Line: vscode.TextLine;
 
     /**
      * The project type (GUID).
@@ -57,7 +55,7 @@ export class Project
     public RelativePath: string;
 
     /**
-     * The relative path to the project.
+     * The absolute path to the project.
      */
     public AbsolutePath: string;
 
@@ -100,7 +98,7 @@ export class Project
         let result = "";
         let first = true;
 
-        for(const folder of this.RelativePath.split("\\"))
+        for(const folder of this.RelativePath.split(path.sep))
         {
             if(first)
             {
@@ -109,7 +107,7 @@ export class Project
             }
             else
             {
-                result += `\n\\${folder}`;
+                result += `\n${path.sep}${folder}`;
             }
         }
 
@@ -129,7 +127,7 @@ export class Project
      */
     public GetProjectFileNameWithoutExtension(): string
     {
-        const fileName = this.GetProjectFileName();
+        const fileName = path.basename(this.RelativePath);
 
         const lastPointPosition = fileName.lastIndexOf(".");
         if(lastPointPosition < 1)
@@ -143,17 +141,26 @@ export class Project
     /**
      * Return the file extension of the project file
      */
-    public GetProjectFileNameExtension()
+    public GetProjectFileNameExtension(): string
     {
-        const fileName = this.GetProjectFileName();
+        return path.extname(this.RelativePath)
+    }
 
-        const lastPointPosition = fileName.lastIndexOf(".");
-        if(lastPointPosition < 1)
+    /**
+     * Return the project folder (last part of the project path)
+     */
+    public GetProjectFolder(): string
+    {
+        const dir = path.dirname(this.RelativePath);
+
+        const dirSplit = dir.split(path.sep);
+
+        if(dirSplit.length === 0)
         {
             return "";
         }
 
-        return fileName.substring(lastPointPosition);      
+        return dirSplit[dirSplit.length - 1];
     }
 
     //#endregion Public Methods
@@ -165,7 +172,7 @@ export class Project
      */
     public GetPathRange(): vscode.Range
     {
-        const characterStart = this.line.text.indexOf(this.RelativePath);
+        const characterStart = this.Line.text.indexOf(this.RelativePath);
         const characterEnd = characterStart + this.RelativePath.length;
         
         return this.GetRange(characterStart, characterEnd);
@@ -179,7 +186,7 @@ export class Project
         const fileName = this.GetProjectFileName();
         const fileNameWithoutExtension = this.GetProjectFileNameWithoutExtension();
 
-        const characterStart = this.line.text.indexOf(fileName);
+        const characterStart = this.Line.text.indexOf(fileName);
         const characterEnd = characterStart + fileNameWithoutExtension.length;
 
         return this.GetRange(characterStart, characterEnd);
@@ -192,8 +199,20 @@ export class Project
     {
         const fileNameExtension = this.GetProjectFileNameExtension();
 
-        const characterStart = this.line.text.indexOf(fileNameExtension);
+        const characterStart = this.Line.text.indexOf(fileNameExtension);
         const characterEnd = characterStart + fileNameExtension.length;
+
+        return this.GetRange(characterStart, characterEnd);
+    }
+
+    public GetProjectFolderRange(): vscode.Range
+    {
+        const projectFolder = this.GetProjectFolder();
+
+        const search = projectFolder + path.sep + this.GetProjectFileName();
+
+        const characterStart = this.Line.text.indexOf(search);
+        const characterEnd = characterStart + projectFolder.length;
 
         return this.GetRange(characterStart, characterEnd);
     }
@@ -209,8 +228,8 @@ export class Project
      */
     private GetRange(characterStart: number, characterEnd: number): vscode.Range
     {
-        const start = new vscode.Position(this.line.lineNumber, characterStart);
-        const end = new vscode.Position(this.line.lineNumber, characterEnd)
+        const start = new vscode.Position(this.Line.lineNumber, characterStart);
+        const end = new vscode.Position(this.Line.lineNumber, characterEnd)
 
         return new vscode.Range(start, end);
     }

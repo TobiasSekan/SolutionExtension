@@ -162,6 +162,6 @@ export class ProjectTypes
                 return true;
         }
 
-        return projectList.filter(([found, _]) => found == projectType).length > 0
+        return projectList.filter(([found, _]) => found === projectType).length > 0
     }
 }

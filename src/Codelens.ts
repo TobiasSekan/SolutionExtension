@@ -3,7 +3,7 @@ import { ProjectCollector } from './projects/ProjectCollector';
 import { Project } from './projects/Project';
 import { ProjectTypes } from './projects/ProjectTypes';
 
-export class codelensProvider implements vscode.CodeLensProvider
+export class CodelensProvider implements vscode.CodeLensProvider
 {
     private codeLensList: Array<vscode.CodeLens>;
 
@@ -64,19 +64,19 @@ export class codelensProvider implements vscode.CodeLensProvider
                     const guidStart = line.text.indexOf("{", textPosition) + 1;
                     const guidEnd = line.text.indexOf("}", textPosition);
             
-                    if(guidStart == -1 || guidEnd == -1)
+                    if(guidStart === -1 || guidEnd === -1)
                     {
                         break;
                     }
 
                     if(insideSelections)
                     {
-                        this.addCodeLensForSolutionGuids(line, guidStart, guidEnd, projectList);
+                        this.AddCodeLensForSolutionGuids(line, guidStart, guidEnd, projectList);
                     }
 
                     if(insideProject)
                     {
-                        this.addCodeLensForProjectGuids(line, guidStart, guidEnd);
+                        this.AddCodeLensForProjectGuids(line, guidStart, guidEnd);
                     }
 
                     textPosition = guidEnd + 1;
@@ -93,22 +93,22 @@ export class codelensProvider implements vscode.CodeLensProvider
         return codeLens;
     }
 
-    private addCodeLensForSolutionGuids(textLine: vscode.TextLine, guidStart: number, guidEnd: number, projectList: Array<Project>): void
+    private AddCodeLensForSolutionGuids(textLine: vscode.TextLine, guidStart: number, guidEnd: number, projectList: Array<Project>): void
     {
         const guidToCheck = textLine.text.substr(guidStart, guidEnd - guidStart);
 
-        const project = projectList.find(found => found.Guid == guidToCheck);
+        const project = projectList.find(found => found.Guid === guidToCheck);
         if(!project)
         {
             return;
         }
 
-        const codeLens = this.getCodeLensForSolutionGuids(project, textLine, guidStart, guidEnd)
+        const codeLens = this.GetCodeLensForSolutionGuids(project, textLine, guidStart, guidEnd)
 
         this.codeLensList.push(codeLens);
     }
 
-    private getCodeLensForSolutionGuids(project: Project, textLine: vscode.TextLine, guidStart: number, guidEnd: number)
+    private GetCodeLensForSolutionGuids(project: Project, textLine: vscode.TextLine, guidStart: number, guidEnd: number)
     {
         const startPosition = new vscode.Position(textLine.lineNumber, guidStart);
         const endPosition = new vscode.Position(textLine.lineNumber, guidEnd);
@@ -125,18 +125,18 @@ export class codelensProvider implements vscode.CodeLensProvider
         return new vscode.CodeLens(range, command);
     }
 
-    private addCodeLensForProjectGuids(textLine: vscode.TextLine, guidStart: number, guidEnd: number): void
+    private AddCodeLensForProjectGuids(textLine: vscode.TextLine, guidStart: number, guidEnd: number): void
     {
         const projectGuid = textLine.text.substr(guidStart, guidEnd - guidStart);
 
         const type = ProjectTypes.GetProjectTypeName(projectGuid);
 
-        const codeLens = this.getCodeLensForProjectType(type, textLine, guidStart, guidEnd)
+        const codeLens = this.GetCodeLensForProjectType(type, textLine, guidStart, guidEnd)
 
         this.codeLensList.push(codeLens);
     }
 
-    private getCodeLensForProjectType(type: string, textLine: vscode.TextLine, guidStart: number, guidEnd: number)
+    private GetCodeLensForProjectType(type: string, textLine: vscode.TextLine, guidStart: number, guidEnd: number)
     {
         const startPosition = new vscode.Position(textLine.lineNumber, guidStart);
         const endPosition = new vscode.Position(textLine.lineNumber, guidEnd);

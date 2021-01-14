@@ -38,6 +38,7 @@ export class Diagnostic
         this.CheckForMissingProjectGuid(document, projectList);
         this.CheckForDifferentProjectNameAndProjectFile(projectList);
         this.CheckForDifferentProjectTypeAndFileExtension(projectList);
+        this.CheckForDifferentProjectNameAndProjectPath(projectList);
         
         this.collection.set(document.uri, this.diagnostics);
         
@@ -70,14 +71,14 @@ export class Diagnostic
                 const guidStart = lineText.indexOf("{", textPosition) + 1;
                 const guidEnd = lineText.indexOf("}", textPosition);
 
-                if(guidStart == -1 || guidEnd == -1)
+                if(guidStart === -1 || guidEnd === -1)
                 {
                     break;
                 }
 
                 const guidToCheck = lineText.substr(guidStart, guidEnd - guidStart);
 
-                if(projectList.findIndex(found => found.Guid == guidToCheck) < 0)
+                if(projectList.findIndex(found => found.Guid === guidToCheck) < 0)
                 {
                     const startPosition = new vscode.Position(lineNumber, guidStart);
                     const endPosition = new vscode.Position(lineNumber, guidEnd)
@@ -127,7 +128,7 @@ export class Diagnostic
             const guidStart = lineText.indexOf("{",) + 1;
             const guidEnd = lineText.indexOf("}");
 
-            if(guidStart == -1 || guidEnd == -1)
+            if(guidStart === -1 || guidEnd === -1)
             {
                 break;
             }
@@ -222,6 +223,31 @@ export class Diagnostic
             const diagnostic = new vscode.Diagnostic(
                 project.GetFileExtensionRange(),
                 `File extension "${fileExtension}" differ from project type "${ProjectTypes.GetProjectTypeName(project.ProjectType)}"`,
+                vscode.DiagnosticSeverity.Warning);
+                
+            this.diagnostics.push(diagnostic);
+        }
+    }
+
+    private CheckForDifferentProjectNameAndProjectPath(projectList: Array<Project>) : void
+    {
+        for(const project of projectList)
+        {
+            if(project.IsSolutionFolder())
+            {
+                continue;
+            }
+
+            const projectFolder = project.GetProjectFolder();
+
+            if(projectFolder === project.Name)
+            {
+                continue;
+            }
+
+            const diagnostic = new vscode.Diagnostic(
+                project.GetProjectFolderRange(),
+                `The project folder "${projectFolder}" differ from project name "${project.Name}"`,
                 vscode.DiagnosticSeverity.Warning);
                 
             this.diagnostics.push(diagnostic);

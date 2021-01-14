@@ -2,8 +2,8 @@
 
 import * as vscode from 'vscode';
 import { Diagnostic } from './Diagnostic';
-import { solutionHover } from './solutionHover';
-import { codelensProvider } from './codelensProvider';
+import { SolutionHover } from './Hover';
+import { CodelensProvider } from './Codelens';
 import { ModuleProvider } from './completion/ModuleProvider';
 import { ValueProvider } from './completion/ValueProvider';
 import { PropertyProvider } from './completion/PropertyProvider';
@@ -17,8 +17,8 @@ const languageId = 'sln';
 export function activate(context: vscode.ExtensionContext): void
 {
     const diagnostic = new Diagnostic(vscode.languages.createDiagnosticCollection(languageId));
-    const hover = new solutionHover();
-    const codelens = new codelensProvider();
+    const hover = new SolutionHover();
+    const codelens = new CodelensProvider();
 
     // Update diagnostic when a document is restored on startup
     if (vscode.window.activeTextEditor)
@@ -65,7 +65,7 @@ export function activate(context: vscode.ExtensionContext): void
     vscode.commands.registerCommand("solutionExtension.gotoProjectLine", (args: Project) =>
     {
         vscode.window.activeTextEditor?.revealRange(
-            args.line.range,
+            args.Line.range,
             vscode.TextEditorRevealType.InCenter);
     });
 }
