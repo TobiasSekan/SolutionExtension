@@ -11,8 +11,13 @@ New:
 * Show error for project GUIDs that used by another projects.
 * Show warning for project names that used by another projects.
 * Show info for solution folders, when name is used by another projects.
-* Code completion and syntax highlight for keyword `SharedMSBuildProjectFiles`.
+
+Improvements:
+
 * Show the line number of the other usage in tooltip in nested project diagnostic.
+* Check file extension `.vcxitems` too (must be `C++` project)
+
+* Code completion and syntax highlight for keyword `SharedMSBuildProjectFiles`.
 
 Changes:
 
@@ -25,9 +30,9 @@ Changes:
 New:
 
 * Show error for project files that was not found
-* Show waring for project filename that differ from project name
-* Show waring for project folders that differ from project name
-* Show waring for project file extension that differ from project type
+* Show warning for project filename that differ from project name
+* Show warning for project folders that differ from project name
+* Show warning for project file extension that differ from project type
   * For `.csproj`, `.vcxproj`, `.vbproj` and `.shproj`
 * Code completion for values `Debug|x86` and `Release|x86`
 * CodeLens and code completion for project types

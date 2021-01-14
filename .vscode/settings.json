@@ -4,6 +4,7 @@
         "RESX",
         "endregion",
         "globalsection",
-        "projectsection"
+        "projectsection",
+        "vcxitems"
     ]
 }

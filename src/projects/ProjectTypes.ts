@@ -146,6 +146,7 @@ export class ProjectTypes
                 break;
 
             case ".vcxproj":
+            case ".vcxitems":
                 projectList = ProjectTypes._projectTypesCPlusPlus;
                 break;
 
