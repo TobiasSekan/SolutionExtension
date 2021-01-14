@@ -14,6 +14,8 @@ New:
 
 Changes:
 
+* don't longer underline between file name and file extension
+  * Make simultaneously warnings from file name and file extension more clear
 * Internal: reduce diagnostic loops
 
 ## [1.3.0]

@@ -199,7 +199,7 @@ export class Project
     {
         const fileNameExtension = this.GetProjectFileNameExtension();
 
-        const characterStart = this.Line.text.indexOf(fileNameExtension);
+        const characterStart = this.Line.text.indexOf(fileNameExtension) + 1;
         const characterEnd = characterStart + fileNameExtension.length;
 
         return this.GetRange(characterStart, characterEnd);
