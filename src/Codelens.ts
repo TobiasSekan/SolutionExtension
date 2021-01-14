@@ -30,23 +30,24 @@ export class CodelensProvider implements vscode.CodeLensProvider
 
             for (let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
             {
-                const line = document.lineAt(lineNumber);
+                const textLine = document.lineAt(lineNumber);
+                const lowerCase = textLine.text.toLowerCase();
 
                 let insideProject = false;
 
-                if(line.text.indexOf("GlobalSection(") > -1
-                || line.text.indexOf("ProjectSection(") > -1)
+                if(lowerCase.indexOf("globalsection(") > -1
+                || lowerCase.indexOf("projectsection(") > -1)
                 {
                     insideSelections = true;
                 }
 
-                if(line.text.indexOf("Project(") > -1)
+                if(textLine.text.indexOf("project(") > -1)
                 {
                     insideProject = true;
                 }
 
-                if(line.text.indexOf("EndGlobalSection") > -1
-                || line.text.indexOf("EndProjectSection") > -1)
+                if(textLine.text.indexOf("endglobalsection") > -1
+                || textLine.text.indexOf("endprojectsection") > -1)
                 {
                     insideSelections = false;
                     continue;
@@ -61,8 +62,8 @@ export class CodelensProvider implements vscode.CodeLensProvider
 
                 do
                 {
-                    const guidStart = line.text.indexOf("{", textPosition) + 1;
-                    const guidEnd = line.text.indexOf("}", textPosition);
+                    const guidStart = textLine.text.indexOf("{", textPosition) + 1;
+                    const guidEnd = textLine.text.indexOf("}", textPosition);
             
                     if(guidStart === -1 || guidEnd === -1)
                     {
@@ -71,17 +72,17 @@ export class CodelensProvider implements vscode.CodeLensProvider
 
                     if(insideSelections)
                     {
-                        this.AddCodeLensForSolutionGuids(line, guidStart, guidEnd, projectList);
+                        this.AddCodeLensForSolutionGuids(textLine, guidStart, guidEnd, projectList);
                     }
 
                     if(insideProject)
                     {
-                        this.AddCodeLensForProjectGuids(line, guidStart, guidEnd);
+                        this.AddCodeLensForProjectGuids(textLine, guidStart, guidEnd);
                     }
 
                     textPosition = guidEnd + 1;
                 }
-                while(textPosition < line.text.length && !insideProject)
+                while(textPosition < textLine.text.length && !insideProject)
             }
 
             resolve(this.codeLensList);

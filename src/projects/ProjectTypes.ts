@@ -158,7 +158,7 @@ export class ProjectTypes
     {
         let projectList: Array<[string, string]>;
         
-        switch(extension)
+        switch(extension.toLowerCase())
         {
             case ".csproj":
                 projectList = ProjectTypes._projectTypesCSharp;

@@ -20,7 +20,7 @@ export class ProjectCollector
             const line = textDocument.lineAt(lineNumber)
             const lineText = line.text.trim();
 
-            if(!lineText.startsWith("Project("))
+            if(!lineText.toLowerCase().startsWith("project("))
             {
                 continue;
             }

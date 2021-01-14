@@ -6,9 +6,13 @@
         "VSTA",
         "VSTO",
         "Zune",
+        "endglobalsection",
+        "endprojectsection",
         "endregion",
         "globalsection",
+        "nestedprojects",
         "projectsection",
+        "solutionguid",
         "vcxitems"
     ]
 }
