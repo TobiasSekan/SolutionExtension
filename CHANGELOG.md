@@ -15,6 +15,10 @@ New:
   * VB.NET SDK-style (`{778DAE3C-4631-46EA-AA77-85C1314464D9}`)
   * Shared Project SDK-style (`{D954291E-2A0B-460D-934E-DC6B0785DB48}`)
 
+  Remove:
+
+* not correct working project type syntax highlight
+
 ## [1.2.0]
 
 New:

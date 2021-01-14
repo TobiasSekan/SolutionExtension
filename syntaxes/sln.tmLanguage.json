@@ -100,10 +100,6 @@
 		},
 		"guid": {
 			"patterns": [{
-				"name": "support.type.text.sln",
-				"match": "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}|{2150E333-8FDC-42A3-9474-1A3956D46DE8}|{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}|{9A19103F-16F7-4668-BE54-9A1E7A4F7556}"
-			},
-			{
 				"name": "string.other.text.sln",
 				"match": "{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}}"
 			}]
