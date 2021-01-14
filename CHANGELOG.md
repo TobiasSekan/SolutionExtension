@@ -16,7 +16,6 @@ Improvements:
 
 * Show the line number of the other usage in tooltip in nested project diagnostic.
 * Check file extension `.vcxitems` too (must be `C++` project)
-
 * Code completion and syntax highlight for keyword `SharedMSBuildProjectFiles`.
 
 Changes:
@@ -34,14 +33,17 @@ New:
 * Show warning for project folders that differ from project name
 * Show warning for project file extension that differ from project type
   * For `.csproj`, `.vcxproj`, `.vbproj` and `.shproj`
+
+Improvements:
+
 * Code completion for values `Debug|x86` and `Release|x86`
 * CodeLens and code completion for project types
   * VB.NET SDK-style (`{778DAE3C-4631-46EA-AA77-85C1314464D9}`)
   * Shared Project SDK-style (`{D954291E-2A0B-460D-934E-DC6B0785DB48}`)
 
-Remove:
+Changes:
 
-* not correct working project type syntax highlight
+* Remove not correct working project type syntax highlight
 
 ## [1.2.0]
 
@@ -49,6 +51,9 @@ New:
 
 * Clink on CodeLens of a project GUID jump to project line.
 * Code completion for project types
+
+Improvements:
+
 * Code completion for keywords `SolutionNotes` and `ExtensibilityAddIns`
 * Code completion for values `preSolution` and `postSolution`
 * Code completion for property `RESX_SortFileContentOnSave`
@@ -61,7 +66,7 @@ Changes:
 
 New:
 
-* Code completion
+* Code completion for Snippet, modules, keywords, properties and values
 
 Fixes:
 
@@ -86,7 +91,7 @@ Fixes:
 Fixes:
 
 * Fix not wrong picture link in `readme.md`
-* Add `VSIX` to `.gitignore`
+* Internal: Add `VSIX` to `.gitignore`
 
 ## [1.0.0]
 
