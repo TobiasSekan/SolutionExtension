@@ -9,9 +9,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 New:
 
 * Show error for project GUIDs that used by another projects.
-* Show waring for project names that used by another projects.
+* Show warning for project names that used by another projects.
 * Show info for solution folders, when name is used by another projects.
-* Code completion and Syntax Highlight for keyword `SharedMSBuildProjectFiles`.
+* Code completion and syntax highlight for keyword `SharedMSBuildProjectFiles`.
+* Show the line number of the other usage in tooltip in nested project diagnostic.
 
 Changes:
 

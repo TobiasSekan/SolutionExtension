@@ -33,7 +33,7 @@ export class Diagnostic
         this.diagnostics.length = 0;
 
         const projectList = new ProjectCollector().CollectAllProjectGuid(document);
-        const alreadyUsedGuid = new Array<string>();
+        const alreadyUsedGuid = new Array<[number, string]>();
 
         let insideNestedProjects = false;
 
@@ -127,7 +127,7 @@ export class Diagnostic
         while(textPosition < textLine.text.length)
     }
 
-    private CheckForDoubleUsingInNestedProjects(textLine: vscode.TextLine, alreadyUsedGuid: Array<string>): void
+    private CheckForDoubleUsingInNestedProjects(textLine: vscode.TextLine, alreadyUsedGuid: Array<[number, string]>): void
     {
         const guidStart = textLine.text.indexOf("{",) + 1;
         const guidEnd = textLine.text.indexOf("}");
@@ -139,20 +139,25 @@ export class Diagnostic
 
         const guidToCheck = textLine.text.substr(guidStart, guidEnd - guidStart);
 
-        if(alreadyUsedGuid.includes(guidToCheck))
-        {
-            const startPosition = new vscode.Position(textLine.lineNumber, guidStart);
-            const endPosition = new vscode.Position(textLine.lineNumber, guidEnd)
+        const found = alreadyUsedGuid.find(([, guidNumber]) => guidNumber === guidToCheck);
 
-            const diagnostic = new vscode.Diagnostic(
-                new vscode.Range(startPosition, endPosition),
-                `Guid {${guidToCheck}} is already used`,
-                vscode.DiagnosticSeverity.Warning)
-                
-                this.diagnostics.push(diagnostic);
+        alreadyUsedGuid.push([textLine.lineNumber, guidToCheck]);
+        if(!found)
+        {
+            return;
         }
 
-        alreadyUsedGuid.push(guidToCheck);
+        const [lineNumber, ] = found;
+
+        const startPosition = new vscode.Position(textLine.lineNumber, guidStart);
+        const endPosition = new vscode.Position(textLine.lineNumber, guidEnd)
+
+        const diagnostic = new vscode.Diagnostic(
+            new vscode.Range(startPosition, endPosition),
+            `Guid {${guidToCheck}} is already used in Line ${lineNumber}`,
+            vscode.DiagnosticSeverity.Warning)
+            
+            this.diagnostics.push(diagnostic);
     }
 
     private CheckForNotFoundProjectFiles(project: Project): void
