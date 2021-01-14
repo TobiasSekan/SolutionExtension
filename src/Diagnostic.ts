@@ -33,224 +33,190 @@ export class Diagnostic
         this.diagnostics.length = 0;
 
         const projectList = new ProjectCollector().CollectAllProjectGuid(document);
-
-        this.CheckForDoubleUsedProjectGuid(document);
-        this.CheckForMissingProjectGuid(document, projectList);
-        this.CheckForDifferentProjectNameAndProjectFile(projectList);
-        this.CheckForDifferentProjectTypeAndFileExtension(projectList);
-        this.CheckForDifferentProjectNameAndProjectPath(projectList);
-        
-        this.collection.set(document.uri, this.diagnostics);
-        
-        this.CheckForNotFoundProjectFiles(document, projectList);
-    }
-
-    private CheckForMissingProjectGuid(document: vscode.TextDocument, projectList: Array<Project>): void
-    {
-        for (let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
-        {
-            const line = document.lineAt(lineNumber);
-            const lineText = line.text;
-
-            // ignore lines with projects and line solution guid
-            if(lineText.startsWith("Project(") || lineText.indexOf("SolutionGuid") > -1)
-            {
-                continue;
-            }
-
-            // ignore lines than don't contain a guid
-            if(lineText.indexOf("{") < 0 || lineText.indexOf("}") < 0)
-            {
-                continue;
-            }
-
-            let textPosition = 0;
-
-            do
-            {
-                const guidStart = lineText.indexOf("{", textPosition) + 1;
-                const guidEnd = lineText.indexOf("}", textPosition);
-
-                if(guidStart === -1 || guidEnd === -1)
-                {
-                    break;
-                }
-
-                const guidToCheck = lineText.substr(guidStart, guidEnd - guidStart);
-
-                if(projectList.findIndex(found => found.Guid === guidToCheck) < 0)
-                {
-                    const startPosition = new vscode.Position(lineNumber, guidStart);
-                    const endPosition = new vscode.Position(lineNumber, guidEnd)
-
-                    const diagnostic = new vscode.Diagnostic(
-                        new vscode.Range(startPosition, endPosition),
-                        `Project with Guid {${guidToCheck}} not found in solution`,
-                        vscode.DiagnosticSeverity.Error)
-
-                    this.diagnostics.push(diagnostic);
-                }
-
-                textPosition = guidEnd + 1;
-            }
-            while(textPosition < lineText.length)
-        }
-    }
-
-    private CheckForDoubleUsedProjectGuid(document: vscode.TextDocument): void
-    {
-        const guidList = new Array<string>();
+        const alreadyUsedGuid = new Array<string>();
 
         let insideNestedProjects = false;
 
-        for (let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
+        for(let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
         {
-            const line = document.lineAt(lineNumber);
-            const lineText = line.text;
+            var textLine = document.lineAt(lineNumber);
 
-            if(lineText.indexOf("GlobalSection(NestedProjects)") > -1)
+            this.CheckForMissingProjectGuid(textLine, projectList);
+
+            if(textLine.text.indexOf("GlobalSection(NestedProjects)") > -1)
             {
                 insideNestedProjects = true;
                 continue;
             }
-
-            if(lineText.indexOf("EndGlobalSection") > -1)
+            
+            if(textLine.text.indexOf("EndGlobalSection") > -1)
             {
                 insideNestedProjects = false;
                 continue;
             }
+            
+            if(insideNestedProjects)
+            {
+                this.CheckForDoubleUsingInNestedProjects(textLine, alreadyUsedGuid);
+            }
+        }
 
-            if(!insideNestedProjects)
+        for(const project of projectList)
+        {
+            if(project.IsSolutionFolder())
             {
                 continue;
             }
 
-            const guidStart = lineText.indexOf("{",) + 1;
-            const guidEnd = lineText.indexOf("}");
+            this.CheckForDifferentProjectNameAndProjectFile(project);
+            this.CheckForDifferentProjectTypeAndFileExtension(project);
+            this.CheckForDifferentProjectNameAndProjectPath(project);
+            this.CheckForNotFoundProjectFiles(project);
+        }
+
+        this.collection.set(document.uri, this.diagnostics);
+        
+    }
+
+    private CheckForMissingProjectGuid(textLine: vscode.TextLine, projectList: Array<Project>): void
+    {
+        // ignore lines with projects and line solution guid
+        if(textLine.text.startsWith("Project(") || textLine.text.indexOf("SolutionGuid") > -1)
+        {
+            return;
+        }
+
+        // ignore lines than don't contain a guid
+        if(textLine.text.indexOf("{") < 0 || textLine.text.indexOf("}") < 0)
+        {
+            return;
+        }
+
+        let textPosition = 0;
+
+        do
+        {
+            const guidStart = textLine.text.indexOf("{", textPosition) + 1;
+            const guidEnd = textLine.text.indexOf("}", textPosition);
 
             if(guidStart === -1 || guidEnd === -1)
             {
                 break;
             }
 
-            const guidToCheck = lineText.substr(guidStart, guidEnd - guidStart);
+            const guidToCheck = textLine.text.substr(guidStart, guidEnd - guidStart);
 
-            if(guidList.includes(guidToCheck))
+            if(projectList.findIndex(found => found.Guid === guidToCheck) < 0)
             {
-                const startPosition = new vscode.Position(lineNumber, guidStart);
-                const endPosition = new vscode.Position(lineNumber, guidEnd)
-                
+                const startPosition = new vscode.Position(textLine.lineNumber, guidStart);
+                const endPosition = new vscode.Position(textLine.lineNumber, guidEnd)
+
                 const diagnostic = new vscode.Diagnostic(
                     new vscode.Range(startPosition, endPosition),
-                    `Guid {${guidToCheck}} is already used`,
-                    vscode.DiagnosticSeverity.Warning)
-                    
-                    this.diagnostics.push(diagnostic);
-            }
+                    `Project with Guid {${guidToCheck}} not found in solution`,
+                    vscode.DiagnosticSeverity.Error)
 
-            guidList.push(guidToCheck);
-        }
-    }
-
-    private CheckForNotFoundProjectFiles(document: vscode.TextDocument, projectList: Array<Project>): void
-    {
-        for (const project of projectList)
-        {
-            if(project.IsSolutionFolder())
-            {
-                continue;
-            }
-
-            fs.access(project.AbsolutePath, constants.R_OK, (error) =>
-            {
-                if(!error)
-                {
-                    return;
-                }
-
-                const diagnostic = new vscode.Diagnostic(
-                    project.GetPathRange(),
-                    `File "${project.RelativePath}" not found`,
-                    vscode.DiagnosticSeverity.Error);
-                    
                 this.diagnostics.push(diagnostic);
-                this.collection.set(document.uri, this.diagnostics);
-            });
+            }
+
+            textPosition = guidEnd + 1;
         }
+        while(textPosition < textLine.text.length)
     }
 
-    private CheckForDifferentProjectNameAndProjectFile(projectList: Array<Project>): void
+    private CheckForDoubleUsingInNestedProjects(textLine: vscode.TextLine, alreadyUsedGuid: Array<string>): void
     {
-        for(const project of projectList)
+        const guidStart = textLine.text.indexOf("{",) + 1;
+        const guidEnd = textLine.text.indexOf("}");
+
+        if(guidStart === -1 || guidEnd === -1)
         {
-            if(project.IsSolutionFolder())
-            {
-                continue;
-            }
+            return;
+        }
 
-            const filleName = project.GetProjectFileNameWithoutExtension();
+        const guidToCheck = textLine.text.substr(guidStart, guidEnd - guidStart);
 
-            if(project.Name === filleName)
-            {
-                continue;
-            }
+        if(alreadyUsedGuid.includes(guidToCheck))
+        {
+            const startPosition = new vscode.Position(textLine.lineNumber, guidStart);
+            const endPosition = new vscode.Position(textLine.lineNumber, guidEnd)
 
             const diagnostic = new vscode.Diagnostic(
-                project.GetFileNameWithoutExtensionRange(),
-                `Filename "${filleName}" differ from project name "${project.Name}"`,
-                vscode.DiagnosticSeverity.Warning);
+                new vscode.Range(startPosition, endPosition),
+                `Guid {${guidToCheck}} is already used`,
+                vscode.DiagnosticSeverity.Warning)
+                
+                this.diagnostics.push(diagnostic);
+        }
+
+        alreadyUsedGuid.push(guidToCheck);
+    }
+
+    private CheckForNotFoundProjectFiles(project: Project): void
+    {
+        try
+        {
+            fs.accessSync(project.AbsolutePath, constants.R_OK)
+        }
+        catch
+        {
+            const diagnostic = new vscode.Diagnostic(
+                project.GetPathRange(),
+                `File "${project.RelativePath}" not found`,
+                vscode.DiagnosticSeverity.Error);
                 
             this.diagnostics.push(diagnostic);
         }
     }
 
-    private CheckForDifferentProjectTypeAndFileExtension(projectList: Array<Project>) : void
+    private CheckForDifferentProjectNameAndProjectFile(project: Project): void
     {
-        for(const project of projectList)
+        const filleName = project.GetProjectFileNameWithoutExtension();
+
+        if(project.Name === filleName)
         {
-            if(project.IsSolutionFolder())
-            {
-                continue;
-            }
-
-            const fileExtension = project.GetProjectFileNameExtension();
-
-            if(ProjectTypes.FileExtensionMatchProjectType(fileExtension, project.ProjectType))
-            {
-                continue;
-            }
-
-            const diagnostic = new vscode.Diagnostic(
-                project.GetFileExtensionRange(),
-                `File extension "${fileExtension}" differ from project type "${ProjectTypes.GetProjectTypeName(project.ProjectType)}"`,
-                vscode.DiagnosticSeverity.Warning);
-                
-            this.diagnostics.push(diagnostic);
+            return;
         }
+
+        const diagnostic = new vscode.Diagnostic(
+            project.GetFileNameWithoutExtensionRange(),
+            `Filename "${filleName}" differ from project name "${project.Name}"`,
+            vscode.DiagnosticSeverity.Warning);
+            
+        this.diagnostics.push(diagnostic);
     }
 
-    private CheckForDifferentProjectNameAndProjectPath(projectList: Array<Project>) : void
+    private CheckForDifferentProjectTypeAndFileExtension(project: Project): void
     {
-        for(const project of projectList)
+        const fileExtension = project.GetProjectFileNameExtension();
+
+        if(ProjectTypes.FileExtensionMatchProjectType(fileExtension, project.ProjectType))
         {
-            if(project.IsSolutionFolder())
-            {
-                continue;
-            }
-
-            const projectFolder = project.GetProjectFolder();
-
-            if(projectFolder === project.Name)
-            {
-                continue;
-            }
-
-            const diagnostic = new vscode.Diagnostic(
-                project.GetProjectFolderRange(),
-                `The project folder "${projectFolder}" differ from project name "${project.Name}"`,
-                vscode.DiagnosticSeverity.Warning);
-                
-            this.diagnostics.push(diagnostic);
+            return;
         }
+
+        const diagnostic = new vscode.Diagnostic(
+            project.GetFileExtensionRange(),
+            `File extension "${fileExtension}" differ from project type "${ProjectTypes.GetProjectTypeName(project.ProjectType)}"`,
+            vscode.DiagnosticSeverity.Warning);
+            
+        this.diagnostics.push(diagnostic);
+    }
+
+    private CheckForDifferentProjectNameAndProjectPath(project: Project): void
+    {
+        const projectFolder = project.GetProjectFolder();
+
+        if(projectFolder === project.Name)
+        {
+            return;
+        }
+
+        const diagnostic = new vscode.Diagnostic(
+            project.GetProjectFolderRange(),
+            `The project folder "${projectFolder}" differ from project name "${project.Name}"`,
+            vscode.DiagnosticSeverity.Warning);
+            
+        this.diagnostics.push(diagnostic);
     }
 }
