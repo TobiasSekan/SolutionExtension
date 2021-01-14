@@ -9,6 +9,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 New:
 
 * Show error for project GUIDs that used by another projects.
+* Show waring for project names that used by another projects.
+* Show info for solution folders, when name is used by another projects.
 
 Changes:
 
