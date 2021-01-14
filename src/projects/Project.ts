@@ -205,6 +205,9 @@ export class Project
         return this.GetRange(characterStart, characterEnd);
     }
 
+    /**
+     * Return the range of the project folder (last folder part) of the project line
+     */
     public GetProjectFolderRange(): vscode.Range
     {
         const projectFolder = this.GetProjectFolder();
@@ -216,6 +219,18 @@ export class Project
 
         return this.GetRange(characterStart, characterEnd);
     }
+
+    /**
+     * Return the range of the project GUID of the project line
+     */
+    public GetProjectGuidRange(): vscode.Range
+    {
+        const characterStart = this.Line.text.indexOf(this.Guid);
+        const characterEnd = characterStart + this.Guid.length;
+
+        return this.GetRange(characterStart, characterEnd);
+    }
+
 
     //#endregion Public Methods - Ranges
 

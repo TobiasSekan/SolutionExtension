@@ -72,6 +72,7 @@ export class Diagnostic
             this.CheckForDifferentProjectTypeAndFileExtension(project);
             this.CheckForDifferentProjectNameAndProjectPath(project);
             this.CheckForNotFoundProjectFiles(project);
+            this.CheckForDoubleUsedProjectGuids(project, projectList);
         }
 
         this.collection.set(document.uri, this.diagnostics);
@@ -218,5 +219,30 @@ export class Diagnostic
             vscode.DiagnosticSeverity.Warning);
             
         this.diagnostics.push(diagnostic);
+    }
+
+    private CheckForDoubleUsedProjectGuids(project: Project, projectList: Array<Project>): void
+    {
+        const foundProjects = projectList.filter(found => found.Guid === project.Guid);
+        if(foundProjects.length < 2)
+        {
+            return;
+        }
+
+        for (const doubleProject of foundProjects)
+        {
+            if(doubleProject.Name == project.Name)
+            {
+                // avoid double diagnostic entires
+                continue;
+            }
+
+            const diagnostic = new vscode.Diagnostic(
+                doubleProject.GetProjectGuidRange(),
+                `The project guid {"${project.Guid}"} is already used by project "${project.Name}" in line ${project.Line.lineNumber}.`,
+                vscode.DiagnosticSeverity.Error);
+
+            this.diagnostics.push(diagnostic);
+        }
     }
 }

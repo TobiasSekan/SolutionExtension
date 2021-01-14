@@ -6,6 +6,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Finished -> Upcoming next
 
+New:
+
+* Show error for project GUIDs that used by another projects.
+
+Changes:
+
+* Internal: reduce diagnostic loops
 
 ## [1.3.0]
 
