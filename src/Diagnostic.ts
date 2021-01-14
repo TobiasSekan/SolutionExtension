@@ -75,6 +75,7 @@ export class Diagnostic
             this.CheckForDifferentProjectTypeAndFileExtension(project);
             this.CheckForDifferentProjectNameAndProjectPath(project);
             this.CheckForNotFoundProjectFiles(project);
+            this.CheckForUnknownProjectTypes(project);
         }
 
         this.collection.set(document.uri, this.diagnostics);
@@ -288,5 +289,20 @@ export class Diagnostic
 
             this.diagnostics.push(diagnostic);
         }
+    }
+
+    private CheckForUnknownProjectTypes(project: Project)
+    {
+        if(ProjectTypes.IsKnownProjectType(project.ProjectType))
+        {
+            return;
+        }
+
+        const diagnostic = new vscode.Diagnostic(
+            project.GetProjectTypeRange(),
+            `The project type {"${project.ProjectType}"} is unknown.`,
+            vscode.DiagnosticSeverity.Error);
+
+        this.diagnostics.push(diagnostic);
     }
 }

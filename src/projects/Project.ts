@@ -241,6 +241,18 @@ export class Project
 
         return this.GetRange(characterStart, characterEnd);
     }
+
+    /**
+     * Return the range of the project type of the project line
+     */
+    public GetProjectTypeRange(): vscode.Range
+    {
+        const characterStart = this.Line.text.indexOf(this.ProjectType);
+        const characterEnd = characterStart + this.ProjectType.length;
+
+        return this.GetRange(characterStart, characterEnd);
+    }
+
     //#endregion Public Methods - Ranges
 
     //#region Private Methods

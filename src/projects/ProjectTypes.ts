@@ -74,7 +74,7 @@ export class ProjectTypes
         [ "A860303F-1F3F-4691-B57E-529FC101A107", "Visual Studio Tools for Applications (VSTA)" ],
         [ "A9ACE9BB-CECE-4E62-9AA4-C7E7C5BD2124", "Database" ],
         [ "AB322303-2255-48EF-A496-5904EB18DA55", "Deployment Smart Device Cab" ],
-        [ "B69E3092-B931-443C-ABE7-7E7B65F2A37F", "Micro Frmework" ],
+        [ "B69E3092-B931-443C-ABE7-7E7B65F2A37F", "Micro Framework" ],
         [ "BAA0C2D2-18E2-41B9-852F-F413020CAA33", "Visual Studio Tools for Office (VSTO)" ],
         [ "BC8A1FFA-BEE3-4634-8014-F334798102B3", "Windows Store Apps (Metro Apps)" ],
         [ "C252FEB5-A946-4202-B1D4-9916A0590387", "Visual Database Tools" ],
@@ -128,6 +128,25 @@ export class ProjectTypes
         }
 
         return "Unknown";
+    }
+
+    /**
+     * Check if the given project type is known.
+     * @param projectType The project type (GUID) to check
+     */
+    public static IsKnownProjectType(projectType: string): boolean
+    {
+        for(const [typeGuid, _] of this._projectTypesAll)
+        {
+            if(typeGuid !== projectType)
+            {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
