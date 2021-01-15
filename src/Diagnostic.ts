@@ -68,6 +68,7 @@ export class Diagnostic
         {
             this.CheckForDoubleUsedProjectGuids(project, projectList);
             this.CheckForDoubleUsedProjectNames(project, projectList);
+            this.CheckForDifferentProjectTypeAndFileExtension(project);
 
             if(project.IsSolutionFolder())
             {
@@ -75,7 +76,6 @@ export class Diagnostic
             }
 
             this.CheckForDifferentProjectNameAndProjectFile(project);
-            this.CheckForDifferentProjectTypeAndFileExtension(project);
             this.CheckForDifferentProjectNameAndProjectPath(project);
             this.CheckForNotFoundProjectFiles(project);
             this.CheckForUnknownProjectTypes(project);
