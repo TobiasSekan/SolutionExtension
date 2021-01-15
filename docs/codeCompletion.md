@@ -23,10 +23,12 @@ Triggered by `(` and auto completion by `)`.
 3. `NestedProjects`
 4. `ProjectConfigurationPlatforms`
 5. `ProjectDependencies`
-6. `SolutionConfigurationPlatforms`
-7. `SolutionItems`
-8. `SolutionNotes`
-9. `SolutionProperties`
+6. `SharedMSBuildProjectFiles`
+7. `SolutionConfigurationPlatforms`
+8. `SolutionItems`
+9. `SolutionNotes`
+10. `SolutionProperties`
+
 
 ## Properties
 
@@ -42,11 +44,13 @@ Triggered by `=`
 
 1. `Any|x64`
 2. `Debug|x64`
-3. `postProject`
-4. `postSolution`
-5. `preProject`
-6. `preSolution`
-7. `Release|x64`
+3. `Debug|x86`
+4. `postProject`
+5. `postSolution`
+6. `preProject`
+7. `preSolution`
+8. `Release|x64`
+9. `Release|x86`
 
 ## Constant
 

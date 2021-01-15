@@ -4,16 +4,18 @@ vsCode extension for Visual Studio solution files (*.sln)
 
 ## New in 1.3.0
 
-* Show error for project files that was not found
-* Show waring for project filename that differ from project name
-* Show waring for project folders that differ from project name
-* Show waring for project file extension that differ from project type
-  * Currently for `.csproj`, `.vcxproj`, `.vbproj` and `.shproj`
-* Code completion for values `Debug|x86` and `Release|x86`
-* CodeLens and code completion for project types
-  * VB.NET SDK-style (`{778DAE3C-4631-46EA-AA77-85C1314464D9}`)
-  * Shared Project SDK-style (`{D954291E-2A0B-460D-934E-DC6B0785DB48}`)
-* Remove: not correct working project type syntax highlight
+* CodeLens on project lines for "Project" nested in "Project".
+* Show error for project GUIDs that used by another projects.
+* Show error for unknown project type GUIDs.
+* Show warning for project names that used by another projects.
+* Show warning when module words have not correct PascalCase
+  * For `Project`, `EndProject`, `ProjectSection`, `EndProjectSection`
+  * And `Global`, `EndGlobal`, `GlobalSection`, `EndGlobalSection`
+* Show info for solution folders, when name is used by another projects.
+* Show the line number of the other usage in the diagnostic tooltip in nested project definition.
+* Check file extension `.vcxitems` too (should be `C++` project)
+* Code completion and syntax highlight for keyword `SharedMSBuildProjectFiles`.
+* CodeLens on project lines show no "Project type ..." instead of type only.
 
 ## Picture
 

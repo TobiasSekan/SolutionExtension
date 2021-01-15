@@ -4,26 +4,28 @@ All notable changes to the "SolutionExtension" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## Finished -> Upcoming next
+## [1.4.0]
 
 New:
 
+* CodeLens on project lines for "Project" nested in "Project".
 * Show error for project GUIDs that used by another projects.
 * Show error for unknown project type GUIDs.
 * Show warning for project names that used by another projects.
-* Show warning when modules words have not correct PascalCase
+* Show warning when module words have not correct PascalCase
   * For `Project`, `EndProject`, `ProjectSection`, `EndProjectSection`
   * And `Global`, `EndGlobal`, `GlobalSection`, `EndGlobalSection`
 * Show info for solution folders, when name is used by another projects.
 
 Improvements:
 
-* Show the line number of the other usage in tooltip in nested project diagnostic.
-* Check file extension `.vcxitems` too (must be `C++` project)
+* Show the line number of the other usage in the diagnostic tooltip in nested project definition.
+* Check file extension `.vcxitems` too (should be `C++` project)
 * Code completion and syntax highlight for keyword `SharedMSBuildProjectFiles`.
 
 Changes:
 
+* CodeLens on project lines show no "Project type ..." instead of type only.
 * don't longer underline between file name and file extension.
   * Make simultaneously warnings from file name and file extension more clear.
 * Internal: reduce diagnostic loops.
