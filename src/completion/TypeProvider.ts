@@ -14,7 +14,7 @@ export class TypeProvider implements vscode.CompletionItemProvider
         token: vscode.CancellationToken,
         context: vscode.CompletionContext): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList>
     {
-        var projectList = new ProjectCollector().CollectAllProjectGuid(document);
+        var projectList = new ProjectCollector(document, false).ProjectList;
         var projectTypeList = ProjectTypes.GetAllProjectTypes();
 
         var list = new Array<vscode.CompletionItem>();

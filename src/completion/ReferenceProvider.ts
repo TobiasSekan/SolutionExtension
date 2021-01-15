@@ -13,7 +13,7 @@ export class ReferenceProvider implements vscode.CompletionItemProvider
         token: vscode.CancellationToken,
         context: vscode.CompletionContext): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList>
     {
-        var guidList = new ProjectCollector().CollectAllProjectGuid(document);
+        var guidList = new ProjectCollector(document, false).ProjectList;
 
         var list = new Array<vscode.CompletionItem>();
 

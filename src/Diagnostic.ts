@@ -32,7 +32,8 @@ export class Diagnostic
 
         this.diagnostics.length = 0;
 
-        const projectList = new ProjectCollector().CollectAllProjectGuid(document);
+        const projectList = new ProjectCollector(document, false).ProjectList;
+
         const alreadyUsedGuid = new Array<[number, string]>();
 
         let insideNestedProjects = false;
@@ -50,13 +51,13 @@ export class Diagnostic
                 insideNestedProjects = true;
                 continue;
             }
-            
+
             if(lowerCase.indexOf("endglobalsection") > -1)
             {
                 insideNestedProjects = false;
                 continue;
             }
-            
+
             if(insideNestedProjects)
             {
                 this.CheckForDoubleUsingInNestedProjects(textLine, alreadyUsedGuid);

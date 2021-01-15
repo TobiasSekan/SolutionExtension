@@ -32,6 +32,8 @@ export class Project
         {
             this.AbsolutePath = dir + path.sep + this.RelativePath;
         }
+
+        this.NestedInProjects = new Array<[vscode.TextLine, string]>();
     }
 
     /** 
@@ -63,6 +65,11 @@ export class Project
      * The GUID of the project that is used in another places inside the solution.
      */
     public Guid: string;
+
+    /**
+     * List with project where the project is nested
+     */
+    public NestedInProjects: Array<[vscode.TextLine, string]>
 
     //#region Public Methods
 

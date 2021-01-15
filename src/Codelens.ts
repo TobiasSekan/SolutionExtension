@@ -24,7 +24,7 @@ export class CodelensProvider implements vscode.CodeLensProvider
 
             this.codeLensList.length = 0;
 
-            const projectList = new ProjectCollector().CollectAllProjectGuid(document);
+            const projectList = new ProjectCollector(document, true).ProjectList;
 
             let insideSelections = false;
 
@@ -41,13 +41,13 @@ export class CodelensProvider implements vscode.CodeLensProvider
                     insideSelections = true;
                 }
 
-                if(textLine.text.indexOf("project(") > -1)
+                if(lowerCase.indexOf("project(") > -1)
                 {
                     insideProject = true;
                 }
 
-                if(textLine.text.indexOf("endglobalsection") > -1
-                || textLine.text.indexOf("endprojectsection") > -1)
+                if(lowerCase.indexOf("endglobalsection") > -1
+                || lowerCase.indexOf("endprojectsection") > -1)
                 {
                     insideSelections = false;
                     continue;
@@ -85,6 +85,8 @@ export class CodelensProvider implements vscode.CodeLensProvider
                 while(textPosition < textLine.text.length && !insideProject)
             }
 
+            this.AddCodeLensForNestedProjects(projectList);
+
             resolve(this.codeLensList);
         });
     }
@@ -117,10 +119,10 @@ export class CodelensProvider implements vscode.CodeLensProvider
 
         const command: vscode.Command =
         {
-            command: "solutionExtension.gotoProjectLine",
+            command: "solutionExtension.gotoRange",
             tooltip: "Jump to project line",
             title: project.Name,
-            arguments: [project],
+            arguments: [project.Line.range],
         }
 
         return new vscode.CodeLens(range, command);
@@ -130,25 +132,42 @@ export class CodelensProvider implements vscode.CodeLensProvider
     {
         const projectGuid = textLine.text.substr(guidStart, guidEnd - guidStart);
 
-        const type = ProjectTypes.GetProjectTypeName(projectGuid);
-
-        const codeLens = this.GetCodeLensForProjectType(type, textLine, guidStart, guidEnd)
-
-        this.codeLensList.push(codeLens);
-    }
-
-    private GetCodeLensForProjectType(type: string, textLine: vscode.TextLine, guidStart: number, guidEnd: number)
-    {
-        const startPosition = new vscode.Position(textLine.lineNumber, guidStart);
-        const endPosition = new vscode.Position(textLine.lineNumber, guidEnd);
-        const range = new vscode.Range(startPosition, endPosition)
+        const typeName = ProjectTypes.GetProjectTypeName(projectGuid);
 
         const command: vscode.Command =
         {
             command: "",
-            title: type,
+            title: `Project type: ${typeName}`,
         }
 
-        return new vscode.CodeLens(range, command);
+        const codeLens = new vscode.CodeLens(textLine.range, command);
+
+        this.codeLensList.push(codeLens);
+    }
+
+    private AddCodeLensForNestedProjects(projectList: Array<Project>): void
+    {
+        for(const project of projectList)
+        {
+            for (const [line, nestedProjectGuid] of project.NestedInProjects)
+            {
+                const nestedInProject = projectList.find(found => found.Guid == nestedProjectGuid);
+                if(!nestedInProject)
+                {
+                    continue;
+                }
+
+                const command: vscode.Command =
+                {
+                    command: "solutionExtension.gotoRange",
+                    tooltip: "Jump to nested configuration line",
+                    title: `"${project.Name}" is nested in "${nestedInProject.Name}"`,
+                    arguments: [line.range],
+                }
+
+                const codeLens = new vscode.CodeLens(project.Line.range, command);
+                this.codeLensList.push(codeLens);
+            }
+        }
     }
 }
