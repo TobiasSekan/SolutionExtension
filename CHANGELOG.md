@@ -4,24 +4,30 @@ All notable changes to the "SolutionExtension" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## Next version
+
+Improvements:
+
+* #32 - Show warning when project have a extension but it is a solution folder.
+
 ## [1.4.0]
 
 New:
 
-* CodeLens on project lines for "Project" nested in "Project".
-* Show error for project GUIDs that used by another projects.
-* Show error for unknown project type GUIDs.
-* Show warning for project names that used by another projects.
-* Show warning when module words have not correct PascalCase
+* #31 - CodeLens on project lines for "Project" nested in "Project".
+* #2 Show error for project GUIDs that used by another projects.
+* #9 - Show error for unknown project type GUIDs.
+* #3 - Show warning for project names that used by another projects.
+* #27 - Show warning when module words have not correct PascalCase
   * For `Project`, `EndProject`, `ProjectSection`, `EndProjectSection`
   * And `Global`, `EndGlobal`, `GlobalSection`, `EndGlobalSection`
 * Show info for solution folders, when name is used by another projects.
 
 Improvements:
 
+* #29 - Check file extension `.vcxitems` too (should be `C++` project)
+* #20 - Code completion and syntax highlight for keyword `SharedMSBuildProjectFiles`.
 * Show the line number of the other usage in the diagnostic tooltip in nested project definition.
-* Check file extension `.vcxitems` too (should be `C++` project)
-* Code completion and syntax highlight for keyword `SharedMSBuildProjectFiles`.
 
 Changes:
 
@@ -34,16 +40,16 @@ Changes:
 
 New:
 
-* Show error for project files that was not found
-* Show warning for project filename that differ from project name
-* Show warning for project folders that differ from project name
-* Show warning for project file extension that differ from project type
+* #1 - Show error for project files that was not found
+* #15 - Show warning for project filename that differ from project name
+* #14 - Show warning for project folders that differ from project name
+* #18 - Show warning for project file extension that differ from project type
   * For `.csproj`, `.vcxproj`, `.vbproj` and `.shproj`
 
 Improvements:
 
-* Code completion for values `Debug|x86` and `Release|x86`
-* CodeLens and code completion for project types
+* #21 - Code completion for values `Debug|x86` and `Release|x86`
+* #19 - CodeLens and code completion for project types
   * VB.NET SDK-style (`{778DAE3C-4631-46EA-AA77-85C1314464D9}`)
   * Shared Project SDK-style (`{D954291E-2A0B-460D-934E-DC6B0785DB48}`)
 
@@ -56,7 +62,7 @@ Changes:
 New:
 
 * Clink on CodeLens of a project GUID jump to project line.
-* Code completion for project types
+* #13 - Code completion for project types
 
 Improvements:
 
@@ -72,7 +78,11 @@ Changes:
 
 New:
 
-* Code completion for Snippet, modules, keywords, properties and values
+* #4 - Code completion for Snippet and modules
+* #5 - Code completion for values
+* #6 - Code completion for used project GUIDs
+* #7 - Code completion for keywords
+* #8 - Code completion for properties
 
 Fixes:
 
