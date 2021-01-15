@@ -9,6 +9,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 Improvements:
 
 * #32 - Show warning when project have a extension but it is a solution folder.
+* #28 - Show more useful warning message for more times nested projects.
+
+Fixes:
+
+* #28 - Show warning for all lines with more times nested projects.
 
 ## [1.4.0]
 

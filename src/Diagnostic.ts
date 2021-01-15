@@ -32,44 +32,23 @@ export class Diagnostic
 
         this.diagnostics.length = 0;
 
-        const projectList = new ProjectCollector(document, false).ProjectList;
-
-        const alreadyUsedGuid = new Array<[number, string]>();
-
-        let insideNestedProjects = false;
+        const projectList = new ProjectCollector(document, true).ProjectList;
 
         for(let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
         {
             const textLine = document.lineAt(lineNumber);
-            const lowerCase = textLine.text.toLowerCase();
 
             this.CheckForMissingProjectGuid(textLine, projectList);
             this.CheckForWrongPascalCase(textLine);
-
-            if(lowerCase.indexOf("globalsection(nestedprojects)") > -1)
-            {
-                insideNestedProjects = true;
-                continue;
-            }
-
-            if(lowerCase.indexOf("endglobalsection") > -1)
-            {
-                insideNestedProjects = false;
-                continue;
-            }
-
-            if(insideNestedProjects)
-            {
-                this.CheckForDoubleUsingInNestedProjects(textLine, alreadyUsedGuid);
-            }
         }
-
+        
         for(const project of projectList)
         {
+            this.CheckForDoubleUsingInNestedProjects(project, projectList);
             this.CheckForDoubleUsedProjectGuids(project, projectList);
             this.CheckForDoubleUsedProjectNames(project, projectList);
             this.CheckForDifferentProjectTypeAndFileExtension(project);
-
+            
             if(project.IsSolutionFolder())
             {
                 continue;
@@ -133,37 +112,38 @@ export class Diagnostic
         while(textPosition < textLine.text.length)
     }
 
-    private CheckForDoubleUsingInNestedProjects(textLine: vscode.TextLine, alreadyUsedGuid: Array<[number, string]>): void
+    private CheckForDoubleUsingInNestedProjects(project: Project,projectList: Array<Project>): void
     {
-        const guidStart = textLine.text.indexOf("{",) + 1;
-        const guidEnd = textLine.text.indexOf("}");
-
-        if(guidStart === -1 || guidEnd === -1)
+        if(project.NestedInProjects.length < 1)
         {
             return;
         }
 
-        const guidToCheck = textLine.text.substr(guidStart, guidEnd - guidStart);
-
-        const found = alreadyUsedGuid.find(([, guidNumber]) => guidNumber === guidToCheck);
-
-        alreadyUsedGuid.push([textLine.lineNumber, guidToCheck]);
-        if(!found)
+        for (const [line1, nestedProjectGuid] of project.NestedInProjects)
         {
-            return;
+            for (const [line2, ] of project.NestedInProjects)
+            {
+                if(line1.lineNumber === line2.lineNumber)
+                {
+                    continue;
+                }
+
+                const nestedProject = projectList.find(found => found.Guid === nestedProjectGuid);
+
+                const guidStart = line2.text.indexOf("{") + 1;
+                const guidEnd = line2.text.indexOf("}", guidStart);
+
+                const startPosition = new vscode.Position(line2.lineNumber, guidStart);
+                const endPosition = new vscode.Position(line2.lineNumber, guidEnd)
+
+                const diagnostic = new vscode.Diagnostic(
+                    new vscode.Range(startPosition, endPosition),
+                    `Project "${project.Name}" is already nested to Project "${nestedProject?.Name}" in line ${line1.lineNumber + 1}`,
+                    vscode.DiagnosticSeverity.Warning)
+                    
+                    this.diagnostics.push(diagnostic);
+            }
         }
-
-        const [lineNumber, ] = found;
-
-        const startPosition = new vscode.Position(textLine.lineNumber, guidStart);
-        const endPosition = new vscode.Position(textLine.lineNumber, guidEnd)
-
-        const diagnostic = new vscode.Diagnostic(
-            new vscode.Range(startPosition, endPosition),
-            `Guid {${guidToCheck}} is already used in Line ${lineNumber}`,
-            vscode.DiagnosticSeverity.Warning)
-            
-            this.diagnostics.push(diagnostic);
     }
 
     private CheckForNotFoundProjectFiles(project: Project): void
