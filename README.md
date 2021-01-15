@@ -2,7 +2,7 @@
 
 vsCode extension for Visual Studio solution files (*.sln)
 
-## New in 1.3.0
+## New in 1.4.0
 
 * CodeLens on project lines for "Project" nested in "Project".
 * Show error for project GUIDs that used by another projects.
