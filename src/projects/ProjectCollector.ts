@@ -26,23 +26,58 @@ export class ProjectCollector
      */
     public CollectAllProjectGuid(textDocument: vscode.TextDocument): void
     {
+        let isInProject = false;
+        let isInSolutionItem = false;
+        let project: Project|undefined;
+
         for(let lineNumber = 0; lineNumber < textDocument.lineCount; lineNumber++)
         {
+
             const textLine = textDocument.lineAt(lineNumber);
             const lineText = textLine.text.trim();
             const lowerCase = lineText.toLowerCase();
 
-            if(!lowerCase.startsWith("project("))
+            if(lowerCase.startsWith("endproject"))
             {
+                if(project)
+                {
+                    this.ProjectList.push(project);
+                }
+
+                isInProject = false;
+                isInSolutionItem = false;
+                project = undefined;
                 continue;
             }
 
-            if(lineText.split("\"").length < 8)
+            if(isInProject && lowerCase.startsWith("endprojectsection"))
             {
+                isInSolutionItem = false;
                 continue;
             }
 
-            this.ProjectList.push(new Project(textDocument, textLine));
+            if(isInSolutionItem && project)
+            {
+                project.SolutionItem.push(textLine);
+            }
+
+            if(lowerCase.startsWith("projectsection(solutionitems)"))
+            {
+                isInSolutionItem = true;
+                continue;
+            }
+
+            if(lowerCase.startsWith("project("))
+            {
+                isInProject = true;
+                
+                if(lineText.split("\"").length < 8)
+                {
+                    continue;
+                }
+
+                project = new Project(textDocument, textLine)
+            }
         }
     }
 

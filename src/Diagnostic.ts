@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import * as path from 'path';
 import * as vscode from 'vscode';
 import { constants } from 'fs';
 import { Project } from './projects/Project';
@@ -48,6 +49,7 @@ export class Diagnostic
             this.CheckForDoubleUsedProjectGuids(project, projectList);
             this.CheckForDoubleUsedProjectNames(project, projectList);
             this.CheckForDifferentProjectTypeAndFileExtension(project);
+            this.CheckForNotFoundProjectSolutionFiles(project, document);
             
             if(project.IsSolutionFolder())
             {
@@ -112,16 +114,16 @@ export class Diagnostic
         while(textPosition < textLine.text.length)
     }
 
-    private CheckForDoubleUsingInNestedProjects(project: Project,projectList: Array<Project>): void
+    private CheckForDoubleUsingInNestedProjects(project: Project, projectList: Array<Project>): void
     {
         if(project.NestedInProjects.length < 1)
         {
             return;
         }
 
-        for (const [line1, nestedProjectGuid] of project.NestedInProjects)
+        for(const [line1, nestedProjectGuid] of project.NestedInProjects)
         {
-            for (const [line2, ] of project.NestedInProjects)
+            for(const [line2, ] of project.NestedInProjects)
             {
                 if(line1.lineNumber === line2.lineNumber)
                 {
@@ -150,7 +152,7 @@ export class Diagnostic
     {
         try
         {
-            fs.accessSync(project.AbsolutePath, constants.R_OK)
+            fs.accessSync(project.AbsolutePath, constants.R_OK);
         }
         catch
         {
@@ -366,6 +368,49 @@ export class Diagnostic
 
         this.diagnostics.push(diagnostic);
         return true;
+    }
+
+    private CheckForNotFoundProjectSolutionFiles(project: Project, document: vscode.TextDocument): void
+    {
+        for (const solutionFileText of project.SolutionItem)
+        {
+            const split = solutionFileText.text.split("=");
+            if(split.length < 2)
+            {
+                continue;
+            }
+
+            let filePath = split[1].trim();
+
+            if(!path.isAbsolute(filePath))
+            {
+                if(project.IsSolutionFolder())
+                {
+                    const dir = path.dirname(document.fileName);
+                    filePath = path.join(dir, filePath);
+                }
+                else
+                {
+                    filePath = path.join(project.AbsolutePath, filePath);
+                }
+            }
+
+            try
+            {
+                fs.accessSync(filePath, constants.R_OK)
+            }
+            catch
+            {
+                const characterStart = solutionFileText.text.lastIndexOf(split[1].trim());
+
+                const diagnostic = new vscode.Diagnostic(
+                    this.GetRange(solutionFileText, characterStart, split[1].trim()),
+                    `File "${filePath}" not found`,
+                    vscode.DiagnosticSeverity.Error);
+                    
+                this.diagnostics.push(diagnostic);
+            }
+        }
     }
 
     private GetRange(textLine: vscode.TextLine, characterStart: number, word: string): vscode.Range

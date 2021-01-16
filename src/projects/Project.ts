@@ -13,7 +13,7 @@ export class Project
      */
     public constructor(textDocument: vscode.TextDocument, line: vscode.TextLine)
     {
-        const dir = path.dirname(textDocument.fileName)
+        const dir = path.dirname(textDocument.fileName);
 
         this.Line = line;
 
@@ -34,6 +34,7 @@ export class Project
         }
 
         this.NestedInProjects = new Array<[vscode.TextLine, string]>();
+        this.SolutionItem = new Array<vscode.TextLine>();
     }
 
     /** 
@@ -69,7 +70,12 @@ export class Project
     /**
      * List with project where the project is nested
      */
-    public NestedInProjects: Array<[vscode.TextLine, string]>
+    public NestedInProjects: Array<[vscode.TextLine, string]>;
+
+    /**
+     * List with all solution items of this project
+     */
+    public SolutionItem: Array<vscode.TextLine>;
 
     //#region Public Methods
 
@@ -94,7 +100,7 @@ export class Project
      */
     public GetGuidWithBraces(): string
     {
-        return "{" + this.Guid + "}"
+        return "{" + this.Guid + "}";
     }
 
     /**
@@ -150,7 +156,7 @@ export class Project
      */
     public GetProjectFileNameExtension(): string
     {
-        return path.extname(this.RelativePath)
+        return path.extname(this.RelativePath);
     }
 
     /**
@@ -272,7 +278,7 @@ export class Project
     private GetRange(characterStart: number, characterEnd: number): vscode.Range
     {
         const start = new vscode.Position(this.Line.lineNumber, characterStart);
-        const end = new vscode.Position(this.Line.lineNumber, characterEnd)
+        const end = new vscode.Position(this.Line.lineNumber, characterEnd);
 
         return new vscode.Range(start, end);
     }
