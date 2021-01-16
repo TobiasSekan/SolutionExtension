@@ -2,17 +2,22 @@
     "cSpell.words": [
         "GUIDs",
         "RESX",
+        "Sekan",
         "Silverlight",
         "VSTA",
         "VSTO",
         "Zune",
         "endglobalsection",
+        "endproject",
         "endprojectsection",
         "endregion",
         "globalsection",
+        "keyof",
         "nestedprojects",
         "projectsection",
+        "solutionextension",
         "solutionguid",
+        "solutionitems",
         "vcxitems"
     ]
 }

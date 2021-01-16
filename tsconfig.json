@@ -16,15 +16,21 @@
 		"noImplicitThis": true,
 		//"noUnusedParameters": true,
 		"noUnusedLocals": true,
+
+		"noStrictGenericChecks": false,
+		"noUncheckedIndexedAccess": false,
 		
 		"alwaysStrict": true,
 		"strictFunctionTypes": true,
 		"strictBindCallApply": true,
 		"strictNullChecks": true,
 		"strictPropertyInitialization": true,
-		"noStrictGenericChecks": false,
 		
 		"keyofStringsOnly": false,
+		"forceConsistentCasingInFileNames": true,
+
+		"suppressImplicitAnyIndexErrors": false,
+		"suppressExcessPropertyErrors": false,
 	},
 	"exclude": ["node_modules"]
 }
