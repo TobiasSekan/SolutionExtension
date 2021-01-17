@@ -29,7 +29,6 @@ Triggered by `(` and auto completion by `)`.
 9. `SolutionNotes`
 10. `SolutionProperties`
 
-
 ## Properties
 
 Auto completion by `=`
