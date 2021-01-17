@@ -9,6 +9,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 New:
 
 * #25 - Check files paths of solution items (`ProjectSection(SolutionItems)`).
+* #10 - Check use configurations under `GlobalSection'(ProjectConfigurationPlatforms)`
+  * They must defined in `GlobalSection(SolutionConfiguration)`
 
 Improvements:
 
@@ -29,7 +31,7 @@ Fixes:
 New:
 
 * #31 - CodeLens on project lines for "Project" nested in "Project".
-* #2 Show error for project GUIDs that used by another projects.
+* #2 - Show error for project GUIDs that used by another projects.
 * #9 - Show error for unknown project type GUIDs.
 * #3 - Show warning for project names that used by another projects.
 * #27 - Show warning when module words have not correct PascalCase
