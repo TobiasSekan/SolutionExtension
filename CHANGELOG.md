@@ -6,14 +6,18 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Next version
 
+New:
+
+* #25 - Check files paths of solution items (`ProjectSection(SolutionItems)`).
+
 Improvements:
 
-* #32 - Show warning when project have a extension but it is a solution folder.
+* #32 - Show warning when project path have a extension, but it is a solution folder.
 * #28 - Show more useful warning message for more times nested projects.
 
 Changes:
 
-* #30 - used project GUIDs in lower case are now a info instead of an error.
+* #30 - Found project GUIDs in lower case are now a info instead of an error.
 
 Fixes:
 
