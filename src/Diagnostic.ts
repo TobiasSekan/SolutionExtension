@@ -98,13 +98,23 @@ export class Diagnostic
 
             if(projectList.findIndex(found => found.Guid === guidToCheck) < 0)
             {
-                const startPosition = new vscode.Position(textLine.lineNumber, guidStart);
-                const endPosition = new vscode.Position(textLine.lineNumber, guidEnd)
+                let diagnostic: vscode.Diagnostic;
 
-                const diagnostic = new vscode.Diagnostic(
-                    new vscode.Range(startPosition, endPosition),
-                    `Project with Guid {${guidToCheck}} not found in solution`,
-                    vscode.DiagnosticSeverity.Error)
+                const uppercaseGuid = guidToCheck.toUpperCase();
+                if(projectList.findIndex(found => found.Guid === uppercaseGuid) < 0)
+                {
+                    diagnostic = new vscode.Diagnostic(
+                        this.GetRange(textLine, guidStart, guidToCheck),
+                        `Project with Guid {${guidToCheck}} not found in solution.`,
+                        vscode.DiagnosticSeverity.Error)
+                }
+                else
+                {
+                    diagnostic = new vscode.Diagnostic(
+                        this.GetRange(textLine, guidStart, guidToCheck),
+                        `Guid {${guidToCheck}} should we written in uppercase.`,
+                        vscode.DiagnosticSeverity.Information)
+                }
 
                 this.diagnostics.push(diagnostic);
             }
@@ -135,11 +145,8 @@ export class Diagnostic
                 const guidStart = line2.text.indexOf("{") + 1;
                 const guidEnd = line2.text.indexOf("}", guidStart);
 
-                const startPosition = new vscode.Position(line2.lineNumber, guidStart);
-                const endPosition = new vscode.Position(line2.lineNumber, guidEnd)
-
                 const diagnostic = new vscode.Diagnostic(
-                    new vscode.Range(startPosition, endPosition),
+                    this.GetRangeStartEnd(line2, guidStart, guidEnd),
                     `Project "${project.Name}" is already nested to Project "${nestedProject?.Name}" in line ${line1.lineNumber + 1}`,
                     vscode.DiagnosticSeverity.Warning)
                     
@@ -417,6 +424,14 @@ export class Diagnostic
     {
         var characterEnd = characterStart + word.length;
 
+        var start = new vscode.Position(textLine.lineNumber, characterStart);
+        var end = new vscode.Position(textLine.lineNumber, characterEnd);
+
+        return new vscode.Range(start, end);
+    }
+
+    private GetRangeStartEnd(textLine: vscode.TextLine, characterStart: number, characterEnd: number): vscode.Range
+    {
         var start = new vscode.Position(textLine.lineNumber, characterStart);
         var end = new vscode.Position(textLine.lineNumber, characterEnd);
 

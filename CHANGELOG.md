@@ -11,9 +11,14 @@ Improvements:
 * #32 - Show warning when project have a extension but it is a solution folder.
 * #28 - Show more useful warning message for more times nested projects.
 
+Changes:
+
+* #30 - used project GUIDs in lower case are now a info instead of an error.
+
 Fixes:
 
 * #28 - Show warning for all lines with more times nested projects.
+* #33 - Project path that start with a ".." have no syntax highlight.
 
 ## [1.4.0]
 
