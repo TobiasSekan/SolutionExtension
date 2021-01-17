@@ -94,7 +94,7 @@
 		"strings": {
 			"patterns": [{
 				"name": "string.quoted.double.text.sln",
-				"begin": "\"[a-zA-z]",
+				"begin": "\"",
 				"end": "\""
 			}]
 		},
