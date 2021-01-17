@@ -34,7 +34,7 @@ export class Project
         }
 
         this.NestedInProjects = new Array<[vscode.TextLine, string]>();
-        this.SolutionItem = new Array<vscode.TextLine>();
+        this.SolutionItems = new Array<vscode.TextLine>();
     }
 
     /** 
@@ -75,7 +75,7 @@ export class Project
     /**
      * List with all solution items of this project
      */
-    public SolutionItem: Array<vscode.TextLine>;
+    public SolutionItems: Array<vscode.TextLine>;
 
     //#region Public Methods
 

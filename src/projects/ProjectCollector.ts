@@ -58,7 +58,7 @@ export class ProjectCollector
 
             if(isInSolutionItem && project)
             {
-                project.SolutionItem.push(textLine);
+                project.SolutionItems.push(textLine);
             }
 
             if(lowerCase.startsWith("projectsection(solutionitems)"))
