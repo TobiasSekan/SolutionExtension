@@ -6,8 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Next version
 
+## [1.5.0]
+
 New:
 
+* #37 - Open project file and project folder from CodeLens on project lines.
 * #25 - Check files paths of solution items (`ProjectSection(SolutionItems)`).
 * #10 - Check use configurations under `GlobalSection'(ProjectConfigurationPlatforms)`
   * They must defined in `GlobalSection(SolutionConfiguration)`
@@ -20,7 +23,8 @@ Improvements:
 Changes:
 
 * #30 - Found project GUIDs in lower case are now a info instead of an error.
-* Remove leftover from vscode beginners extension example
+* Rename `Project type` to `Type` to save space in CodeLens line on projects
+* Remove leftover from vsCode beginners extension example
 
 Fixes:
 

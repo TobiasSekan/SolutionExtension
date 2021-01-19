@@ -65,6 +65,21 @@ export function activate(context: vscode.ExtensionContext): void
     {
         vscode.window.activeTextEditor?.revealRange(args, vscode.TextEditorRevealType.InCenter);
     });
+
+    vscode.commands.registerCommand("solutionExtension.openFile", (args: vscode.Uri) =>
+    {
+        const options: vscode.TextDocumentShowOptions =
+        {
+            preview: true,
+        }
+
+        vscode.window.showTextDocument(args, options,);
+    });
+
+    vscode.commands.registerCommand("solutionExtension.openFolder", (args: vscode.Uri) =>
+    {
+        vscode.commands.executeCommand("vscode.openFolder", args, true)
+    });
 }
 
 function onChangeTextDocument(diagnostic: Diagnostic): (e: vscode.TextDocumentChangeEvent) => any
