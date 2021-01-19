@@ -20,6 +20,7 @@ Improvements:
 Changes:
 
 * #30 - Found project GUIDs in lower case are now a info instead of an error.
+* Remove leftover from vscode beginners extension example
 
 Fixes:
 
