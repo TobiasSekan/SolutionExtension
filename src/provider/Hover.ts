@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-export class SolutionHover implements vscode.HoverProvider
+export class HoverProvider implements vscode.HoverProvider
 {
     public constructor()
     {

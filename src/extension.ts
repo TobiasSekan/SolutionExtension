@@ -1,15 +1,15 @@
 import * as vscode from 'vscode';
 import { Diagnostic } from './Diagnostic';
-import { SolutionHover } from './Hover';
-import { CodelensProvider } from './Codelens';
+import { HoverProvider } from './provider/Hover';
+import { CodelensProvider } from './provider/Codelens';
 import { ModuleProvider } from './completion/ModuleProvider';
 import { ValueProvider } from './completion/ValueProvider';
 import { PropertyProvider } from './completion/PropertyProvider';
 import { KeywordProvider } from './completion/KeywordProvider';
 import { ReferenceProvider } from './completion/ReferenceProvider';
 import { TypeProvider } from './completion/TypeProvider';
-import { DocumentSymbolProvider } from './DocumentSymbolProvider';
-import { DefinitionProvider } from './DefinitionProvider';
+import { DocumentSymbolProvider } from './provider/DocumentSymbol';
+import { DefinitionProvider } from './provider/Definition';
 
 const languageId = 'sln';
 
@@ -46,7 +46,7 @@ export function activate(context: vscode.ExtensionContext): void
         vscode.languages.registerCompletionItemProvider(languageId, new TypeProvider(), "\""),
         vscode.languages.registerDocumentSymbolProvider(languageId, new DocumentSymbolProvider()),
         vscode.languages.registerDefinitionProvider(languageId, new DefinitionProvider()),
-        vscode.languages.registerHoverProvider(languageId, new SolutionHover()),
+        vscode.languages.registerHoverProvider(languageId, new HoverProvider()),
     ];
 
     context.subscriptions.push(...provider);

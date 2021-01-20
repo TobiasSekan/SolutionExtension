@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { Project } from './classes/Project';
-import { Solution } from './classes/Solution';
+import { Project } from '../classes/Project';
+import { Solution } from '../classes/Solution';
 
 export class DefinitionProvider implements vscode.DefinitionProvider
 {
