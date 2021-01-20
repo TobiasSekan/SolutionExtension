@@ -10,6 +10,7 @@ import { ReferenceProvider } from './completion/ReferenceProvider';
 import { TypeProvider } from './completion/TypeProvider';
 import { DocumentSymbolProvider } from './provider/DocumentSymbol';
 import { DefinitionProvider } from './provider/Definition';
+import { DocumentHighlightProvider } from './provider/DocumentHighlight';
 
 const languageId = 'sln';
 
@@ -47,6 +48,7 @@ export function activate(context: vscode.ExtensionContext): void
         vscode.languages.registerDocumentSymbolProvider(languageId, new DocumentSymbolProvider()),
         vscode.languages.registerDefinitionProvider(languageId, new DefinitionProvider()),
         vscode.languages.registerHoverProvider(languageId, new HoverProvider()),
+        vscode.languages.registerDocumentHighlightProvider(languageId, new DocumentHighlightProvider()),
     ];
 
     context.subscriptions.push(...provider);
