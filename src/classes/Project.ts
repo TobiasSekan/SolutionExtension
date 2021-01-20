@@ -1,23 +1,28 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { ProjectTypes } from "./ProjectTypes";
+import { ProjectTypes } from "../projects/ProjectTypes";
+import { SolutionModule } from './SolutionModule';
+import { VscodeHelper } from '../helper/vscodeHelper';
+import { ProjectSection } from './ProjectSection';
 
 /**
  * A project inside a solution.
  */
-export class Project
+export class Project extends SolutionModule
 {
     /**
      * Crate a new project, based on the given (raw) project line string.
      * @param line The line that contains the project information.
      */
-    public constructor(textDocument: vscode.TextDocument, line: vscode.TextLine)
+    public constructor(textDocument: vscode.TextDocument, start: vscode.Position, end: vscode.Position)
     {
+        super("Project", start, end)
+
         const dir = path.dirname(textDocument.fileName);
 
-        this.Line = line;
+        this.Line = textDocument.lineAt(start.line);
 
-        const lineSplit = line.text.trim().split("\"");
+        const lineSplit = this.Line.text.trim().split("\"");
 
         this.ProjectType = lineSplit[1].replace("{", "").replace("}", "");;
         this.Name = lineSplit[3];
@@ -35,6 +40,7 @@ export class Project
 
         this.NestedInProjects = new Array<[vscode.TextLine, string]>();
         this.SolutionItems = new Array<vscode.TextLine>();
+        this.ProjectSections = new Array<ProjectSection>();
     }
 
     /** 
@@ -74,8 +80,11 @@ export class Project
 
     /**
      * List with all solution items of this project
+     * TODO: replace/remove this
      */
     public SolutionItems: Array<vscode.TextLine>;
+
+    public ProjectSections: Array<ProjectSection>;
 
     //#region Public Methods
 
@@ -188,7 +197,7 @@ export class Project
         const characterStart = this.Line.text.indexOf(this.RelativePath);
         const characterEnd = characterStart + this.RelativePath.length;
         
-        return this.GetRange(characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
     }
 
     /**
@@ -202,7 +211,7 @@ export class Project
         const characterStart = this.Line.text.indexOf(fileName);
         const characterEnd = characterStart + fileNameWithoutExtension.length;
 
-        return this.GetRange(characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
     }
 
     /**
@@ -215,7 +224,7 @@ export class Project
         const characterStart = this.Line.text.indexOf(fileNameExtension) + 1;
         const characterEnd = characterStart + fileNameExtension.length;
 
-        return this.GetRange(characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
     }
 
     /**
@@ -230,7 +239,7 @@ export class Project
         const characterStart = this.Line.text.indexOf(search);
         const characterEnd = characterStart + projectFolder.length;
 
-        return this.GetRange(characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
     }
 
     /**
@@ -241,7 +250,7 @@ export class Project
         const characterStart = this.Line.text.indexOf(this.Guid);
         const characterEnd = characterStart + this.Guid.length;
 
-        return this.GetRange(characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
     }
 
     /**
@@ -252,7 +261,7 @@ export class Project
         const characterStart = this.Line.text.indexOf(this.Name);
         const characterEnd = characterStart + this.Name.length;
 
-        return this.GetRange(characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
     }
 
     /**
@@ -263,25 +272,8 @@ export class Project
         const characterStart = this.Line.text.indexOf(this.ProjectType);
         const characterEnd = characterStart + this.ProjectType.length;
 
-        return this.GetRange(characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
     }
 
     //#endregion Public Methods - Ranges
-
-    //#region Private Methods
-
-    /**
-     * Return a range for the given character range
-     * @param characterStart The first character of the range
-     * @param characterEnd The last character of the range
-     */
-    private GetRange(characterStart: number, characterEnd: number): vscode.Range
-    {
-        const start = new vscode.Position(this.Line.lineNumber, characterStart);
-        const end = new vscode.Position(this.Line.lineNumber, characterEnd);
-
-        return new vscode.Range(start, end);
-    }
-
-    //#endregion Private Methods
 }

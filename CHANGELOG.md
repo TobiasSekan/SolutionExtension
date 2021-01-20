@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Next version
 
+New:
+
+* #38 - Show all Symbol Definitions Within a Document (+ Breadcrumbs)
+
 ## [1.5.0]
 
 New:

@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import { Project } from './Project';
+import { Project } from '../classes/Project';
+import { ProjectSection } from '../classes/ProjectSection';
 
 export class ProjectCollector
 {
@@ -29,6 +30,7 @@ export class ProjectCollector
         let isInProject = false;
         let isInSolutionItem = false;
         let project: Project|undefined;
+        let projectSection: ProjectSection|undefined;
 
         for(let lineNumber = 0; lineNumber < textDocument.lineCount; lineNumber++)
         {
@@ -37,33 +39,21 @@ export class ProjectCollector
             const lineText = textLine.text.trim();
             const lowerCase = lineText.toLowerCase();
 
-            if(lowerCase.startsWith("endproject"))
-            {
-                if(project)
-                {
-                    this.ProjectList.push(project);
-                }
-
-                isInProject = false;
-                isInSolutionItem = false;
-                project = undefined;
-                continue;
-            }
-
-            if(isInProject && lowerCase.startsWith("endprojectsection"))
-            {
-                isInSolutionItem = false;
-                continue;
-            }
-
             if(isInSolutionItem && project)
             {
+                project.ProjectSections.push()
                 project.SolutionItems.push(textLine);
             }
 
             if(lowerCase.startsWith("projectsection(solutionitems)"))
             {
                 isInSolutionItem = true;
+                continue;
+            }
+
+            if(lowerCase.startsWith("projectsection("))
+            {
+                projectSection = new ProjectSection(textDocument, textLine.range.start, textLine.range.end);
                 continue;
             }
 
@@ -76,7 +66,35 @@ export class ProjectCollector
                     continue;
                 }
 
-                project = new Project(textDocument, textLine)
+                project = new Project(textDocument, textLine.range.start, textLine.range.end);
+            }
+
+            if(isInProject && lowerCase === "endprojectsection")
+            {
+                if(projectSection)
+                {
+                    projectSection.End = textLine.range.end;
+                    project?.ProjectSections.push(projectSection);
+                    projectSection = undefined;
+                }
+
+                isInSolutionItem = false;
+                continue;
+            }
+
+            if(lowerCase === "endproject")
+            {
+                if(project)
+                {
+                    project.End = textLine.range.end;
+                    this.ProjectList.push(project);
+                    project = undefined
+                }
+
+                isInProject = false;
+                isInSolutionItem = false;
+
+                continue;
             }
         }
     }

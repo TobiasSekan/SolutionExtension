@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { ProjectCollector } from './projects/ProjectCollector';
-import { Project } from './projects/Project';
+import { Project } from './classes/Project';
 import { ProjectTypes } from './projects/ProjectTypes';
 
 export class CodelensProvider implements vscode.CodeLensProvider

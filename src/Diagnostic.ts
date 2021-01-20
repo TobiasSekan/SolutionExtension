@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { constants } from 'fs';
-import { Project } from './projects/Project';
+import { Project } from './classes/Project';
 import { ProjectCollector } from './projects/ProjectCollector';
 import { ProjectTypes } from './projects/ProjectTypes';
 
