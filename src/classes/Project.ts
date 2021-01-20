@@ -194,10 +194,7 @@ export class Project extends SolutionModule
      */
     public GetPathRange(): vscode.Range
     {
-        const characterStart = this.Line.text.indexOf(this.RelativePath);
-        const characterEnd = characterStart + this.RelativePath.length;
-        
-        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, this.RelativePath, this.RelativePath);
     }
 
     /**
@@ -208,10 +205,7 @@ export class Project extends SolutionModule
         const fileName = this.GetProjectFileName();
         const fileNameWithoutExtension = this.GetProjectFileNameWithoutExtension();
 
-        const characterStart = this.Line.text.indexOf(fileName);
-        const characterEnd = characterStart + fileNameWithoutExtension.length;
-
-        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, fileName, fileNameWithoutExtension);
     }
 
     /**
@@ -221,10 +215,7 @@ export class Project extends SolutionModule
     {
         const fileNameExtension = this.GetProjectFileNameExtension();
 
-        const characterStart = this.Line.text.indexOf(fileNameExtension) + 1;
-        const characterEnd = characterStart + fileNameExtension.length;
-
-        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, fileNameExtension, fileNameExtension, /*relativePosition:*/ 1);
     }
 
     /**
@@ -236,10 +227,7 @@ export class Project extends SolutionModule
 
         const search = projectFolder + path.sep + this.GetProjectFileName();
 
-        const characterStart = this.Line.text.indexOf(search);
-        const characterEnd = characterStart + projectFolder.length;
-
-        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, search, projectFolder);
     }
 
     /**
@@ -247,10 +235,7 @@ export class Project extends SolutionModule
      */
     public GetProjectGuidRange(): vscode.Range
     {
-        const characterStart = this.Line.text.indexOf(this.Guid);
-        const characterEnd = characterStart + this.Guid.length;
-
-        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, this.Guid, this.Guid);
     }
 
     /**
@@ -258,10 +243,7 @@ export class Project extends SolutionModule
      */
     public GetProjectNameRange(): vscode.Range
     {
-        const characterStart = this.Line.text.indexOf(this.Name);
-        const characterEnd = characterStart + this.Name.length;
-
-        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, this.Name, this.Name);
     }
 
     /**
@@ -269,10 +251,7 @@ export class Project extends SolutionModule
      */
     public GetProjectTypeRange(): vscode.Range
     {
-        const characterStart = this.Line.text.indexOf(this.ProjectType);
-        const characterEnd = characterStart + this.ProjectType.length;
-
-        return VscodeHelper.GetRange(this.Line, characterStart, characterEnd);
+        return VscodeHelper.GetRange(this.Line, this.ProjectType, this.ProjectType);
     }
 
     //#endregion Public Methods - Ranges

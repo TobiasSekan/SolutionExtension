@@ -3,13 +3,17 @@ import * as vscode from 'vscode';
 export class VscodeHelper
 {
     /**
-     * Return a range for the given character range
-     * @param line The line that contains the line number for the range
-     * @param characterStart The first character of the range
-     * @param characterEnd The last character of the range
+     * Return a range for the given word
+     * @param line The line that contains the word
+     * @param searchFor Search the first occur of the given word
+     * @param word The word for the word length
+     * @param relativePosition The relative position of the first found word character
      */
-    public static GetRange(line: vscode.TextLine, characterStart: number, characterEnd: number): vscode.Range
+    public static GetRange(line: vscode.TextLine, searchFor: string, word: string, relativePosition: number = 0): vscode.Range
     {
+        const characterStart = line.text.indexOf(searchFor) + relativePosition;
+        const characterEnd = characterStart + word.length;
+
         const start = new vscode.Position(line.lineNumber, characterStart);
         const end = new vscode.Position(line.lineNumber, characterEnd);
 
