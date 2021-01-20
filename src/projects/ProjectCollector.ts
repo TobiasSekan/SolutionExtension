@@ -30,7 +30,7 @@ export class ProjectCollector
         let isInProject = false;
         let isInSolutionItem = false;
         let project: Project|undefined;
-        let projectSection: ProjectSection|undefined;
+        let projectSectionStart: vscode.Position|undefined;
 
         for(let lineNumber = 0; lineNumber < textDocument.lineCount; lineNumber++)
         {
@@ -41,7 +41,6 @@ export class ProjectCollector
 
             if(isInSolutionItem && project)
             {
-                project.ProjectSections.push()
                 project.SolutionItems.push(textLine);
             }
 
@@ -53,7 +52,7 @@ export class ProjectCollector
 
             if(lowerCase.startsWith("projectsection("))
             {
-                projectSection = new ProjectSection(textDocument, textLine.range.start, textLine.range.end);
+                projectSectionStart = textLine.range.start;
                 continue;
             }
 
@@ -71,11 +70,10 @@ export class ProjectCollector
 
             if(isInProject && lowerCase === "endprojectsection")
             {
-                if(projectSection)
+                if(projectSectionStart)
                 {
-                    projectSection.End = textLine.range.end;
-                    project?.ProjectSections.push(projectSection);
-                    projectSection = undefined;
+                    project?.ProjectSections.push(new ProjectSection(textDocument, projectSectionStart, textLine.range.end));
+                    projectSectionStart = undefined;
                 }
 
                 isInSolutionItem = false;

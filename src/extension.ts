@@ -9,6 +9,7 @@ import { KeywordProvider } from './completion/KeywordProvider';
 import { ReferenceProvider } from './completion/ReferenceProvider';
 import { TypeProvider } from './completion/TypeProvider';
 import { DocumentSymbolProvider } from './DocumentSymbolProvider';
+import { DefinitionProvider } from './DefinitionProvider';
 
 const languageId = 'sln';
 
@@ -44,6 +45,7 @@ export function activate(context: vscode.ExtensionContext): void
         vscode.languages.registerCompletionItemProvider(languageId, new ReferenceProvider(), "{"),
         vscode.languages.registerCompletionItemProvider(languageId, new TypeProvider(), "\""),
         vscode.languages.registerDocumentSymbolProvider(languageId, new DocumentSymbolProvider()),
+        vscode.languages.registerDefinitionProvider(languageId, new DefinitionProvider()),
         vscode.languages.registerHoverProvider(languageId, new SolutionHover()),
     ];
 

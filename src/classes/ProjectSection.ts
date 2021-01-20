@@ -28,5 +28,25 @@ export class ProjectSection extends SolutionModule
             textLine.text.indexOf(")"));
  
         super(type, start, end);
+
+        this.KeyValueList = new Array<[vscode.TextLine, string, string]>();
+
+        for (let lineNumber = start.line + 1; lineNumber < end.line; lineNumber++)
+        {
+            const line = textDocument.lineAt(lineNumber);
+            const lineSplit = line.text.split('=');
+
+            if(lineSplit.length < 2)
+            {
+                continue;
+            }
+
+            const left = lineSplit[0].trim().replace('{', '').replace('}', '').trim();
+            const right = lineSplit[1].trim().replace('{', '').replace('}', '').trim();
+
+            this.KeyValueList.push([line, left, right])
+        }
     }
+
+    public KeyValueList: Array<[vscode.TextLine, string, string]>
 }
