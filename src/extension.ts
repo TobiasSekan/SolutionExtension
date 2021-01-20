@@ -1,5 +1,3 @@
-'use strict';
-
 import * as vscode from 'vscode';
 import { Diagnostic } from './Diagnostic';
 import { SolutionHover } from './Hover';
@@ -10,14 +8,13 @@ import { PropertyProvider } from './completion/PropertyProvider';
 import { KeywordProvider } from './completion/KeywordProvider';
 import { ReferenceProvider } from './completion/ReferenceProvider';
 import { TypeProvider } from './completion/TypeProvider';
+import { DocumentSymbolProvider } from './DocumentSymbolProvider';
 
 const languageId = 'sln';
 
 export function activate(context: vscode.ExtensionContext): void
 {
     const diagnostic = new Diagnostic(vscode.languages.createDiagnosticCollection(languageId));
-    const hover = new SolutionHover();
-    const codelens = new CodelensProvider();
 
     // Update diagnostic when a document is restored on startup
     if (vscode.window.activeTextEditor)
@@ -36,30 +33,21 @@ export function activate(context: vscode.ExtensionContext): void
         onChangeTextDocument(diagnostic),
         null,
         context.subscriptions);
-            
-    context.subscriptions.push(
-        vscode.languages.registerHoverProvider(languageId, hover));
 
-    context.subscriptions.push(
-        vscode.languages.registerCodeLensProvider(languageId, codelens));
+    const provider =
+    [
+        vscode.languages.registerCodeLensProvider(languageId, new CodelensProvider()),
+        vscode.languages.registerCompletionItemProvider(languageId, new ModuleProvider()),
+        vscode.languages.registerCompletionItemProvider(languageId, new PropertyProvider()),
+        vscode.languages.registerCompletionItemProvider(languageId, new ValueProvider(), "="),
+        vscode.languages.registerCompletionItemProvider(languageId, new KeywordProvider(), "("),
+        vscode.languages.registerCompletionItemProvider(languageId, new ReferenceProvider(), "{"),
+        vscode.languages.registerCompletionItemProvider(languageId, new TypeProvider(), "\""),
+        vscode.languages.registerDocumentSymbolProvider(languageId, new DocumentSymbolProvider()),
+        vscode.languages.registerHoverProvider(languageId, new SolutionHover()),
+    ];
 
-    context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider(languageId, new ModuleProvider()));
-
-    context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider(languageId, new PropertyProvider()));
-    
-    context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider(languageId, new ValueProvider(), "="));
-
-    context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider(languageId, new KeywordProvider(), "("));
-
-    context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider(languageId, new ReferenceProvider(), "{"));
-
-    context.subscriptions.push(
-        vscode.languages.registerCompletionItemProvider(languageId, new TypeProvider(), "\""));
+    context.subscriptions.push(...provider);
 
     vscode.commands.registerCommand("solutionExtension.gotoRange", (args: vscode.Range) =>
     {

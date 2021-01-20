@@ -24,7 +24,7 @@ export class ProjectCollector
      * Collect all information from the project lines 
      * @param textDocument The text document of the complete solution file
      */
-    public CollectAllProjectGuid(textDocument: vscode.TextDocument): void
+    private CollectAllProjectGuid(textDocument: vscode.TextDocument): void
     {
         let isInProject = false;
         let isInSolutionItem = false;
@@ -85,7 +85,7 @@ export class ProjectCollector
      * Collect all information about nested projects
      * @param textDocument The text document of the complete solution file
      */
-    public CollectAllNestedProjects(textDocument: vscode.TextDocument): void
+    private CollectAllNestedProjects(textDocument: vscode.TextDocument): void
     {
         let insideNestedProjects = false;
 
