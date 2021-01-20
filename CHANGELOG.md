@@ -8,7 +8,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 New:
 
-* #38 - Show all Symbol Definitions Within a Document (+ Breadcrumbs)
+* #38 - All symbol definitions within a document (via `Ctrl+P` + `@`)
+* #38 - Breadcrumbs
+* #42 - Goto definition of a symbol (via `F12` or context-menu)
 
 ## [1.5.0]
 
