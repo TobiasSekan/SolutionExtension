@@ -8,11 +8,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 New:
 
-* #38 - All symbol definitions within a document (via `Ctrl+P` + `@`)
-* #38 - Breadcrumbs
+* #46 - Highlight all occurrences of a symbol in a document (for GUIDs)
 * #42 - Goto definition of a symbol (via `F12` or context-menu)
 * #48 - Goto reference of a symbol (via `Shift+F12` or context-menu)
 * #48 - Find all references of a symbol (via `Shift+Alt+F12` or context-menu)
+* #38 - Show all symbol definitions within a document (via `Ctrl+P` + `@`)
+* #38 - Show Breadcrumbs
 
 ## [1.5.0]
 
