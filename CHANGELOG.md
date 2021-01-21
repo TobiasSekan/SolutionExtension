@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Next version
 
+## [1.6.0]
+
 New:
 
 * #46 - Highlight all occurrences of a symbol in a document (for GUIDs)

@@ -2,31 +2,21 @@
 
 vsCode extension for Visual Studio solution files (*.sln)
 
-## New in 1.5.0
+## New in 1.6.0
 
 New:
 
-* CodeLens - Open project file and project folder from CodeLens on project lines.
-* Show Error
-  * When files paths in `ProjectSection(SolutionItems)` was not found.
-  * When a configurations under `GlobalSection(ProjectConfigurationPlatforms)` is not defined.
-    * They must defined in `GlobalSection(SolutionConfiguration)`
+* #38 - Show Breadcrumbs
+* #38 - Show all symbol definitions within a document (via `Ctrl+P` + `@`)
+* #42 - Goto to definition + Peek definition
+* #50 - Goto to implementation + Peek implementation + Find all implementation
+* #48 - Goto to reference + Peek reference + Find all reference
+* #46 - Highlight all occurrences of a symbol in a document (for GUIDs)
+* #51 - File link support (`Ctrl+Click` to open)
 
-Improvements:
+Remove:
 
-* Show warning when project path have a extension, but it is a solution folder.
-* Show more useful warning message for more times nested projects.
-
-Changes:
-
-* Found project GUIDs in lower case are now a info instead of an error.
-* Rename `Project type` to `Type` to save space in CodeLens line on projects
-* Remove leftover from vsCode beginners extension example
-
-Fixes:
-
-* Show warning for all lines with more times nested projects.
-* Project path that start with a ".." have no syntax highlight.
+* Don't longer show file (+action) in CodeLens, replaced by file link support
 
 ## Picture
 
@@ -36,14 +26,14 @@ _Color Theme: Dark+ (default dark)_
 ## Features
 
 * Syntax highlight
-* Code completion
-  * Project GUIDs and Project type GUIDs
-  * Module and snippets
-  * Keywords and Properties
-  * Values and constant
-* CodeLens
-  * Project lines: Type | (Open) Folder | (Open) File | Nested in "..."
-  * For all used project GUIDs with action to jump to project line
+* Navigation
+  * Breadcrumbs
+  * Goto to definition + Peek definition
+  * Goto to implementation + Peek implementation + Find all implementation
+  * Goto to reference + Peek reference + Find all reference
+  * Symbol definition (`Ctrl+P` + `@`)
+  * Highlight all occurrences of a GUID
+  * File link support (`Ctrl+Click`)
 * Diagnostic
   * Show error for GUIDs that are not project GUIDs
   * Show error for files that was not found
@@ -61,6 +51,14 @@ _Color Theme: Dark+ (default dark)_
     * For `Project`, `EndProject`, `ProjectSection`, `EndProjectSection`
     * And `Global`, `EndGlobal`, `GlobalSection`, `EndGlobalSection`
   * Show info for solution folders, when name is used by another projects.
+* Code completion
+  * Project GUIDs and Project type GUIDs
+  * Module and snippets
+  * Keywords and Properties
+  * Values and constant
+* CodeLens
+  * Project lines: Type | (Open) Folder | Nested in "..."
+  * For all used project GUIDs with action to jump to project line
 * Hover
   * For the first four lines (version)
   * For keyword `Project`
