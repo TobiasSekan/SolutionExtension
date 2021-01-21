@@ -19,10 +19,11 @@
                 "id": "sln",
                 "aliases": [
                     "Visual Studio Solution",
+                    "Solution File",
                     "sln"
                 ],
                 "extensions": [
-                    "sln"
+                    ".sln"
                 ],
                 "configuration": "./language-configuration.json"
             }
