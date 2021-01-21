@@ -6,11 +6,12 @@ import { ModuleProvider } from './completion/ModuleProvider';
 import { ValueProvider } from './completion/ValueProvider';
 import { PropertyProvider } from './completion/PropertyProvider';
 import { KeywordProvider } from './completion/KeywordProvider';
-import { ReferenceProvider } from './completion/ReferenceProvider';
+import { CompletionReferenceProvider } from './completion/ReferenceProvider';
 import { TypeProvider } from './completion/TypeProvider';
 import { DocumentSymbolProvider } from './provider/DocumentSymbol';
 import { DefinitionProvider } from './provider/Definition';
 import { DocumentHighlightProvider } from './provider/DocumentHighlight';
+import { ReferenceProvider } from './provider/Reference';
 
 const languageId = 'sln';
 
@@ -38,17 +39,32 @@ export function activate(context: vscode.ExtensionContext): void
 
     const provider =
     [
+        //vscode.languages.registerCodeActionsProvider
         vscode.languages.registerCodeLensProvider(languageId, new CodelensProvider()),
+        //vscode.languages.registerColorProvider
         vscode.languages.registerCompletionItemProvider(languageId, new ModuleProvider()),
         vscode.languages.registerCompletionItemProvider(languageId, new PropertyProvider()),
         vscode.languages.registerCompletionItemProvider(languageId, new ValueProvider(), "="),
         vscode.languages.registerCompletionItemProvider(languageId, new KeywordProvider(), "("),
-        vscode.languages.registerCompletionItemProvider(languageId, new ReferenceProvider(), "{"),
+        vscode.languages.registerCompletionItemProvider(languageId, new CompletionReferenceProvider(), "{"),
         vscode.languages.registerCompletionItemProvider(languageId, new TypeProvider(), "\""),
-        vscode.languages.registerDocumentSymbolProvider(languageId, new DocumentSymbolProvider()),
+        //vscode.languages.registerDeclarationProvider
         vscode.languages.registerDefinitionProvider(languageId, new DefinitionProvider()),
-        vscode.languages.registerHoverProvider(languageId, new HoverProvider()),
+        //vscode.languages.registerDocumentFormattingEditProvider
         vscode.languages.registerDocumentHighlightProvider(languageId, new DocumentHighlightProvider()),
+        //vscode.languages.registerDocumentLinkProvider
+        //vscode.languages.registerDocumentRangeFormattingEditProvider
+        vscode.languages.registerDocumentSymbolProvider(languageId, new DocumentSymbolProvider()),
+        //vscode.languages.registerFoldingRangeProvider
+        vscode.languages.registerHoverProvider(languageId, new HoverProvider()),
+        //vscode.languages.registerImplementationProvider
+        //vscode.languages.registerOnTypeFormattingEditProvider
+        vscode.languages.registerReferenceProvider(languageId, new ReferenceProvider()),
+        //vscode.languages.registerRenameProvider
+        //vscode.languages.registerSelectionRangeProvider
+        //vscode.languages.registerSignatureHelpProvider
+        //vscode.languages.registerTypeDefinitionProvider
+        //vscode.languages.registerWorkspaceSymbolProvider
     ];
 
     context.subscriptions.push(...provider);
@@ -65,7 +81,7 @@ export function activate(context: vscode.ExtensionContext): void
             preview: true,
         }
 
-        vscode.window.showTextDocument(args, options,);
+        vscode.window.showTextDocument(args, options);
     });
 
     vscode.commands.registerCommand("solutionExtension.openFolder", (args: vscode.Uri) =>

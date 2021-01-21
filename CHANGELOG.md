@@ -11,6 +11,8 @@ New:
 * #38 - All symbol definitions within a document (via `Ctrl+P` + `@`)
 * #38 - Breadcrumbs
 * #42 - Goto definition of a symbol (via `F12` or context-menu)
+* #48 - Goto reference of a symbol (via `Shift+F12` or context-menu)
+* #48 - Find all references of a symbol (via `Shift+Alt+F12` or context-menu)
 
 ## [1.5.0]
 

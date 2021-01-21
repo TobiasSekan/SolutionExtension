@@ -1,16 +1,16 @@
 import * as vscode from 'vscode';
 import { VscodeHelper } from '../helper/vscodeHelper';
 
-export class DocumentHighlightProvider implements vscode.DocumentHighlightProvider
+export class ReferenceProvider implements vscode.ReferenceProvider
 {
-    provideDocumentHighlights(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): vscode.ProviderResult<vscode.DocumentHighlight[]>
+    provideReferences(document: vscode.TextDocument, position: vscode.Position, context: vscode.ReferenceContext, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Location[]>
     {
-        return new Promise<vscode.DocumentHighlight[]>((resolve, reject) =>
+        return new Promise<vscode.Location[]>((resolve, reject) =>
         {
             const guid = VscodeHelper.GetGuidFromPosition(document, position);
             if(guid)
             {
-                const list = new Array<vscode.DocumentHighlight>();
+                const list = new Array<vscode.Location>();
 
                 for(let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
                 {
@@ -23,13 +23,13 @@ export class DocumentHighlightProvider implements vscode.DocumentHighlightProvid
                     const range = VscodeHelper.GetRange(textLine, guid, guid);
                     const lastRange = VscodeHelper.GetLastRange(textLine, guid, guid);
 
-                    list.push(new vscode.DocumentHighlight(range));
+                    list.push(new vscode.Location(document.uri, range));
                     if(lastRange.start.compareTo(range.start) == 0)
                     {
                         continue;
                     }
 
-                    list.push(new vscode.DocumentHighlight(lastRange));
+                    list.push(new vscode.Location(document.uri, lastRange));
                 }
 
                 resolve(list);

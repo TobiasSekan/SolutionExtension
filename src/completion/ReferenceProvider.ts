@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { ProjectCollector } from '../projects/ProjectCollector';
 
-export class ReferenceProvider implements vscode.CompletionItemProvider
+export class CompletionReferenceProvider implements vscode.CompletionItemProvider
 {
     constructor()
     {

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { Project } from '../classes/Project';
 import { Solution } from '../classes/Solution';
 
-export class DefinitionProvider implements vscode.DefinitionProvider
+export class  DefinitionProvider implements vscode.DefinitionProvider
 {
     provideDefinition(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Location | vscode.Location[] | vscode.LocationLink[]>
     {

@@ -37,4 +37,34 @@ export class VscodeHelper
 
         return new vscode.Range(start, end);
     }
+
+    /**
+     * Return the GUID of the current position, when possible
+     * @param document The complete document
+     * @param position The current position in the document
+     */
+    public static GetGuidFromPosition(document: vscode.TextDocument, position: vscode.Position): string|undefined
+    {
+        const currentLine = document.lineAt(position.line);
+
+        let guidStart = -1;
+
+        for(let index = position.character; index > 0; index--)
+        {
+            if(currentLine.text[index] === '{')
+            {
+                guidStart = index;
+                break;
+            }
+        }
+
+        const guidEnd = currentLine.text.indexOf('}', position.character);
+
+        if(guidEnd - guidStart > 40)
+        {
+            return undefined;
+        }
+
+        return currentLine.text.substring(guidStart + 1, guidEnd);
+    }
 }
