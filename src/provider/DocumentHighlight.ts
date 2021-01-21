@@ -5,12 +5,13 @@ export class DocumentHighlightProvider implements vscode.DocumentHighlightProvid
 {
     provideDocumentHighlights(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): vscode.ProviderResult<vscode.DocumentHighlight[]>
     {
-        return new Promise<vscode.DocumentHighlight[]>((resolve, reject) =>
+        return new Promise<vscode.DocumentHighlight[]>((resolve, _) =>
         {
+            const list = new Array<vscode.DocumentHighlight>();
+
             const guid = VscodeHelper.GetGuidFromPosition(document, position);
             if(guid)
             {
-                const list = new Array<vscode.DocumentHighlight>();
 
                 for(let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
                 {
@@ -34,11 +35,9 @@ export class DocumentHighlightProvider implements vscode.DocumentHighlightProvid
 
                     list.push(new vscode.DocumentHighlight(lastRange));
                 }
-
-                resolve(list);
             }
 
-            reject();
+            resolve(list);
         });
     }
 }

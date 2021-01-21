@@ -13,6 +13,7 @@ import { DefinitionProvider } from './provider/Definition';
 import { DocumentHighlightProvider } from './provider/DocumentHighlight';
 import { ReferenceProvider } from './provider/Reference';
 import { ImplementationProvider } from './provider/Implementation';
+import { DocumentLinkProvider } from './provider/DocumentLink';
 
 const languageId = 'sln';
 
@@ -56,7 +57,7 @@ export function activate(context: vscode.ExtensionContext): void
         vscode.languages.registerDefinitionProvider(languageId, new DefinitionProvider()),
         //vscode.languages.registerDocumentFormattingEditProvider
         vscode.languages.registerDocumentHighlightProvider(languageId, new DocumentHighlightProvider()),
-        //vscode.languages.registerDocumentLinkProvider
+        vscode.languages.registerDocumentLinkProvider(languageId, new DocumentLinkProvider()),
         //vscode.languages.registerDocumentRangeFormattingEditProvider
         vscode.languages.registerDocumentSymbolProvider(languageId, new DocumentSymbolProvider()),
         //vscode.languages.registerFoldingRangeProvider

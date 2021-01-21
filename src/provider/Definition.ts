@@ -5,20 +5,20 @@ export class  DefinitionProvider implements vscode.DefinitionProvider
 {
     provideDefinition(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Location | vscode.Location[] | vscode.LocationLink[]>
     {
-        return new Promise<vscode.Location | vscode.Location[] | vscode.LocationLink[]>((resolve, reject) =>
+        return new Promise<vscode.Location | vscode.Location[] | vscode.LocationLink[]>((resolve, _) =>
         {
+            const list = new Array<vscode.Location>();
             const textLine = document.lineAt(position);
-            const uppercase = textLine.text.toUpperCase();
 
+            const uppercase = textLine.text.toUpperCase();
             if(uppercase.toLowerCase().startsWith("project("))
             {
-                reject();
+                resolve(list);
             }
 
             const guid = VscodeHelper.GetGuidFromPosition(document, position);
             if(guid)
             {
-                const list = new Array<vscode.Location>();
 
                 for(let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
                 {
@@ -44,14 +44,9 @@ export class  DefinitionProvider implements vscode.DefinitionProvider
 
                     list.push(new vscode.Location(document.uri, lastRange));
                 }
+            }
 
-                resolve(list);
-            }
-            else
-            {
-                vscode.window.showWarningMessage("No GUID selected");
-                reject;
-            }
+            resolve(list);
         });
     }
 }

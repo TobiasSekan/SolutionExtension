@@ -31,7 +31,6 @@ export class CodelensProvider implements vscode.CodeLensProvider
             {
                 this.AddCodeLensForProjectTypes(project);
                 this.AddCodeLensForProjectFolders(project, document);
-                this.AddCodeLensForProjectFiles(project);
                 this.AddCodeLensForNestedProjects(project, projectList);
             }
 
@@ -123,25 +122,6 @@ export class CodelensProvider implements vscode.CodeLensProvider
         {
             command : "",
             title: `Type: ${typeName}`,
-        }
-
-        const codeLens = new vscode.CodeLens(project.Line.range, command);
-        this.codeLensList.push(codeLens);
-    }
-
-    private AddCodeLensForProjectFiles(project: Project): void
-    {
-        if(project.IsSolutionFolder())
-        {
-            return;
-        }
-        
-        const  command: vscode.Command =
-        {
-            arguments : [vscode.Uri.file(project.AbsolutePath)],
-            command : "solutionExtension.openFile",
-            title: `File: "${project.Name}"`,
-            tooltip : `Open project file: ${project.AbsolutePath}`,
         }
 
         const codeLens = new vscode.CodeLens(project.Line.range, command);

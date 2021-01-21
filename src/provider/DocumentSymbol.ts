@@ -5,7 +5,7 @@ export class DocumentSymbolProvider  implements vscode.DocumentSymbolProvider
 {
     provideDocumentSymbols(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.ProviderResult<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>
     {
-        return new Promise<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>((resolve, reject) =>
+        return new Promise<vscode.SymbolInformation[] | vscode.DocumentSymbol[]>((resolve, _) =>
         {
             const list = new Array<vscode.SymbolInformation>();
             const solution = new Solution(document);

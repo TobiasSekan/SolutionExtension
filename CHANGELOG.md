@@ -15,6 +15,11 @@ New:
 * #48 - Find all references of a symbol (via `Shift+Alt+F12` or context-menu)
 * #38 - Show all symbol definitions within a document (via `Ctrl+P` + `@`)
 * #38 - Show Breadcrumbs
+* #51 - File link support (Ctrl+Click to open)
+
+Remove:
+
+* Don't longer show file (+action) in CodeLens, replaced by file link support
 
 ## [1.5.0]
 
