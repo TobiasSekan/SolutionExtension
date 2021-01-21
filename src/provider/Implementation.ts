@@ -1,16 +1,16 @@
 import * as vscode from 'vscode';
 import { VscodeHelper } from '../helper/vscodeHelper';
 
-export class  DefinitionProvider implements vscode.DefinitionProvider
+export class ImplementationProvider implements vscode.ImplementationProvider
 {
-    provideDefinition(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Location | vscode.Location[] | vscode.LocationLink[]>
+    provideImplementation(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Location | vscode.Location[] | vscode.LocationLink[]>
     {
         return new Promise<vscode.Location | vscode.Location[] | vscode.LocationLink[]>((resolve, reject) =>
         {
             const textLine = document.lineAt(position);
             const uppercase = textLine.text.toUpperCase();
 
-            if(uppercase.toLowerCase().startsWith("project("))
+            if(!uppercase.toLowerCase().startsWith("project("))
             {
                 reject();
             }
@@ -30,7 +30,7 @@ export class  DefinitionProvider implements vscode.DefinitionProvider
                     const textLine = document.lineAt(lineNumber);
                     const uppercase = textLine.text.toUpperCase();
 
-                    if(!uppercase.toLowerCase().startsWith("project("))
+                    if(uppercase.toLowerCase().startsWith("project("))
                     {
                         continue;
                     }
@@ -40,7 +40,15 @@ export class  DefinitionProvider implements vscode.DefinitionProvider
                         continue;
                     }
 
+                    const range = VscodeHelper.GetRange(textLine, guid, guid);
                     const lastRange = VscodeHelper.GetLastRange(textLine, guid, guid);
+
+                    list.push(new vscode.Location(document.uri, range));
+
+                    if(lastRange.start.compareTo(range.start) == 0)
+                    {
+                        continue;
+                    }
 
                     list.push(new vscode.Location(document.uri, lastRange));
                 }
@@ -50,7 +58,7 @@ export class  DefinitionProvider implements vscode.DefinitionProvider
             else
             {
                 vscode.window.showWarningMessage("No GUID selected");
-                reject;
+                reject("No GUID selected");
             }
         });
     }

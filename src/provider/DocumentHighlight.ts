@@ -15,7 +15,9 @@ export class DocumentHighlightProvider implements vscode.DocumentHighlightProvid
                 for(let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
                 {
                     const textLine = document.lineAt(lineNumber);
-                    if(textLine.text.indexOf(guid) < 0)
+                    const uppercase = textLine.text.toUpperCase();
+
+                    if(uppercase.indexOf(guid) < 0)
                     {
                         continue;
                     }
@@ -24,6 +26,7 @@ export class DocumentHighlightProvider implements vscode.DocumentHighlightProvid
                     const lastRange = VscodeHelper.GetLastRange(textLine, guid, guid);
 
                     list.push(new vscode.DocumentHighlight(range));
+
                     if(lastRange.start.compareTo(range.start) == 0)
                     {
                         continue;

@@ -12,6 +12,7 @@ import { DocumentSymbolProvider } from './provider/DocumentSymbol';
 import { DefinitionProvider } from './provider/Definition';
 import { DocumentHighlightProvider } from './provider/DocumentHighlight';
 import { ReferenceProvider } from './provider/Reference';
+import { ImplementationProvider } from './provider/Implementation';
 
 const languageId = 'sln';
 
@@ -37,6 +38,9 @@ export function activate(context: vscode.ExtensionContext): void
         null,
         context.subscriptions);
 
+
+    //  https://code.visualstudio.com/api/language-extensions/programmatic-language-features
+
     const provider =
     [
         //vscode.languages.registerCodeActionsProvider
@@ -57,7 +61,7 @@ export function activate(context: vscode.ExtensionContext): void
         vscode.languages.registerDocumentSymbolProvider(languageId, new DocumentSymbolProvider()),
         //vscode.languages.registerFoldingRangeProvider
         vscode.languages.registerHoverProvider(languageId, new HoverProvider()),
-        //vscode.languages.registerImplementationProvider
+        vscode.languages.registerImplementationProvider(languageId, new ImplementationProvider()),
         //vscode.languages.registerOnTypeFormattingEditProvider
         vscode.languages.registerReferenceProvider(languageId, new ReferenceProvider()),
         //vscode.languages.registerRenameProvider

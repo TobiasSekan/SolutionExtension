@@ -15,7 +15,9 @@ export class ReferenceProvider implements vscode.ReferenceProvider
                 for(let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
                 {
                     const textLine = document.lineAt(lineNumber);
-                    if(textLine.text.indexOf(guid) < 0)
+                    const uppercase = textLine.text.toUpperCase();
+
+                    if(uppercase.indexOf(guid) < 0)
                     {
                         continue;
                     }
@@ -24,6 +26,7 @@ export class ReferenceProvider implements vscode.ReferenceProvider
                     const lastRange = VscodeHelper.GetLastRange(textLine, guid, guid);
 
                     list.push(new vscode.Location(document.uri, range));
+
                     if(lastRange.start.compareTo(range.start) == 0)
                     {
                         continue;
@@ -31,11 +34,13 @@ export class ReferenceProvider implements vscode.ReferenceProvider
 
                     list.push(new vscode.Location(document.uri, lastRange));
                 }
-
                 resolve(list);
             }
-
-            reject();
+            else
+            {
+                vscode.window.showWarningMessage("No GUID selected");
+                reject("No GUID selected");
+            }
         });
     }
 }

@@ -11,7 +11,7 @@ export class VscodeHelper
      */
     public static GetRange(line: vscode.TextLine, searchFor: string, word: string, relativePosition: number = 0): vscode.Range
     {
-        const characterStart = line.text.indexOf(searchFor) + relativePosition;
+        const characterStart = line.text.toUpperCase().indexOf(searchFor.toUpperCase()) + relativePosition;
         const characterEnd = characterStart + word.length;
 
         const start = new vscode.Position(line.lineNumber, characterStart);
@@ -29,7 +29,7 @@ export class VscodeHelper
      */
     public static GetLastRange(line: vscode.TextLine, searchFor: string, word: string, relativePosition: number = 0): vscode.Range
     {
-        const characterStart = line.text.lastIndexOf(searchFor) + relativePosition;
+        const characterStart = line.text.toUpperCase().lastIndexOf(searchFor.toUpperCase()) + relativePosition;
         const characterEnd = characterStart + word.length;
 
         const start = new vscode.Position(line.lineNumber, characterStart);
@@ -65,6 +65,6 @@ export class VscodeHelper
             return undefined;
         }
 
-        return currentLine.text.substring(guidStart + 1, guidEnd);
+        return currentLine.text.substring(guidStart + 1, guidEnd).toUpperCase();
     }
 }

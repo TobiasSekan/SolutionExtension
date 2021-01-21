@@ -10,6 +10,7 @@ New:
 
 * #46 - Highlight all occurrences of a symbol in a document (for GUIDs)
 * #42 - Goto definition of a symbol (via `F12` or context-menu)
+* #50 - Goto implementation of a symbol (via `Ctrl+F12` or context-menu)
 * #48 - Goto reference of a symbol (via `Shift+F12` or context-menu)
 * #48 - Find all references of a symbol (via `Shift+Alt+F12` or context-menu)
 * #38 - Show all symbol definitions within a document (via `Ctrl+P` + `@`)
