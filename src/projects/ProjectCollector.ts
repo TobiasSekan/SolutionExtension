@@ -58,6 +58,12 @@ export class ProjectCollector
 
             if(lowerCase.startsWith("project("))
             {
+                // if a project has no ENDPROJECT tag, add it too
+                if(project)
+                {
+                    this.ProjectList.push(project);
+                }
+
                 isInProject = true;
                 
                 if(lineText.split("\"").length < 8)
@@ -72,7 +78,11 @@ export class ProjectCollector
             {
                 if(projectSectionStart)
                 {
-                    project?.ProjectSections.push(new ProjectSection(textDocument, projectSectionStart, textLine.range.end));
+                    project?.ProjectSections.push(new ProjectSection(
+                        textDocument,
+                        projectSectionStart,
+                        textLine.range.end));
+
                     projectSectionStart = undefined;
                 }
 
@@ -94,6 +104,12 @@ export class ProjectCollector
 
                 continue;
             }
+        }
+
+        // if a project has no ENDPROJECT tag, add it too
+        if(project)
+        {
+            this.ProjectList.push(project);
         }
     }
 

@@ -71,6 +71,7 @@ export class Diagnostic
         
         for(const project of projectList)
         {
+            this.CheckForMissingEndTag(project);
             this.CheckForDoubleUsingInNestedProjects(project, projectList);
             this.CheckForDoubleUsedProjectGuids(project, projectList);
             this.CheckForDoubleUsedProjectNames(project, projectList);
@@ -419,6 +420,21 @@ export class Diagnostic
         const diagnostic = new vscode.Diagnostic(
             project.GetProjectTypeRange(),
             `The project type {"${project.ProjectType}"} is unknown.`,
+            vscode.DiagnosticSeverity.Error);
+
+        this.diagnostics.push(diagnostic);
+    }
+
+    private CheckForMissingEndTag(project: Project): void
+    {
+        if(project.Start.line !== project.End.line)
+        {
+            return;
+        }
+
+        const diagnostic = new vscode.Diagnostic(
+            project.Line.range,
+            `The project module has no ENDPROJECT tag`,
             vscode.DiagnosticSeverity.Error);
 
         this.diagnostics.push(diagnostic);

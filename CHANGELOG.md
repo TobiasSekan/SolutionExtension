@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Next version
 
+New:
+
+* #49 - Show error when a project have no `ENDPROJECT` entry
+
 Improvements:
 
 * Syntax highlight for lowercase GUIDs
@@ -15,6 +19,7 @@ Improvements:
 
 Changes:
 
+* #49 - GUIDs from projects without no `ENDPROCT`entry produce no longer a error
 * Lowercase project GUIDs under "GlobalSection(SharedMSBuildProjectFiles)" no longer an info
 
 Fixes:
@@ -34,7 +39,7 @@ New:
 * #48 - Find all references of a symbol (via `Shift+Alt+F12` or context-menu)
 * #38 - Show all symbol definitions within a document (via `Ctrl+P` + `@`)
 * #38 - Show Breadcrumbs
-* #51 - File link support (Ctrl+Click to open)
+* #51 - File link support. (Ctrl+Click to open)
 
 Remove:
 
@@ -44,52 +49,52 @@ Remove:
 
 New:
 
-* #37 - Open project file and project folder from CodeLens on project lines.
-* #25 - Check files paths of solution items (`ProjectSection(SolutionItems)`).
+* #37 - Open project file and project folder from CodeLens on project lines
+* #25 - Check files paths of solution items (`ProjectSection(SolutionItems)`)
 * #10 - Check use configurations under `GlobalSection'(ProjectConfigurationPlatforms)`
   * They must defined in `GlobalSection(SolutionConfiguration)`
 
 Improvements:
 
-* #32 - Show warning when project path have a extension, but it is a solution folder.
-* #28 - Show more useful warning message for more times nested projects.
+* #32 - Show warning when project path have a extension, but it is a solution folder
+* #28 - Show more useful warning message for more times nested projects
 
 Changes:
 
-* #30 - Found project GUIDs in lower case are now a info instead of an error.
+* #30 - Found project GUIDs in lower case are now a info instead of an error
 * Rename `Project type` to `Type` to save space in CodeLens line on projects
 * Remove leftover from vsCode beginners extension example
 
 Fixes:
 
-* #28 - Show warning for all lines with more times nested projects.
-* #33 - Project path that start with a ".." have no syntax highlight.
+* #28 - Show warning for all lines with more times nested projects
+* #33 - Project path that start with a ".." have no syntax highlight
 
 ## [1.4.0]
 
 New:
 
-* #31 - CodeLens on project lines for "Project" nested in "Project".
-* #2 - Show error for project GUIDs that used by another projects.
-* #9 - Show error for unknown project type GUIDs.
-* #3 - Show warning for project names that used by another projects.
+* #31 - CodeLens on project lines for "Project" nested in "Project"
+* #2 - Show error for project GUIDs that used by another projects
+* #9 - Show error for unknown project type GUIDs
+* #3 - Show warning for project names that used by another projects
 * #27 - Show warning when module words have not correct PascalCase
   * For `Project`, `EndProject`, `ProjectSection`, `EndProjectSection`
   * And `Global`, `EndGlobal`, `GlobalSection`, `EndGlobalSection`
-* Show info for solution folders, when name is used by another projects.
+* Show info for solution folders, when name is used by another projects
 
 Improvements:
 
 * #29 - Check file extension `.vcxitems` too (should be `C++` project)
-* #20 - Code completion and syntax highlight for keyword `SharedMSBuildProjectFiles`.
-* Show the line number of the other usage in the diagnostic tooltip in nested project definition.
+* #20 - Code completion and syntax highlight for keyword `SharedMSBuildProjectFiles`
+* Show the line number of the other usage in the diagnostic tooltip in nested project definition
 
 Changes:
 
-* CodeLens on project lines show no "Project type ..." instead of type only.
-* don't longer underline between file name and file extension.
-  * Make simultaneously warnings from file name and file extension more clear.
-* Internal: reduce diagnostic loops.
+* CodeLens on project lines show no "Project type ..." instead of type only
+* don't longer underline between file name and file extension
+  * Make simultaneously warnings from file name and file extension more clear
+* Internal: reduce diagnostic loops
 
 ## [1.3.0]
 
@@ -116,7 +121,7 @@ Changes:
 
 New:
 
-* Clink on CodeLens of a project GUID jump to project line.
+* Clink on CodeLens of a project GUID jump to project line
 * #13 - Code completion for project types
 
 Improvements:
@@ -147,14 +152,14 @@ Fixes:
 
 Fixes:
 
-* More fixes for file trigger was not set to `*.sln` files.
+* More fixes for file trigger was not set to `*.sln` files
 * Remove not working `changlog.md` link in `redme.md` (`vsCode` and marketplace)
 
 ## [1.0.2]
 
 Fixes:
 
-* Fix file trigger was not set to `*.sln` files.
+* Fix file trigger was not set to `*.sln` files
 * Fix not wrong link to `changlog.md` in `readme.md`
 
 ## [1.0.1]
