@@ -17,6 +17,7 @@
         "nestedprojects",
         "projectconfigurationplatforms",
         "projectsection",
+        "sharedmsbuildprojectfiles",
         "solutionconfigurationplatforms",
         "solutionextension",
         "solutionguid",

@@ -8,9 +8,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 Improvements:
 
+* Syntax highlight for lowercase GUIDs
 * Entries under "ProjectConfigurationPlatforms" are now better highlighted
   * e.g. "Debug|x86" was two separate words, now its only one word
   * e.g. ".Debug|x64.ActiveCfg" was three separate words, now its only one word
+
+Changes:
+
+* Lowercase project GUIDs under "GlobalSection(SharedMSBuildProjectFiles)" no longer an info
 
 Fixes:
 

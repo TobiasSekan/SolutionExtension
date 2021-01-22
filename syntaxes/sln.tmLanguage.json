@@ -101,7 +101,7 @@
 		"guid": {
 			"patterns": [{
 				"name": "string.other.text.sln",
-				"match": "{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}}"
+				"match": "{[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}}"
 			}]
 		}
 	}

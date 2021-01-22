@@ -33,6 +33,10 @@ export class Diagnostic
      */
     private isInProjectConfiguration: boolean;
 
+    /**
+     * Indicate that we are currently inside "SharedMSBuildProjectFiles"
+     */
+    private isInSharedMSBuildProjectFiles: boolean;
 
     public constructor(collection: vscode.DiagnosticCollection)
     {
@@ -41,6 +45,7 @@ export class Diagnostic
         this.configurations = new Array<string>();
         this.isInSolutionConfiguration = false;
         this.isInProjectConfiguration = false;
+        this.isInSharedMSBuildProjectFiles = false;
     }
 
     public UpdateDiagnostics(document: vscode.TextDocument): void
@@ -88,7 +93,17 @@ export class Diagnostic
 
     private CheckForMissingProjectGuid(textLine: vscode.TextLine, projectList: Array<Project>): void
     {
-        const lowerCase = textLine.text.toLowerCase();
+        const lowerCase = textLine.text.trim().toLowerCase();
+
+        if(lowerCase.startsWith("globalsection(sharedmsbuildprojectfiles)"))
+        {
+            this.isInSharedMSBuildProjectFiles = true;
+        }
+
+        if(lowerCase.startsWith("endglobalsection"))
+        {
+            this.isInSharedMSBuildProjectFiles = false;
+        }
 
         // ignore lines with projects and line solution guid
         if(lowerCase.startsWith("project(") || lowerCase.indexOf("solutionguid") > -1)
@@ -127,16 +142,18 @@ export class Diagnostic
                         this.GetRange(textLine, guidStart, guidToCheck),
                         `Project with Guid {${guidToCheck}} not found in solution.`,
                         vscode.DiagnosticSeverity.Error)
+
+                    this.diagnostics.push(diagnostic);
                 }
-                else
+                else if(!this.isInSharedMSBuildProjectFiles)
                 {
                     diagnostic = new vscode.Diagnostic(
                         this.GetRange(textLine, guidStart, guidToCheck),
                         `Guid {${guidToCheck}} should we written in uppercase.`,
                         vscode.DiagnosticSeverity.Information)
-                }
 
-                this.diagnostics.push(diagnostic);
+                    this.diagnostics.push(diagnostic);
+                }
             }
 
             textPosition = guidEnd + 1;
