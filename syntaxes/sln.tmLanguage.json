@@ -64,25 +64,25 @@
 		"parameter": {
 			"patterns": [{
 				"name" : "support.type.property-name",
-				"match": "ExtensibilityAddIns|ExtensibilityGlobals|NestedProjects|ProjectConfigurationPlatforms|ProjectDependencies|SharedMSBuildProjectFiles|SolutionConfigurationPlatforms|SolutionItems|SolutionNotes|SolutionProperties"
+				"match": "\\bExtensibilityAddIns\\b|\\bExtensibilityGlobals\\b|\\bNestedProjects\\b|\\bProjectConfigurationPlatforms\\b|\\bProjectDependencies\\b|\\bSharedMSBuildProjectFiles\\b|\\bSolutionConfigurationPlatforms\\b|\\bSolutionItems\\b|\\bSolutionNotes\\b|\\bSolutionProperties\\b"
 			}]
 		},
 		"properties": {
 			"patterns": [{
 				"name" : "variable.name.text.sln",
-				"match": "HideSolutionNode|SolutionGuid|RESX_SortFileContentOnSave"
+				"match": "\\bHideSolutionNode\\b|\\bSolutionGuid\\b|\\bRESX_SortFileContentOnSave\\b"
 			},
 			{
 				"name" : "variable.name.text.sln",
-				"match": "Debug|Release|Any CPU|x64|x86|ActiveCfg|Build"
+				"match": "(Debug|Release)\\w*\\|(Any CPU|x86|x64|ARM|arm64|Win32)(\\.(ActiveCfg|Build|Deploy)(\\.\\d){0,1}){0,1}"
 			},
 			{
 				"name" : "variable.parameter.text.sln",
-				"match": "preSolution|postSolution|postProject|preProject"
+				"match": "\\bpreSolution\\b|\\bpostSolution\\b|\\bpostProject\\b|\\bpreProject\\b"
 			},
 			{
 				"name" : "variable.parameter.text.sln",
-				"match": "TRUE|FALSE|True|False"
+				"match": "\\bTRUE\\b|\\bFALSE\\b|\\bTrue\\b|\\bFalse\\b"
 			}]
 		},
 		"comments": {

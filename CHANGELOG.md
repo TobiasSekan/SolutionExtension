@@ -6,6 +6,18 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Next version
 
+Improvements:
+
+* Entries under "ProjectConfigurationPlatforms" are now better highlighted
+  * e.g. "Debug|x86" was two separate words, now its only one word
+  * e.g. ".Debug|x64.ActiveCfg" was three separate words, now its only one word
+
+Fixes:
+
+* #35 - Fix wrong syntax highlight for words in paths
+  * e.g. "Build" was found in "Build.cmd"
+  * e.g. "Build" was found in "CodeAnalysis.Debugging"
+
 ## [1.6.0]
 
 New:
