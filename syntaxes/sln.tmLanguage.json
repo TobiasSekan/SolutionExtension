@@ -48,7 +48,12 @@
 				"end": "\\bEndGlobalSection\\b",
 				"beginCaptures": { "0": { "name": "keyword.section.begin.text.sln" }},
 				"endCaptures": { "0": { "name": "keyword.section.end.text.sln" }},
-				"patterns" : [{ "include": "#parameter" }, { "include": "#guid" }, { "include": "#properties" }]
+				"patterns" : [
+					{ "include": "#parameter" },
+					{ "include": "#guid" },
+					{ "include": "#properties" },
+					{ "include": "#pair" }
+				]
 			}]
 		},
 		"projectsection": {
@@ -58,7 +63,12 @@
 				"end": "\\bEndProjectSection\\b",
 				"beginCaptures": { "0": { "name": "keyword.section.begin.text.sln" }},
 				"endCaptures": { "0": { "name": "keyword.section.end.text.sln" }},
-				"patterns" : [{ "include": "#parameter" }, { "include": "#guid" }, { "include": "#properties" }]
+				"patterns" : [
+					{ "include": "#parameter" },
+					{ "include": "#guid" },
+					{ "include": "#properties" },
+					{ "include": "#pair" }
+				]
 			}]
 		},
 		"parameter": {
@@ -87,8 +97,14 @@
 		},
 		"comments": {
 			"patterns": [{
-				"name": "comment",
+				"name": "comment.text.sln",
 				"match": "#.*"
+			}]
+		},
+		"pair": {
+			"patterns": [{
+				"name": "variable.parameter.text.sln",
+				"match": "\\b\\d+\\b"
 			}]
 		},
 		"strings": {

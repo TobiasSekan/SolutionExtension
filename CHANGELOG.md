@@ -8,20 +8,21 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 New:
 
-* Support document link for files unter `ProjectSection(SolutionItems)`
 * #49 - Show error when a project have no `EndProject` entry
+* Support document link for files unter `ProjectSection(SolutionItems)`
 
 Improvements:
 
+* Right-hand numbers under `GlobalSection(SharedMSBuildProjectFiles)` are now highlighted as variables
 * Syntax highlight for lowercase GUIDs
-* Entries under "ProjectConfigurationPlatforms" are now better highlighted
+* Entries under `ProjectConfigurationPlatforms` are now better highlighted
   * e.g. "Debug|x86" was two separate words, now its only one word
   * e.g. ".Debug|x64.ActiveCfg" was three separate words, now its only one word
 
 Changes:
 
-* #49 - GUIDs from projects without no `EndProject` entry produce no longer a error
-* Lowercase project GUIDs under "GlobalSection(SharedMSBuildProjectFiles)" no longer an info
+* #49 - GUIDs from projects without `EndProject` entry produce no longer a error
+* Lowercase project GUIDs under `GlobalSection(SharedMSBuildProjectFiles)` no longer an info
 
 Fixes:
 
