@@ -20,8 +20,8 @@ Changes:
 Fixes:
 
 * #35 - Fix wrong syntax highlight for words in paths
-  * e.g. "Build" was found in "Build.cmd"
-  * e.g. "Build" was found in "CodeAnalysis.Debugging"
+  * e.g. "Debug" was found in "Debug.cmd"
+  * e.g. "Debug" was found in "CodeAnalysis.Debugging"
 
 ## [1.6.0]
 
