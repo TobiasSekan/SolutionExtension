@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 
 export class VscodeHelper
 {
@@ -66,5 +67,23 @@ export class VscodeHelper
         }
 
         return currentLine.text.substring(guidStart + 1, guidEnd).toUpperCase();
+    }
+
+    /**
+     * Return the absolute path of the given file
+     * @param textDocument A root document that contains the root folder path
+     * @param filePath The (relative) file path
+     */
+    public static GetAbsoluteFilePath(textDocument: vscode.TextDocument, filePath: string)
+    {
+        if(path.isAbsolute(filePath))
+        {
+            return filePath;
+        }
+        else
+        {
+            const dir = path.dirname(textDocument.fileName);
+            return  path.join(dir, filePath);
+        }
     }
 }

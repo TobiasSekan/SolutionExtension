@@ -34,7 +34,6 @@ export class ProjectCollector
 
         for(let lineNumber = 0; lineNumber < textDocument.lineCount; lineNumber++)
         {
-
             const textLine = textDocument.lineAt(lineNumber);
             const lineText = textLine.text.trim();
             const lowerCase = lineText.toLowerCase();
@@ -47,6 +46,7 @@ export class ProjectCollector
             if(lowerCase.startsWith("projectsection(solutionitems)"))
             {
                 isInSolutionItem = true;
+                projectSectionStart = textLine.range.start;
                 continue;
             }
 

@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import { ProjectCollector } from '../projects/ProjectCollector';
+import { VscodeHelper } from '../helper/vscodeHelper';
 
 export class DocumentLinkProvider implements vscode.DocumentLinkProvider
 {
@@ -13,19 +14,43 @@ export class DocumentLinkProvider implements vscode.DocumentLinkProvider
             const projectList = new ProjectCollector(document, false).ProjectList;
             for(const project of projectList)
             {
-                if(project.IsSolutionFolder())
+                if(!project.IsSolutionFolder())
                 {
-                    continue;
+                    try
+                    {
+                        fs.accessSync(project.AbsolutePath, fs.constants.R_OK);
+                        const uri = vscode.Uri.file(project.AbsolutePath);
+                        list.push(new vscode.DocumentLink(project.GetPathRange(), uri));
+                    }
+                    catch
+                    {
+                    }
                 }
 
-                try
+                for(const section of project.ProjectSections)
                 {
-                    fs.accessSync(project.AbsolutePath, fs.constants.R_OK)
-                    const uri = vscode.Uri.file(project.AbsolutePath);
-                    list.push(new vscode.DocumentLink(project.GetPathRange(), uri));
-                }
-                catch
-                {
+                    if(section.Type.toLowerCase() === "projectdependencies")
+                    {
+                        continue;
+                    }
+
+                    for(const [line, _, filePath] of section.KeyValueList)
+                    {
+                        const path = VscodeHelper.GetAbsoluteFilePath(document, filePath);
+
+                        try
+                        {
+                            fs.accessSync(path, fs.constants.R_OK);
+
+                            const uri = vscode.Uri.file(path);
+                            const range = VscodeHelper.GetLastRange(line, filePath, filePath);
+
+                            list.push(new vscode.DocumentLink(range, uri));
+                        }
+                        catch
+                        {
+                        }
+                    }
                 }
             }
 

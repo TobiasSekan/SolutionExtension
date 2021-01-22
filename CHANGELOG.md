@@ -8,7 +8,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 New:
 
-* #49 - Show error when a project have no `ENDPROJECT` entry
+* Support document link for files unter `ProjectSection(SolutionItems)`
+* #49 - Show error when a project have no `EndProject` entry
 
 Improvements:
 
@@ -19,7 +20,7 @@ Improvements:
 
 Changes:
 
-* #49 - GUIDs from projects without no `ENDPROCT`entry produce no longer a error
+* #49 - GUIDs from projects without no `EndProject` entry produce no longer a error
 * Lowercase project GUIDs under "GlobalSection(SharedMSBuildProjectFiles)" no longer an info
 
 Fixes:

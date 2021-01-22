@@ -18,8 +18,6 @@ export class Project extends SolutionModule
     {
         super("Project", start, end)
 
-        const dir = path.dirname(textDocument.fileName);
-
         this.Line = textDocument.lineAt(start.line);
 
         const lineSplit = this.Line.text.trim().split("\"");
@@ -29,14 +27,7 @@ export class Project extends SolutionModule
         this.RelativePath = lineSplit[5];
         this.Guid = lineSplit[7].replace("{", "").replace("}", "");
 
-        if(path.isAbsolute(this.RelativePath))
-        {
-            this.AbsolutePath = this.RelativePath;
-        }
-        else
-        {
-            this.AbsolutePath = dir + path.sep + this.RelativePath;
-        }
+        this.AbsolutePath = VscodeHelper.GetAbsoluteFilePath(textDocument, this.RelativePath);
 
         this.NestedInProjects = new Array<[vscode.TextLine, string]>();
         this.SolutionItems = new Array<vscode.TextLine>();
