@@ -39,6 +39,10 @@ export function activate(context: vscode.ExtensionContext): void
         null,
         context.subscriptions);
 
+    vscode.workspace.onDidCloseTextDocument(
+        onDidCloseTextDocument(diagnostic),
+        null,
+        context.subscriptions)
 
     //  https://code.visualstudio.com/api/language-extensions/programmatic-language-features
 
@@ -119,6 +123,15 @@ function onChangeActiveTextEditor(diagnostic: Diagnostic): (e: vscode.TextEditor
 
         updateDiagnostics(diagnostic, textEditor.document);
     };
+}
+
+function onDidCloseTextDocument(diagnostic: Diagnostic): (e: vscode.TextDocument | undefined) => any
+{
+    return textDocument =>
+    {
+        diagnostic.ClearDiagnostic();
+        return;
+    }
 }
 
 function updateDiagnostics(diagnostic: Diagnostic, textDocument: vscode.TextDocument): void

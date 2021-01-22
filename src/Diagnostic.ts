@@ -48,6 +48,11 @@ export class Diagnostic
         this.isInSharedMSBuildProjectFiles = false;
     }
 
+    public ClearDiagnostic(): void
+    {
+        this.collection.clear();
+    }
+
     public UpdateDiagnostics(document: vscode.TextDocument): void
     {
         if (!document)

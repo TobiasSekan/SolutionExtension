@@ -25,6 +25,7 @@ Changes:
 
 Fixes:
 
+* Fix - Problems window was not clear after close a solution file.
 * #35 - Fix wrong syntax highlight for words in paths
   * e.g. "Debug" was found in "Debug.cmd"
   * e.g. "Debug" was found in "CodeAnalysis.Debugging"
