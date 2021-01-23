@@ -10,6 +10,7 @@ New:
 
 * #49 - Show error when a project have no `EndProject` entry
 * Support document link for files unter `ProjectSection(SolutionItems)`
+* Show signature help for `Project`, `ProjectSection` and `GlobalSection`
 
 Improvements:
 
