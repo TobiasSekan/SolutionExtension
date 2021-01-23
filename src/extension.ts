@@ -5,9 +5,7 @@ import { CodelensProvider } from './provider/Codelens';
 import { ModuleProvider } from './completion/ModuleProvider';
 import { ValueProvider } from './completion/ValueProvider';
 import { PropertyProvider } from './completion/PropertyProvider';
-import { KeywordProvider } from './completion/KeywordProvider';
 import { CompletionReferenceProvider } from './completion/ReferenceProvider';
-import { TypeProvider } from './completion/TypeProvider';
 import { DocumentSymbolProvider } from './provider/DocumentSymbol';
 import { DefinitionProvider } from './provider/Definition';
 import { DocumentHighlightProvider } from './provider/DocumentHighlight';
@@ -16,6 +14,7 @@ import { ImplementationProvider } from './provider/Implementation';
 import { DocumentLinkProvider } from './provider/DocumentLink';
 import { SignatureHelpProvider } from './provider/SignatureHelp';
 import { WorkspaceSymbolProvider } from './provider/WorkspaceSymbol';
+import { ParenthesesCompletionItemProvider } from './completion/Parentheses';
 
 const languageId = "sln";
 
@@ -56,9 +55,8 @@ export function activate(context: vscode.ExtensionContext): void
         vscode.languages.registerCompletionItemProvider(languageId, new ModuleProvider()),
         vscode.languages.registerCompletionItemProvider(languageId, new PropertyProvider()),
         vscode.languages.registerCompletionItemProvider(languageId, new ValueProvider(), "="),
-        vscode.languages.registerCompletionItemProvider(languageId, new KeywordProvider(), "("),
+        vscode.languages.registerCompletionItemProvider(languageId, new ParenthesesCompletionItemProvider(), "("),
         vscode.languages.registerCompletionItemProvider(languageId, new CompletionReferenceProvider(), "{"),
-        vscode.languages.registerCompletionItemProvider(languageId, new TypeProvider(), "\""),
         //vscode.languages.registerDeclarationProvider
         vscode.languages.registerDefinitionProvider(languageId, new DefinitionProvider()),
         //vscode.languages.registerDocumentFormattingEditProvider

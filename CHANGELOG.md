@@ -17,16 +17,25 @@ New:
 
 Improvements:
 
-* Right-hand numbers under `GlobalSection(SharedMSBuildProjectFiles)` are now highlighted as variables
 * Syntax highlight for lowercase GUIDs
+* Right-hand numbers under `GlobalSection(SharedMSBuildProjectFiles)` are now highlighted as variables
 * Entries under `ProjectConfigurationPlatforms` are now better highlighted
   * e.g. "Debug|x86" was two separate words, now it is only one word
   * e.g. ".Debug|x64.ActiveCfg" was three separate words, now it is only one word
+* Keywords are now only shown in the code completion when usage is possible
+  * Also when the line starts with `ProjectSection` or `GlobalSection`
+  * The trigger character is `(`
+* Project types (GUIDs) are now only shown in the code completion when usage is possible
+  * Also when the line starts with `Project`
+  * The trigger character is `(`
+* Project types (GUIDs) are now automatically surrounded with `"{` and `}"` instead of `{` and `}`
 
 Changes:
 
 * #49 - GUIDs from projects without `EndProject` entry produce no longer a error
 * Lowercase project GUIDs under `GlobalSection(SharedMSBuildProjectFiles)` produces no longer a info
+* The trigger chartachter `"` is no longer working for project types (GUIDs)
+  * because of improved code completion
 
 Fixes:
 
