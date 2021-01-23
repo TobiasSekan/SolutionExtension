@@ -15,6 +15,7 @@ import { ReferenceProvider } from './provider/Reference';
 import { ImplementationProvider } from './provider/Implementation';
 import { DocumentLinkProvider } from './provider/DocumentLink';
 import { SignatureHelpProvider } from './provider/SignatureHelp';
+import { WorkspaceSymbolProvider } from './provider/WorkspaceSymbol';
 
 const languageId = "sln";
 
@@ -74,7 +75,7 @@ export function activate(context: vscode.ExtensionContext): void
         //vscode.languages.registerSelectionRangeProvider
         vscode.languages.registerSignatureHelpProvider(languageId, new SignatureHelpProvider(), "("),
         //vscode.languages.registerTypeDefinitionProvider
-        //vscode.languages.registerWorkspaceSymbolProvider
+        vscode.languages.registerWorkspaceSymbolProvider(new WorkspaceSymbolProvider()),
     ];
 
     context.subscriptions.push(...provider);

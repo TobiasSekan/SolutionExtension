@@ -11,19 +11,22 @@ New:
 * #49 - Show error when a project have no `EndProject` entry
 * Support document link for files unter `ProjectSection(SolutionItems)`
 * Show signature help for `Project`, `ProjectSection` and `GlobalSection`
+* Workspace symbols (`Ctrl+P` + `#`)
+  * Works only for project files of the solution
+  * Works only when the **active** editor has open a solution file (*.sln)
 
 Improvements:
 
 * Right-hand numbers under `GlobalSection(SharedMSBuildProjectFiles)` are now highlighted as variables
 * Syntax highlight for lowercase GUIDs
 * Entries under `ProjectConfigurationPlatforms` are now better highlighted
-  * e.g. "Debug|x86" was two separate words, now its only one word
-  * e.g. ".Debug|x64.ActiveCfg" was three separate words, now its only one word
+  * e.g. "Debug|x86" was two separate words, now it is only one word
+  * e.g. ".Debug|x64.ActiveCfg" was three separate words, now it is only one word
 
 Changes:
 
 * #49 - GUIDs from projects without `EndProject` entry produce no longer a error
-* Lowercase project GUIDs under `GlobalSection(SharedMSBuildProjectFiles)` no longer an info
+* Lowercase project GUIDs under `GlobalSection(SharedMSBuildProjectFiles)` produces no longer a info
 
 Fixes:
 
