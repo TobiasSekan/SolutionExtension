@@ -2,10 +2,9 @@ import * as vscode from 'vscode';
 import { Diagnostic } from './Diagnostic';
 import { HoverProvider } from './provider/Hover';
 import { CodelensProvider } from './provider/Codelens';
-import { ModuleProvider } from './completion/ModuleProvider';
-import { ValueProvider } from './completion/ValueProvider';
-import { PropertyProvider } from './completion/PropertyProvider';
-import { CompletionReferenceProvider } from './completion/ReferenceProvider';
+import { ModuleCompletionItemProvider } from './completion/ModuleCompletionItemProvider';
+import { ValueCompletionItemProvider } from './completion/ValueCompletionItem';
+import { PropertyCompletionItemProvider } from './completion/PropertyCompletionItem';
 import { DocumentSymbolProvider } from './provider/DocumentSymbol';
 import { DefinitionProvider } from './provider/Definition';
 import { DocumentHighlightProvider } from './provider/DocumentHighlight';
@@ -14,7 +13,8 @@ import { ImplementationProvider } from './provider/Implementation';
 import { DocumentLinkProvider } from './provider/DocumentLink';
 import { SignatureHelpProvider } from './provider/SignatureHelp';
 import { WorkspaceSymbolProvider } from './provider/WorkspaceSymbol';
-import { ParenthesesCompletionItemProvider } from './completion/Parentheses';
+import { ParenthesesCompletionItemProvider } from './completion/ParenthesesCompletionItem';
+import { SectionCompletionItemProvider } from './completion/SectionCompletionItem';
 
 const languageId = "sln";
 
@@ -40,6 +40,7 @@ export function activate(context: vscode.ExtensionContext): void
         null,
         context.subscriptions);
 
+    // Update diagnostic when a document was is closed
     vscode.workspace.onDidCloseTextDocument(
         onDidCloseTextDocument(diagnostic),
         null,
@@ -52,11 +53,11 @@ export function activate(context: vscode.ExtensionContext): void
         //vscode.languages.registerCodeActionsProvider
         vscode.languages.registerCodeLensProvider(languageId, new CodelensProvider()),
         //vscode.languages.registerColorProvider
-        vscode.languages.registerCompletionItemProvider(languageId, new ModuleProvider()),
-        vscode.languages.registerCompletionItemProvider(languageId, new PropertyProvider()),
-        vscode.languages.registerCompletionItemProvider(languageId, new ValueProvider(), "="),
+        vscode.languages.registerCompletionItemProvider(languageId, new ModuleCompletionItemProvider()),
         vscode.languages.registerCompletionItemProvider(languageId, new ParenthesesCompletionItemProvider(), "("),
-        vscode.languages.registerCompletionItemProvider(languageId, new CompletionReferenceProvider(), "{"),
+        vscode.languages.registerCompletionItemProvider(languageId, new PropertyCompletionItemProvider()),
+        vscode.languages.registerCompletionItemProvider(languageId, new SectionCompletionItemProvider(), "{"),
+        vscode.languages.registerCompletionItemProvider(languageId, new ValueCompletionItemProvider(), "="),
         //vscode.languages.registerDeclarationProvider
         vscode.languages.registerDefinitionProvider(languageId, new DefinitionProvider()),
         //vscode.languages.registerDocumentFormattingEditProvider

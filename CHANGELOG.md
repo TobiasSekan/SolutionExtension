@@ -22,13 +22,23 @@ Improvements:
 * Entries under `ProjectConfigurationPlatforms` are now better highlighted
   * e.g. "Debug|x86" was two separate words, now it is only one word
   * e.g. ".Debug|x64.ActiveCfg" was three separate words, now it is only one word
-* Keywords are now only shown in the code completion when usage is possible
+* Keywords are now only shown in the code completion when usage is allowed
   * Also when the line starts with `ProjectSection` or `GlobalSection`
   * The trigger character is `(`
-* Project types (GUIDs) are now only shown in the code completion when usage is possible
+* Project types (GUIDs) are now only shown in the code completion when usage is allowed
   * Also when the line starts with `Project`
   * The trigger character is `(`
+* Modules are now only shown in the code completion when usage is allowed
+  * `Project` and `Global` only on root
+  * `ProjectSection`and `EndProject` only under `Project`
+  * `GlobalSection` and `EndGlobal` only under `Global`
+  * `EndProjectSection` only under `ProjectSection`
+  * `EndGlobalSection` only under `GlobalSection`
 * Project types (GUIDs) are now automatically surrounded with `"{` and `}"` instead of `{` and `}`
+* Values are now only shown in the code completion when usage is allowed
+  * Only inside `ProjectSection` and `GlobalSection`
+* Used projects (GUIDs) are now only shown in the code completion when usage is allowed
+  * Only inside `ProjectSection` and `GlobalSection`
 
 Changes:
 
@@ -39,7 +49,7 @@ Changes:
 
 Fixes:
 
-* Fix - Problems window was not clear after close a solution file.
+* Problems window was not clear after close a solution file.
 * #35 - Fix wrong syntax highlight for words in paths
   * e.g. "Debug" was found in "Debug.cmd"
   * e.g. "Debug" was found in "CodeAnalysis.Debugging"
@@ -66,8 +76,8 @@ Remove:
 New:
 
 * #37 - Open project file and project folder from CodeLens on project lines
-* #25 - Check files paths of solution items (`ProjectSection(SolutionItems)`)
-* #10 - Check use configurations under `GlobalSection'(ProjectConfigurationPlatforms)`
+* #25 - Check files paths of solution items under `ProjectSection(SolutionItems)`
+* #10 - Check use configurations under `GlobalSection(ProjectConfigurationPlatforms)`
   * They must defined in `GlobalSection(SolutionConfiguration)`
 
 Improvements:
