@@ -12,6 +12,7 @@
         "endproject",
         "endprojectsection",
         "endregion",
+        "extensibilityglobals",
         "globalsection",
         "keyof",
         "nestedprojects",
@@ -23,6 +24,7 @@
         "solutionextension",
         "solutionguid",
         "solutionitems",
+        "solutionproperties",
         "vcxitems"
     ]
 }

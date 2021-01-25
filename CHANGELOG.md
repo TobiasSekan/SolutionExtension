@@ -6,12 +6,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Next version
 
+## [1.7.0]
+
 New:
 
 * #49 - Show error when a project have no `EndProject` entry
 * Support document link for files unter `ProjectSection(SolutionItems)`
 * Show signature help for `Project`, `ProjectSection` and `GlobalSection`
-* Workspace symbols (`Ctrl+P` + `#`)
+* Support for workspace symbols (`Ctrl+P` + `#`)
   * Works only for project files of the solution
   * Works only when the **active** editor has open a solution file (*.sln)
 
@@ -43,6 +45,7 @@ Improvements:
 Changes:
 
 * #49 - GUIDs from projects without `EndProject` entry produce no longer a error
+  * We show now a extra error for missing `EndProject`
 * Lowercase project GUIDs under `GlobalSection(SharedMSBuildProjectFiles)` produces no longer a info
 * The trigger chartachter `"` is no longer working for project types (GUIDs)
   * because of improved code completion

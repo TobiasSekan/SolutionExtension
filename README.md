@@ -2,21 +2,56 @@
 
 vsCode extension for Visual Studio solution files (*.sln)
 
-## New in 1.6.0
+## Version 1.7.0 is here
 
 New:
 
-* #38 - Show Breadcrumbs
-* #38 - Show all symbol definitions within a document (via `Ctrl+P` + `@`)
-* #42 - Goto to definition + Peek definition
-* #50 - Goto to implementation + Peek implementation + Find all implementation
-* #48 - Goto to reference + Peek reference + Find all reference
-* #46 - Highlight all occurrences of a symbol in a document (for GUIDs)
-* #51 - File link support (`Ctrl+Click` to open)
+* #49 - Show error when a project have no `EndProject` entry
+* Support document link for files unter `ProjectSection(SolutionItems)`
+* Show signature help for `Project`, `ProjectSection` and `GlobalSection`
+* Support for workspace symbols (`Ctrl+P` + `#`)
+  * Works only for project files of the solution
+  * Works only when the **active** editor has open a solution file (*.sln)
 
-Remove:
+Improvements:
 
-* Don't longer show file (+action) in CodeLens, replaced by file link support
+* Syntax highlight for lowercase GUIDs
+* Right-hand numbers under `GlobalSection(SharedMSBuildProjectFiles)` are now highlighted as variables
+* Entries under `ProjectConfigurationPlatforms` are now better highlighted
+  * e.g. "Debug|x86" was two separate words, now it is only one word
+  * e.g. ".Debug|x64.ActiveCfg" was three separate words, now it is only one word
+* Keywords are now only shown in the code completion when usage is allowed
+  * Also when the line starts with `ProjectSection` or `GlobalSection`
+  * The trigger character is `(`
+* Project types (GUIDs) are now only shown in the code completion when usage is allowed
+  * Also when the line starts with `Project`
+  * The trigger character is `(`
+* Modules are now only shown in the code completion when usage is allowed
+  * `Project` and `Global` only on root
+  * `ProjectSection`and `EndProject` only under `Project`
+  * `GlobalSection` and `EndGlobal` only under `Global`
+  * `EndProjectSection` only under `ProjectSection`
+  * `EndGlobalSection` only under `GlobalSection`
+* Project types (GUIDs) are now automatically surrounded with `"{` and `}"` instead of `{` and `}`
+* Values are now only shown in the code completion when usage is allowed
+  * Only inside `ProjectSection` and `GlobalSection`
+* Used projects (GUIDs) are now only shown in the code completion when usage is allowed
+  * Only inside `ProjectSection` and `GlobalSection`
+
+Changes:
+
+* #49 - GUIDs from projects without `EndProject` entry produce no longer a error
+  * We show now a extra error for missing `EndProject`
+* Lowercase project GUIDs under `GlobalSection(SharedMSBuildProjectFiles)` produces no longer a info
+* The trigger chartachter `"` is no longer working for project types (GUIDs)
+  * because of improved code completion
+
+Fixes:
+
+* Problems window was not clear after close a solution file.
+* #35 - Fix wrong syntax highlight for words in paths
+  * e.g. "Debug" was found in "Debug.cmd"
+  * e.g. "Debug" was found in "CodeAnalysis.Debugging"
 
 ## Picture
 
