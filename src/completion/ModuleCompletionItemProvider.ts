@@ -38,6 +38,7 @@ export class ModuleCompletionItemProvider implements vscode.CompletionItemProvid
                 if(line.startsWith("globalsection"))
                 {
                     inGlobalSection = true;
+                    break;
                 }
 
                 if(line.startsWith("project") || line.startsWith("endprojectsection"))

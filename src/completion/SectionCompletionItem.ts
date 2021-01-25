@@ -26,7 +26,9 @@ export class SectionCompletionItemProvider implements vscode.CompletionItemProvi
                     rejects();
                 }
 
-                if(line.startsWith("globalsection") || line.startsWith("projectsection"))
+                if(line.startsWith("globalsection(projectconfigurationplatforms)")
+                || line.startsWith("globalsection(nestedprojects)")
+                || line.startsWith("projectsection(projectdependencies)"))
                 {
                     inSection = true;
                     break;

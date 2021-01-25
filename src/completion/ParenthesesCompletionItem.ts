@@ -10,6 +10,8 @@ export class ParenthesesCompletionItemProvider implements vscode.CompletionItemP
         token: vscode.CancellationToken,
         context: vscode.CompletionContext): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList>
     {
+        // see https://docs.microsoft.com/en-us/visualstudio/extensibility/internals/solution-dot-sln-file?view=vs-2019
+
         return new Promise<vscode.CompletionItem[]|vscode.CompletionList>((resolve, rejects) =>
         {
             const word = document.lineAt(position).text.trimLeft().toLowerCase();
@@ -19,16 +21,16 @@ export class ParenthesesCompletionItemProvider implements vscode.CompletionItemP
             {
                 const keywords =
                 [
-                    `ExtensibilityAddIns`,
-                    'ExtensibilityGlobals',
-                    'NestedProjects',
-                    'ProjectConfigurationPlatforms',
+                    'SolutionItems',
                     'ProjectDependencies',
+                    `ExtensibilityAddIns`,
+                    `SolutionNotes`,
                     'SharedMSBuildProjectFiles',
                     'SolutionConfigurationPlatforms',
-                    'SolutionItems',
-                    `SolutionNotes`,
+                    'ProjectConfigurationPlatforms',
                     'SolutionProperties',
+                    'NestedProjects',
+                    'ExtensibilityGlobals',
                 ]
 
                 for(const keyword of keywords)
