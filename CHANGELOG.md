@@ -16,6 +16,9 @@ New:
 * Support for workspace symbols (`Ctrl+P` + `#`)
   * Works only for project files of the solution
   * Works only when the **active** editor has open a solution file (*.sln)
+* Code completion for configuration (properties and values)
+  * `Debug|ARM64`, `Debug|ARM`
+  * `Release|ARM64`, `Release|ARM`
 
 Improvements:
 
@@ -26,21 +29,34 @@ Improvements:
   * e.g. ".Debug|x64.ActiveCfg" was three separate words, now it is only one word
 * Keywords are now only shown in the code completion when usage is allowed
   * Also when the line starts with `ProjectSection` or `GlobalSection`
-  * The trigger character is `(`
+  * Trigger character is `(`
 * Project types (GUIDs) are now only shown in the code completion when usage is allowed
   * Also when the line starts with `Project`
-  * The trigger character is `(`
+  * Trigger character is `(`
 * Modules are now only shown in the code completion when usage is allowed
   * `Project` and `Global` only on root
   * `ProjectSection`and `EndProject` only under `Project`
   * `GlobalSection` and `EndGlobal` only under `Global`
   * `EndProjectSection` only under `ProjectSection`
   * `EndGlobalSection` only under `GlobalSection`
-* Project types (GUIDs) are now automatically surrounded with `"{` and `}"` instead of `{` and `}`
-* Values are now only shown in the code completion when usage is allowed
-  * Only inside `ProjectSection` and `GlobalSection`
-* Used projects (GUIDs) are now only shown in the code completion when usage is allowed
-  * Only inside `ProjectSection` and `GlobalSection`
+* Project types (GUIDs) now automatically surrounded with `"{` and `}"` instead of `{` and `}`
+* Configurations, like `Debug|x64` are now only shown in the code completion when usage is allowed
+  * Properties only inside `GlobalSection(SolutionConfigurationPlatforms)`
+  * Values inside `GlobalSection(SolutionConfigurationPlatforms)` and `GlobalSection(ProjectConfigurationPlatforms)`
+* Properties now only shown in the code completion when usage is allowed
+  * `HideSolutionNode` in `GlobalSection(SolutionProperties)`
+  * `SolutionGuid` and in `GlobalSection(ExtensibilityGlobals)`
+* Used projects (GUIDs) now only shown in the code completion when usage is allowed
+  * Only inside `GlobalSection(NestedProjects)`
+  * `GlobalSection(ProjectConfigurationPlatforms)`
+  * and `ProjectSection(SolutionItems)`
+* Code completion for `preProject` and `postProject` now only shown on `ProjectSection` lines
+  * Trigger character is `=`, space before is also automatically added
+* Code completion for `preSolution` and `postSolution` now only shown on `GlobalSection` lines
+  * Trigger character is `=`, space before is also automatically added
+* Code completion for configuration (properties and values)
+  * `Debug|Any CPU` instead of `Debug|Any`
+  * `Release|Any CPU` instead of `Release|Any`
 
 Changes:
 

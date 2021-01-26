@@ -2,7 +2,7 @@
 
 vsCode extension for Visual Studio solution files (*.sln)
 
-## Version 1.7.0 is here
+## Version 1.7.0
 
 New:
 
@@ -17,26 +17,14 @@ Improvements:
 
 * Syntax highlight for lowercase GUIDs
 * Right-hand numbers under `GlobalSection(SharedMSBuildProjectFiles)` are now highlighted as variables
+* Code completion now offers elements only when useful and allowed
+  * see Changelog for detailed information
 * Entries under `ProjectConfigurationPlatforms` are now better highlighted
   * e.g. "Debug|x86" was two separate words, now it is only one word
   * e.g. ".Debug|x64.ActiveCfg" was three separate words, now it is only one word
-* Keywords are now only shown in the code completion when usage is allowed
-  * Also when the line starts with `ProjectSection` or `GlobalSection`
-  * The trigger character is `(`
-* Project types (GUIDs) are now only shown in the code completion when usage is allowed
-  * Also when the line starts with `Project`
-  * The trigger character is `(`
-* Modules are now only shown in the code completion when usage is allowed
-  * `Project` and `Global` only on root
-  * `ProjectSection`and `EndProject` only under `Project`
-  * `GlobalSection` and `EndGlobal` only under `Global`
-  * `EndProjectSection` only under `ProjectSection`
-  * `EndGlobalSection` only under `GlobalSection`
-* Project types (GUIDs) are now automatically surrounded with `"{` and `}"` instead of `{` and `}`
-* Values are now only shown in the code completion when usage is allowed
-  * Only inside `ProjectSection` and `GlobalSection`
-* Used projects (GUIDs) are now only shown in the code completion when usage is allowed
-  * Only inside `ProjectSection` and `GlobalSection`
+* Code completion for configuration (properties and values)
+  * `Debug|Any CPU` instead of `Debug|Any`
+  * `Release|Any CPU` instead of `Release|Any`
 
 Changes:
 
