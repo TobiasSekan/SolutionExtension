@@ -63,7 +63,7 @@ Changes:
 * #49 - GUIDs from projects without `EndProject` entry produce no longer a error
   * We show now a extra error for missing `EndProject`
 * Lowercase project GUIDs under `GlobalSection(SharedMSBuildProjectFiles)` produces no longer a info
-* The trigger chartachter `"` is no longer working for project types (GUIDs)
+* The trigger character `"` is no longer working for project types (GUIDs)
   * because of improved code completion
 
 Fixes:
