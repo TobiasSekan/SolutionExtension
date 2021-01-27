@@ -8,11 +8,19 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 New:
 
-* #61 - Project type for F# SDK-Style is now longer unknown
-  * Project type GUID `6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705`
+* #61 - Code completion for project type "F# SDK-Style" `6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705`
+* #62 - Code completion for project type "Windows Application Packaging" `C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5`
+
 * #61 - Diagnostic for file extension `*.fsproj`, must match project type GUID
   * of `6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705` (F#)
   * or `F2A71F9B-5D33-465A-A702-920D77279786` (F# SDK-style)
+* #62 - Diagnostic for file extension `*.fsproj`, must match project type GUID
+  * of `C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5` (Windows Application Packaging)
+
+* Changes:
+
+* #61 - Project type GUID `6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705` is no longer unknown
+* #62 - Project type GUID `C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5` is no longer unknown
 
 ## [1.7.0]
 

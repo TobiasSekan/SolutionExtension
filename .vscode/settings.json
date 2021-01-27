@@ -25,6 +25,7 @@
         "solutionguid",
         "solutionitems",
         "solutionproperties",
-        "vcxitems"
+        "vcxitems",
+        "wapproj"
     ]
 }

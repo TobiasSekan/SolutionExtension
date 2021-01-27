@@ -1,7 +1,9 @@
 export class ProjectTypes
 {
+    // TODO: refactor this
+
     /**
-     * List with all known C# (C-Sharp) project types
+     * List with all known "C#"" (C-Sharp) project types
      */
     private static _projectTypesCSharp: Array<[string, string]> =
     [
@@ -16,7 +18,7 @@ export class ProjectTypes
     ]
     
     /**
-     * List with all known Visual Basic .NET project types
+     * List with all known "Visual Basic .NET" project types
      */
     private static _projectTypesVisualBasic: Array<[string, string]> =
     [
@@ -30,7 +32,7 @@ export class ProjectTypes
     ]
     
     /**
-     * List with all known C++ (C-PlusPlus) project types
+     * List with all known "C++" (C-PlusPlus) project types
      */
     private static _projectTypesCPlusPlus: Array<[string, string]> =
     [
@@ -38,7 +40,7 @@ export class ProjectTypes
     ]
 
     /**
-     * List with all known shared project types
+     * List with all known "Shared" project types
      */
     private static _projectTypesShared: Array<[string, string]> =
     [
@@ -46,12 +48,20 @@ export class ProjectTypes
     ]
 
     /**
-     * List with all known F# (F-Sharp) project types
+     * List with all known "F#" (F-Sharp) project types
      */
     private static _projectTypesFSharp: Array<[string, string]> =
     [
         [ "F2A71F9B-5D33-465A-A702-920D77279786", "F#" ],
         [ "6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705", "F# SDK-style" ],
+    ]
+
+    /**
+     * List with all known "Windows Application Packaging" project types
+     */
+    private static _projectTypesPackaging: Array<[string, string]> =
+    [
+        [ "C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5", "Windows Application Packaging" ],
     ]
 
     /**
@@ -109,6 +119,7 @@ export class ProjectTypes
         ...ProjectTypes._projectTypesVisualBasic,
         ...ProjectTypes._projectTypesShared,
         ...ProjectTypes._projectTypesFSharp,
+        ...ProjectTypes._projectTypesPackaging,
         ...ProjectTypes._projectTypesOther,
     ];
 
@@ -188,6 +199,10 @@ export class ProjectTypes
 
             case ".fsproj":
                 projectList = ProjectTypes._projectTypesFSharp;
+                break;
+
+            case ".wapproj":
+                projectList = ProjectTypes._projectTypesPackaging;
                 break;
 
             default:
