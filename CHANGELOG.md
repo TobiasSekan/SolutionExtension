@@ -6,6 +6,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Next version
 
+New:
+
+* #61 - Project type for F# SDK-Style is now longer unknown
+  * Project type GUID `6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705`
+* #61 - Diagnostic for file extension `*.fsproj`, must match project type GUID
+  * of `6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705` (F#)
+  * or `F2A71F9B-5D33-465A-A702-920D77279786` (F# SDK-style)
+
 ## [1.7.0]
 
 New:

@@ -46,6 +46,15 @@ export class ProjectTypes
     ]
 
     /**
+     * List with all known F# (F-Sharp) project types
+     */
+    private static _projectTypesFSharp: Array<[string, string]> =
+    [
+        [ "F2A71F9B-5D33-465A-A702-920D77279786", "F#" ],
+        [ "6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705", "F# SDK-style" ],
+    ]
+
+    /**
      * List with all known other project types
      */
     private static _projectTypesOther: Array<[string, string]> =
@@ -85,7 +94,6 @@ export class ProjectTypes
         [ "E6FDF86B-F3D1-11D4-8576-0002A516ECE8", "J#" ],
         [ "EFBA0AD7-5A72-4C68-AF49-83D382785DCF", "Xamarin.Android / Mono for Android" ],
         [ "F135691A-BF7E-435D-8960-F99683D2D49C", "Distributed System" ],
-        [ "F2A71F9B-5D33-465A-A702-920D77279786", "F#" ],
         [ "F5B4F3BC-B597-4E2B-B552-EF5D8A32436F", "MonoTouch Binding" ],
         [ "F85E285D-A4E0-4152-9332-AB1D724D3325", "ASP.NET MVC 2.0" ],
         [ "F8810EC1-6754-47FC-A15F-DFABD2E3FA90", "SharePoint Workflow" ],
@@ -100,6 +108,7 @@ export class ProjectTypes
         ...ProjectTypes._projectTypesCPlusPlus,
         ...ProjectTypes._projectTypesVisualBasic,
         ...ProjectTypes._projectTypesShared,
+        ...ProjectTypes._projectTypesFSharp,
         ...ProjectTypes._projectTypesOther,
     ];
 
@@ -175,6 +184,10 @@ export class ProjectTypes
 
             case ".shproj":
                 projectList = ProjectTypes._projectTypesShared;
+                break;
+
+            case ".fsproj":
+                projectList = ProjectTypes._projectTypesFSharp;
                 break;
 
             default:
