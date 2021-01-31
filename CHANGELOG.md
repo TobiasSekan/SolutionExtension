@@ -32,6 +32,7 @@ Changes:
 Fixes:
 
 * #58 - Diagnostic was not triggered when language was changed to `sln`
+* Diagnostic was not cleared when language was changed away from `sln`
 
 ## [1.7.0]
 
