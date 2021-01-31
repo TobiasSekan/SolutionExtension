@@ -8,13 +8,22 @@ export class VscodeHelper
      * @param line The line that contains the word
      * @param searchFor Search the first occur of the given word
      * @param word The word for the word length
-     * @param relativePosition The relative position of the first found word character
+     * @param relativePosition (optional) The relative position of the first found word character
      */
-    public static GetRange(line: vscode.TextLine, searchFor: string, word: string, relativePosition: number = 0): vscode.Range
+    public static GetRange(
+        line: vscode.TextLine,
+        searchFor: string,
+        word: string,
+        relativePosition: number = 0): vscode.Range
     {
         const characterStart = line.text.toUpperCase().indexOf(searchFor.toUpperCase()) + relativePosition;
-        const characterEnd = characterStart + word.length;
+        if(characterStart === -1)
+        {
+            return line.range;
+        }
 
+        const characterEnd = characterStart + word.length;
+        
         const start = new vscode.Position(line.lineNumber, characterStart);
         const end = new vscode.Position(line.lineNumber, characterEnd);
 
@@ -26,11 +35,20 @@ export class VscodeHelper
      * @param line The line that contains the word
      * @param searchFor Search the last occur of the given word
      * @param word The word for the word length
-     * @param relativePosition The relative position of the last found word character
+     * @param relativePosition (optional) The relative position of the last found word character
      */
-    public static GetLastRange(line: vscode.TextLine, searchFor: string, word: string, relativePosition: number = 0): vscode.Range
+    public static GetLastRange(
+        line: vscode.TextLine,
+        searchFor: string,
+        word: string,
+        relativePosition: number = 0): vscode.Range
     {
         const characterStart = line.text.toUpperCase().lastIndexOf(searchFor.toUpperCase()) + relativePosition;
+        if(characterStart === -1)
+        {
+            return line.range;
+        }
+
         const characterEnd = characterStart + word.length;
 
         const start = new vscode.Position(line.lineNumber, characterStart);
@@ -74,7 +92,7 @@ export class VscodeHelper
      * @param textDocument A root document that contains the root folder path
      * @param filePath The (relative) file path
      */
-    public static GetAbsoluteFilePath(textDocument: vscode.TextDocument, filePath: string)
+    public static GetAbsoluteFilePath(textDocument: vscode.TextDocument, filePath: string): string
     {
         if(path.isAbsolute(filePath))
         {

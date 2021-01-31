@@ -65,11 +65,6 @@ export class ProjectCollector
                 }
 
                 isInProject = true;
-                
-                if(lineText.split("\"").length < 8)
-                {
-                    continue;
-                }
 
                 project = new Project(textDocument, textLine.range.start, textLine.range.end);
             }
@@ -151,7 +146,6 @@ export class ProjectCollector
                 return;
             }
 
-            
             let projectGuid = textLine.text.substr(guidStart, guidEnd - guidStart);
             
             const project = this.ProjectList.find(found => found.Guid == projectGuid);

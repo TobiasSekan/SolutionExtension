@@ -18,20 +18,30 @@ export class Project extends SolutionModule
     {
         super("Project", start, end)
 
-        this.Line = textDocument.lineAt(start.line);
-
-        const lineSplit = this.Line.text.trim().split("\"");
-
-        this.ProjectType = lineSplit[1].replace("{", "").replace("}", "");;
-        this.Name = lineSplit[3];
-        this.RelativePath = lineSplit[5];
-        this.Guid = lineSplit[7].replace("{", "").replace("}", "");
-
-        this.AbsolutePath = VscodeHelper.GetAbsoluteFilePath(textDocument, this.RelativePath);
-
         this.NestedInProjects = new Array<[vscode.TextLine, string]>();
         this.SolutionItems = new Array<vscode.TextLine>();
         this.ProjectSections = new Array<ProjectSection>();
+
+        this.Line = textDocument.lineAt(start.line);
+        const lineSplit = this.Line.text.trim().split("\"");
+
+        this.ProjectType = lineSplit.length > 1
+            ? lineSplit[1].replace("{", "").replace("}", "")
+            : "";
+
+        this.Name = lineSplit.length > 3
+            ? lineSplit[3]
+            : ""
+
+        this.RelativePath = lineSplit.length > 5
+            ? lineSplit[5]
+            : ""
+
+        this.Guid = lineSplit.length > 7
+            ? lineSplit[7].replace("{", "").replace("}", "")
+            : ""
+
+        this.AbsolutePath = VscodeHelper.GetAbsoluteFilePath(textDocument, this.RelativePath);
     }
 
     /** 
@@ -100,7 +110,7 @@ export class Project extends SolutionModule
      */
     public GetGuidWithBraces(): string
     {
-        return "{" + this.Guid + "}";
+        return `{${this.Guid}}`;
     }
 
     /**
@@ -206,7 +216,11 @@ export class Project extends SolutionModule
     {
         const fileNameExtension = this.GetProjectFileNameExtension();
 
-        return VscodeHelper.GetRange(this.Line, fileNameExtension, fileNameExtension, /*relativePosition:*/ 1);
+        return VscodeHelper.GetRange(
+            this.Line,
+            fileNameExtension,
+            fileNameExtension,
+            /*relativePosition:*/ 1);
     }
 
     /**
@@ -215,7 +229,6 @@ export class Project extends SolutionModule
     public GetProjectFolderRange(): vscode.Range
     {
         const projectFolder = this.GetProjectFolder();
-
         const search = projectFolder + path.sep + this.GetProjectFileName();
 
         return VscodeHelper.GetRange(this.Line, search, projectFolder);
