@@ -53,21 +53,16 @@ export class Diagnostic
         this.collection.clear();
     }
 
-    public UpdateDiagnostics(document: vscode.TextDocument): void
+    public UpdateDiagnostics(textDocument: vscode.TextDocument): void
     {
-        if (!document)
-        {
-            this.collection.clear();
-        }
-
         this.diagnostics.length = 0;
         this.configurations.length = 0;
 
-        const projectList = new ProjectCollector(document, true).ProjectList;
+        const projectList = new ProjectCollector(textDocument, true).ProjectList;
 
-        for(let lineNumber = 0; lineNumber < document.lineCount; lineNumber++)
+        for(let lineNumber = 0; lineNumber < textDocument.lineCount; lineNumber++)
         {
-            const textLine = document.lineAt(lineNumber);
+            const textLine = textDocument.lineAt(lineNumber);
 
             this.CheckForMissingProjectGuid(textLine, projectList);
             this.CheckForWrongPascalCase(textLine);
@@ -81,7 +76,7 @@ export class Diagnostic
             this.CheckForDoubleUsedProjectGuids(project, projectList);
             this.CheckForDoubleUsedProjectNames(project, projectList);
             this.CheckForDifferentProjectTypeAndFileExtension(project);
-            this.CheckForNotFoundProjectSolutionFiles(project, document);
+            this.CheckForNotFoundProjectSolutionFiles(project, textDocument);
             
             if(project.IsSolutionFolder())
             {
@@ -94,7 +89,7 @@ export class Diagnostic
             this.CheckForUnknownProjectTypes(project);
         }
 
-        this.collection.set(document.uri, this.diagnostics);
+        this.collection.set(textDocument.uri, this.diagnostics);
     }
 
     private CheckForMissingProjectGuid(textLine: vscode.TextLine, projectList: Array<Project>): void
