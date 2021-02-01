@@ -33,6 +33,8 @@ Fixes:
 
 * #58 - Diagnostic was not triggered when language was changed to `sln`
 * Diagnostic was not cleared when language was changed away from `sln`
+* #59 - Syntax highlight was not working for a hand of self-defined configurations
+  * e.g. `LinuxDebug|Any CPU`, `Debug-netcoreapp3_1|Any CPU`, `Code Analysis Debug|x86`
 
 ## [1.7.0]
 
