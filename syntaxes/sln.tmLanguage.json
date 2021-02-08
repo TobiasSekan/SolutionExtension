@@ -84,7 +84,7 @@
 			},
 			{
 				"name" : "variable.name.text.sln",
-				"match": "[\\w ]*(Debug|Release).*\\|(Any CPU|x86|x64|ARM|arm64|Win32)(\\.(ActiveCfg|Build|Deploy)(\\.\\d){0,1}){0,1}"
+				"match": "[\\w ]*(Debug|Release)[\\w-]*\\|(Any CPU|x86|x64|ARM|arm64|Win32)(\\.(ActiveCfg|Build|Deploy)(\\.\\d){0,1}){0,1}"
 			},
 			{
 				"name" : "variable.parameter.text.sln",
