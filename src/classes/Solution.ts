@@ -9,10 +9,10 @@ export class Solution
      * Create a new instance of GlobalSection
      * @param startLine The first line of this module
      */
-    constructor(textDocument: vscode.TextDocument)
+    constructor(textDocument: vscode.TextDocument, nestedProjects: boolean = false)
     {
         // TODO:
-        this.Projects = new ProjectCollector(textDocument, false).ProjectList;
+        this.Projects = new ProjectCollector(textDocument, nestedProjects).ProjectList;
 
         let start: vscode.Position|undefined;
         let end: vscode.Position|undefined;

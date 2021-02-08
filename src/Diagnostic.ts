@@ -3,8 +3,9 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import { constants } from 'fs';
 import { Project } from './classes/Project';
-import { ProjectCollector } from './projects/ProjectCollector';
 import { ProjectTypes } from './projects/ProjectTypes';
+import { Solution } from './classes/Solution';
+import { VscodeHelper } from './helper/vscodeHelper';
 
 export class Diagnostic
 {
@@ -19,21 +20,6 @@ export class Diagnostic
     private diagnostics: Array<vscode.Diagnostic>;
 
     /**
-     * List that contains all configurations
-     */
-    private configurations: Array<string>;
-
-    /**
-     * Indicate that we are currently inside the configuration definition
-     */
-    private isInSolutionConfiguration: boolean;
-
-    /**
-     * Indicate that we are currently inside the project configuration
-     */
-    private isInProjectConfiguration: boolean;
-
-    /**
      * Indicate that we are currently inside "SharedMSBuildProjectFiles"
      */
     private isInSharedMSBuildProjectFiles: boolean;
@@ -42,9 +28,6 @@ export class Diagnostic
     {
         this.collection = collection;
         this.diagnostics = new Array<vscode.Diagnostic>();
-        this.configurations = new Array<string>();
-        this.isInSolutionConfiguration = false;
-        this.isInProjectConfiguration = false;
         this.isInSharedMSBuildProjectFiles = false;
     }
 
@@ -56,25 +39,23 @@ export class Diagnostic
     public UpdateDiagnostics(textDocument: vscode.TextDocument): void
     {
         this.diagnostics.length = 0;
-        this.configurations.length = 0;
 
-        const projectList = new ProjectCollector(textDocument, true).ProjectList;
+        const solution = new Solution(textDocument, true);
 
         for(let lineNumber = 0; lineNumber < textDocument.lineCount; lineNumber++)
         {
             const textLine = textDocument.lineAt(lineNumber);
 
-            this.CheckForMissingProjectGuid(textLine, projectList);
+            this.CheckForMissingProjectGuid(textLine, solution.Projects);
             this.CheckForWrongPascalCase(textLine);
-            this.CheckForMissingConfiguration(textLine);
         }
         
-        for(const project of projectList)
+        for(const project of solution.Projects)
         {
             this.CheckForMissingEndTag(project);
-            this.CheckForDoubleUsingInNestedProjects(project, projectList);
-            this.CheckForDoubleUsedProjectGuids(project, projectList);
-            this.CheckForDoubleUsedProjectNames(project, projectList);
+            this.CheckForDoubleUsingInNestedProjects(project, solution.Projects);
+            this.CheckForDoubleUsedProjectGuids(project, solution.Projects);
+            this.CheckForDoubleUsedProjectNames(project, solution.Projects);
             this.CheckForDifferentProjectTypeAndFileExtension(project);
             this.CheckForNotFoundProjectSolutionFiles(project, textDocument);
             
@@ -82,16 +63,18 @@ export class Diagnostic
             {
                 continue;
             }
-
+            
             this.CheckForDifferentProjectNameAndProjectFile(project);
             this.CheckForDifferentProjectNameAndProjectPath(project);
             this.CheckForNotFoundProjectFiles(project);
             this.CheckForUnknownProjectTypes(project);
         }
 
+        this.CheckForMissingConfiguration(solution);
+
         this.collection.set(textDocument.uri, this.diagnostics);
     }
-
+    
     private CheckForMissingProjectGuid(textLine: vscode.TextLine, projectList: Array<Project>): void
     {
         const lowerCase = textLine.text.trim().toLowerCase();
@@ -162,91 +145,68 @@ export class Diagnostic
         while(textPosition < textLine.text.length)
     }
 
-    private CheckForMissingConfiguration(textLine: vscode.TextLine): void
+    private CheckForMissingConfiguration(solution: Solution): void
     {
-        const lowerCase = textLine.text.trim().toLowerCase();
+        const solutionConfiguration = solution.Global?.GlobalSections
+            .find(find => find.Type.toLowerCase() === "solutionconfigurationplatforms");
+            
+        const projectConfiguration = solution.Global?.GlobalSections
+            .find(find => find.Type.toLowerCase() === "projectconfigurationplatforms");
 
-        if(lowerCase.startsWith("endglobalsection"))
+        if(solutionConfiguration === undefined || projectConfiguration === undefined)
         {
-            this.isInSolutionConfiguration = false;
-            this.isInProjectConfiguration = false;
             return;
         }
 
-        if(lowerCase.startsWith("globalsection(solutionconfigurationplatforms)"))
+        for(const [textLine, leftSide, rightSide] of projectConfiguration.KeyValueList)
         {
-            this.isInSolutionConfiguration = true;
-            return;
-        }
-
-        if(lowerCase.startsWith("globalsection(projectconfigurationplatforms)"))
-        {
-            this.isInProjectConfiguration = true;
-            return;
-        }
-
-        if(this.isInSolutionConfiguration)
-        {
-            const lineSpilt = textLine.text.trim().split("=");
-            if(lineSpilt.length < 2)
+            // TODO: find a better way for this
+            const leftSplit = leftSide.replace(".0", "").split('.');
+            if(leftSplit.length < 2)
             {
-                return;
+                continue;
             }
 
-            this.configurations.push(lineSpilt[1].trim());
-            return;
+            // TODO: find a better way for this
+            const leftConfiguration = leftSplit.slice(1, leftSplit.length - 1).join(".");
+            const rightConfiguration = rightSide;
+
+            let foundLeft = false;
+            let foundRight = false;
+
+            for(const [, , configuration] of solutionConfiguration.KeyValueList)
+            {
+                if(configuration === leftConfiguration)
+                {
+                    foundLeft = true;
+                }
+
+                if(configuration === rightConfiguration)
+                {
+                    foundRight = true;
+                }
+            }
+
+            if(!foundLeft)
+            {
+                const diagnostic = new vscode.Diagnostic(
+                    VscodeHelper.GetRange(textLine, leftConfiguration, leftConfiguration),
+                    `Configuration "${leftConfiguration}" not defined under "SolutionConfigurationPlatforms"`,
+                    vscode.DiagnosticSeverity.Error);
+
+                    this.diagnostics.push(diagnostic);
+            }
+
+            if(!foundRight)
+            {
+                const diagnostic = new vscode.Diagnostic(
+                    VscodeHelper.GetLastRange(textLine, rightConfiguration, rightConfiguration),
+                    `Configuration "${rightConfiguration}" not defined under "SolutionConfigurationPlatforms"`,
+                    vscode.DiagnosticSeverity.Error);
+
+                    this.diagnostics.push(diagnostic);
+            }
         }
-
-        if(!this.isInProjectConfiguration)
-        {
-            return;
-        }
-
-        let lineSpilt = textLine.text.trim().split(".");
-        if(lineSpilt.length < 2)
-        {
-            return;
-        }
-
-        let configuration = lineSpilt[1];
-        let start = textLine.text.indexOf(configuration);
-
-        if(this.configurations.indexOf(configuration) < 0)
-        {
-
-            const diagnostic = new vscode.Diagnostic(
-                this.GetRange(textLine, start, configuration),
-                `Configuration "${configuration}" not defined under "SolutionConfigurationPlatforms"`,
-                vscode.DiagnosticSeverity.Error);
-
-                this.diagnostics.push(diagnostic);
-        }
-
-        if(lineSpilt.length < 3)
-        {
-            return;
-        }
-
-        lineSpilt = lineSpilt[lineSpilt.length - 1].split("=");
-        if(lineSpilt.length < 2)
-        {
-            return;
-        }
-
-        configuration = lineSpilt[1].trim();
-        if(this.configurations.indexOf(configuration) > -1)
-        {
-            return;
-        }
-
-        start = textLine.text.indexOf(configuration, start + 1);
-
-        const diagnostic = new vscode.Diagnostic(
-            this.GetRange(textLine, start, configuration),
-            `Configuration "${configuration}" not defined under "SolutionConfigurationPlatforms"`,
-            vscode.DiagnosticSeverity.Error);
-
-        this.diagnostics.push(diagnostic);
     }
 
     private CheckForDoubleUsingInNestedProjects(project: Project, projectList: Array<Project>): void
