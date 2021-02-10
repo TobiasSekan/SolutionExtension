@@ -48,11 +48,11 @@ export class Diagnostic
         for(let lineNumber = 0; lineNumber < textDocument.lineCount; lineNumber++)
         {
             const textLine = textDocument.lineAt(lineNumber);
-
+            
             this.CheckForMissingProjectGuid(textLine, solution.Projects);
             this.CheckForWrongPascalCase(textLine);
         }
-        
+
         for(const project of solution.Projects)
         {
             this.CheckForMissingEndTag(project);
@@ -61,7 +61,8 @@ export class Diagnostic
             this.CheckForDoubleUsedProjectNames(project, solution.Projects);
             this.CheckForDifferentProjectTypeAndFileExtension(project);
             this.CheckForNotFoundProjectSolutionFiles(project, textDocument);
-            
+            this.CheckForMissingProjectParameter(project);
+
             if(project.IsSolutionFolder())
             {
                 continue;
@@ -373,7 +374,7 @@ export class Diagnostic
 
     private CheckForUnknownProjectTypes(project: Project): void
     {
-        if(ProjectTypes.IsKnownProjectType(project.ProjectType))
+        if(project.ProjectType === "" || ProjectTypes.IsKnownProjectType(project.ProjectType))
         {
             return;
         }
@@ -554,7 +555,7 @@ export class Diagnostic
         {
             const diagnostic = new vscode.Diagnostic(
                 VscodeHelper.GetRange(textLine, solutionGuid, solutionGuid),
-                `Solution GUID is already used by project "${project.Name}" in line ${project.Line.lineNumber}`,
+                `Solution GUID is already used by project "${project.Name}" in line ${project.Line.lineNumber + 1}`,
                 vscode.DiagnosticSeverity.Error);
     
             this.diagnostics.push(diagnostic);
@@ -567,6 +568,49 @@ export class Diagnostic
                 `Solution GUID is reversed for project type "${ProjectTypes.GetProjectTypeName(solutionGuid)}`,
                 vscode.DiagnosticSeverity.Error);
     
+            this.diagnostics.push(diagnostic);
+        }
+    }
+
+    private CheckForMissingProjectParameter(project: Project): void
+    {
+        if(project.ProjectType === "")
+        {
+            const diagnostic = new vscode.Diagnostic(
+                project.Line.range,
+                `Project in line ${project.Line.lineNumber + 1} must have a project type (GUID).`,
+                vscode.DiagnosticSeverity.Error);
+
+            this.diagnostics.push(diagnostic);
+        }
+
+        if(project.Name === "")
+        {
+            const diagnostic = new vscode.Diagnostic(
+                project.Line.range,
+                `Project in line ${project.Line.lineNumber + 1} must have a name.`,
+                vscode.DiagnosticSeverity.Error);
+
+            this.diagnostics.push(diagnostic);
+        }
+
+        if(project.RelativePath === "")
+        {
+            const diagnostic = new vscode.Diagnostic(
+                project.Line.range,
+                `Project in line ${project.Line.lineNumber + 1} must have a path.`,
+                vscode.DiagnosticSeverity.Error);
+
+            this.diagnostics.push(diagnostic);
+        }
+
+        if(project.Guid === "")
+        {
+            const diagnostic = new vscode.Diagnostic(
+                project.Line.range,
+                `Project in line ${project.Line.lineNumber + 1} must have a identifier (GUID).`,
+                vscode.DiagnosticSeverity.Error);
+
             this.diagnostics.push(diagnostic);
         }
     }
