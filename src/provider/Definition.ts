@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { VscodeHelper } from '../helper/vscodeHelper';
+import { VscodeHelper } from '../Helper/vscodeHelper';
 
 export class  DefinitionProvider implements vscode.DefinitionProvider
 {

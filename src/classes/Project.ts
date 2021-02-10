@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { ProjectTypes } from "../projects/ProjectTypes";
+import { ProjectTypes } from "../Projects/ProjectTypes";
 import { SolutionModule } from './SolutionModule';
-import { VscodeHelper } from '../helper/vscodeHelper';
+import { VscodeHelper } from '../Helper/vscodeHelper';
 import { ProjectSection } from './ProjectSection';
 
 /**

@@ -2,10 +2,12 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { constants } from 'fs';
-import { Project } from './classes/Project';
-import { ProjectTypes } from './projects/ProjectTypes';
-import { Solution } from './classes/Solution';
-import { VscodeHelper } from './helper/vscodeHelper';
+import { Project } from './Classes/Project';
+import { ProjectTypes } from './Projects/ProjectTypes';
+import { Solution } from './Classes/Solution';
+import { VscodeHelper } from './Helper/vscodeHelper';
+import { SolutionHelper } from './Helper/SolutionHelper';
+import { Keywords } from './Constants/Keywords';
 
 export class Diagnostic
 {
@@ -74,7 +76,7 @@ export class Diagnostic
 
         this.collection.set(textDocument.uri, this.diagnostics);
     }
-    
+
     private CheckForMissingProjectGuid(textLine: vscode.TextLine, projectList: Array<Project>): void
     {
         const lowerCase = textLine.text.trim().toLowerCase();
@@ -147,11 +149,8 @@ export class Diagnostic
 
     private CheckForMissingConfiguration(solution: Solution): void
     {
-        const solutionConfiguration = solution.Global?.GlobalSections
-            .find(find => find.Type.toLowerCase() === "solutionconfigurationplatforms");
-            
-        const projectConfiguration = solution.Global?.GlobalSections
-            .find(find => find.Type.toLowerCase() === "projectconfigurationplatforms");
+        var solutionConfiguration = SolutionHelper.GetGlobalSection(solution, Keywords.SolutionConfigurationPlatforms);
+        var projectConfiguration = SolutionHelper.GetGlobalSection(solution, Keywords.ProjectConfigurationPlatforms);
 
         if(solutionConfiguration === undefined || projectConfiguration === undefined)
         {

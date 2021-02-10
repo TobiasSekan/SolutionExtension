@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { ProjectCollector } from '../projects/ProjectCollector';
+import { ProjectCollector } from '../Projects/ProjectCollector';
 import { Global } from './Global';
-import { Project } from "./Project";
+import { Project } from './Project';
 
 export class Solution
 {

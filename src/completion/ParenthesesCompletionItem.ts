@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { ProjectCollector } from '../projects/ProjectCollector';
-import { ProjectTypes } from '../projects/ProjectTypes';
+import { ProjectCollector } from '../Projects/ProjectCollector';
+import { ProjectTypes } from '../Projects/ProjectTypes';
 
 export class ParenthesesCompletionItemProvider implements vscode.CompletionItemProvider
 {

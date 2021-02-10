@@ -1,13 +1,13 @@
 import * as vscode from 'vscode';
-import { ProjectCollector } from '../projects/ProjectCollector';
+import { ProjectCollector } from '../Projects/ProjectCollector';
 
 export class ValueCompletionItemProvider implements vscode.CompletionItemProvider
 {
-provideCompletionItems(
-    document: vscode.TextDocument,
-    position: vscode.Position,
-    token: vscode.CancellationToken,
-    context: vscode.CompletionContext): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList>
+    provideCompletionItems(
+        document: vscode.TextDocument,
+        position: vscode.Position,
+        token: vscode.CancellationToken,
+        context: vscode.CompletionContext): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList>
     {
         return new Promise<vscode.CompletionItem[]|vscode.CompletionList>((resolve, rejects) =>
         {

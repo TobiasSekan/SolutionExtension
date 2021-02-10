@@ -1,12 +1,8 @@
 import * as vscode from 'vscode';
-import { ProjectCollector } from '../projects/ProjectCollector';
+import { ProjectCollector } from '../Projects/ProjectCollector';
 
 export class SectionCompletionItemProvider implements vscode.CompletionItemProvider
 {
-    constructor()
-    {
-    }
-
     provideCompletionItems(
         document: vscode.TextDocument,
         position: vscode.Position,

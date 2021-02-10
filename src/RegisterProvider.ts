@@ -1,19 +1,19 @@
 import * as vscode from 'vscode';
-import { HoverProvider } from './provider/Hover';
-import { CodelensProvider } from './provider/Codelens';
-import { ModuleCompletionItemProvider } from './completion/ModuleCompletionItemProvider';
-import { ValueCompletionItemProvider } from './completion/ValueCompletionItem';
-import { PropertyCompletionItemProvider } from './completion/PropertyCompletionItem';
-import { DocumentSymbolProvider } from './provider/DocumentSymbol';
-import { DefinitionProvider } from './provider/Definition';
-import { DocumentHighlightProvider } from './provider/DocumentHighlight';
-import { ReferenceProvider } from './provider/Reference';
-import { ImplementationProvider } from './provider/Implementation';
-import { DocumentLinkProvider } from './provider/DocumentLink';
-import { SignatureHelpProvider } from './provider/SignatureHelp';
-import { WorkspaceSymbolProvider } from './provider/WorkspaceSymbol';
-import { ParenthesesCompletionItemProvider } from './completion/ParenthesesCompletionItem';
-import { SectionCompletionItemProvider } from './completion/SectionCompletionItem';
+import { HoverProvider } from './Provider/Hover';
+import { CodelensProvider } from './Provider/Codelens';
+import { ModuleCompletionItemProvider } from './Completion/ModuleCompletionItemProvider';
+import { ValueCompletionItemProvider } from './Completion/ValueCompletionItem';
+import { PropertyCompletionItemProvider } from './Completion/PropertyCompletionItem';
+import { DocumentSymbolProvider } from './Provider/DocumentSymbol';
+import { DefinitionProvider } from './Provider/Definition';
+import { DocumentHighlightProvider } from './Provider/DocumentHighlight';
+import { ReferenceProvider } from './Provider/Reference';
+import { ImplementationProvider } from './Provider/Implementation';
+import { DocumentLinkProvider } from './Provider/DocumentLink';
+import { SignatureHelpProvider } from './Provider/SignatureHelp';
+import { WorkspaceSymbolProvider } from './Provider/WorkspaceSymbol';
+import { ParenthesesCompletionItemProvider } from './Completion/ParenthesesCompletionItem';
+import { SectionCompletionItemProvider } from './Completion/SectionCompletionItem';
 
 export class RegisterProvider
 {

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
-import { ProjectCollector } from '../projects/ProjectCollector';
-import { VscodeHelper } from '../helper/vscodeHelper';
+import { ProjectCollector } from '../Projects/ProjectCollector';
+import { VscodeHelper } from '../Helper/vscodeHelper';
 
 export class DocumentLinkProvider implements vscode.DocumentLinkProvider
 {

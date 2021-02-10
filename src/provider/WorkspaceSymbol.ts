@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ProjectCollector } from '../projects/ProjectCollector';
+import { ProjectCollector } from '../Projects/ProjectCollector';
 
 export class WorkspaceSymbolProvider implements vscode.WorkspaceSymbolProvider
 {

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Solution } from '../classes/Solution';
+import { Solution } from '../Classes/Solution';
 
 export class DocumentSymbolProvider  implements vscode.DocumentSymbolProvider
 {

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { Project } from '../classes/Project';
-import { ProjectSection } from '../classes/ProjectSection';
+import { Project } from '../Classes/Project';
+import { ProjectSection } from '../Classes/ProjectSection';
 
 export class ProjectCollector
 {
