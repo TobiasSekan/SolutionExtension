@@ -18,7 +18,7 @@ New:
 * #62 - Diagnostic for file extension `*.wapproj`, must match project type GUID
   * of `C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5` (Windows Application Packaging)
 * #60 - Show error when `SolutionGuid` is used by a project
-* #60 - Show error when `SolutionGuid` is reversed for a project type
+* #60 - Show error when `SolutionGuid` is reversed by a project type
 
 Improvement:
 
