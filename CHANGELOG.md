@@ -4,7 +4,7 @@ All notable changes to the "SolutionExtension" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## Next version
+## [1.8.0]
 
 New:
 

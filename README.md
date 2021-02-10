@@ -2,44 +2,44 @@
 
 vsCode extension for Visual Studio solution files (*.sln)
 
-## Version 1.7.0
+## New/Changes/Fixes in Version 1.8.0
 
 New:
 
-* #49 - Show error when a project have no `EndProject` entry
-* Support document link for files unter `ProjectSection(SolutionItems)`
-* Show signature help for `Project`, `ProjectSection` and `GlobalSection`
-* Support for workspace symbols (`Ctrl+P` + `#`)
-  * Works only for project files of the solution
-  * Works only when the **active** editor has open a solution file (*.sln)
+* #61 - Code completion for project type `F# SDK-Style`
+  * GUID `6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705`
+* #62 - Code completion for project type `Windows Application Packaging`
+  * GUID `C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5`
+* #61 - Diagnostic for file extension `*.fsproj`, must match project type GUID
+  * of `6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705` (F#)
+  * or `F2A71F9B-5D33-465A-A702-920D77279786` (F# SDK-style)
+* #62 - Diagnostic for file extension `*.wapproj`, must match project type GUID
+  * of `C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5` (Windows Application Packaging)
+* #60 - Show error when `SolutionGuid` is used by a project
+* #60 - Show error when `SolutionGuid` is reversed by a project type
+* #64 - Show error for missing parameters in project lines
 
-Improvements:
+Improvement:
 
-* Syntax highlight for lowercase GUIDs
-* Right-hand numbers under `GlobalSection(SharedMSBuildProjectFiles)` are now highlighted as variables
-* Code completion now offers elements only when useful and allowed
-  * see Changelog for detailed information
-* Entries under `ProjectConfigurationPlatforms` are now better highlighted
-  * e.g. "Debug|x86" was two separate words, now it is only one word
-  * e.g. ".Debug|x64.ActiveCfg" was three separate words, now it is only one word
-* Code completion for configuration (properties and values)
-  * `Debug|Any CPU` instead of `Debug|Any`
-  * `Release|Any CPU` instead of `Release|Any`
+* #63 - Support for unfinished project lines
+  * That means that all features now working for this lines too
 
 Changes:
 
-* #49 - GUIDs from projects without `EndProject` entry produce no longer a error
-  * We show now a extra error for missing `EndProject`
-* Lowercase project GUIDs under `GlobalSection(SharedMSBuildProjectFiles)` produces no longer a info
-* The trigger character `"` is no longer working for project types (GUIDs)
-  * because of improved code completion
+* #61 - Project type `F# SDK-style` is no longer unknown
+  * GUID `6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705`
+* #62 - Project type `Windows Application Packaging` is no longer unknown
+  * GUID `C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5`
 
 Fixes:
 
-* Problems window was not clear after close a solution file.
-* #35 - Fix wrong syntax highlight for words in paths
-  * e.g. "Debug" was found in "Debug.cmd"
-  * e.g. "Debug" was found in "CodeAnalysis.Debugging"
+* #58 - Diagnostic was not triggered when language was changed to `sln`
+* Diagnostic was not cleared when language was changed away from `sln`
+* #59 - Syntax highlight was not working for a hand of self-defined configurations
+  * e.g. `LinuxDebug|Any CPU`, `Debug-netcoreapp3_1|Any CPU`, `Code Analysis Debug|x86`
+* #65 - Syntax highlight was not working for configurations with additional points in the name
+  * e.g. `Desktop.Release|Any CPU.ActiveCfg`
+* #65 - False positive on diagnostics for configurations with additional points in the name
 
 ## Picture
 
@@ -51,18 +51,19 @@ _Color Theme: Dark+ (default dark)_
 * Syntax highlight
 * Navigation
   * Breadcrumbs
+  * Symbol definition (`Ctrl+P` + `@`)
+  * Workspace symbols (`Ctrl+P` + `#`)
+  * File link support (`Ctrl+Click`)
   * Goto to definition + Peek definition
   * Goto to implementation + Peek implementation + Find all implementation
   * Goto to reference + Peek reference + Find all reference
-  * Symbol definition (`Ctrl+P` + `@`)
-  * Highlight all occurrences of a GUID
-  * File link support (`Ctrl+Click`)
 * Diagnostic
   * Show error for GUIDs that are not project GUIDs
   * Show error for files that was not found
   * Show error for project GUIDs that used by another projects.
   * Show error for not defined configurations.
   * Show error for unknown project type GUIDs.
+  * Show error for projects that have no `EndProject` entry
   * Show warning for GUIDs that are used several times in `Nested Project` declaration
   * Show warning for project names that used by another projects.
   * Show warning for project filename that differ from project name
@@ -74,14 +75,16 @@ _Color Theme: Dark+ (default dark)_
     * For `Project`, `EndProject`, `ProjectSection`, `EndProjectSection`
     * And `Global`, `EndGlobal`, `GlobalSection`, `EndGlobalSection`
   * Show info for solution folders, when name is used by another projects.
+* Highlight all occurrences of a selected GUID
+* CodeLens
+  * Project lines: Type | (Open) Folder | Nested in "..."
+  * For all used project GUIDs with action to jump to project line
 * Code completion
   * Project GUIDs and Project type GUIDs
   * Module and snippets
   * Keywords and Properties
   * Values and constant
-* CodeLens
-  * Project lines: Type | (Open) Folder | Nested in "..."
-  * For all used project GUIDs with action to jump to project line
+* Signature help for `Project`, `ProjectSection` and `GlobalSection`
 * Hover
   * For the first four lines (version)
   * For keyword `Project`
