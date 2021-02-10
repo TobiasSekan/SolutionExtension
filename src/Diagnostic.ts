@@ -529,27 +529,45 @@ export class Diagnostic
             return;
         }
 
-        for(const [line, key, value] of extensibilityglobals.KeyValueList)
+        let solutionGuid: string|undefined;
+        let textLine: vscode.TextLine|undefined;
+
+        for(let [line, key, value] of extensibilityglobals.KeyValueList)
         {
             if(key.toLowerCase() !== Properties.SolutionGuid.toLowerCase())
             {
                 continue;
             }
 
-            const solutionGuid = value.replace('{', '').replace('}','').trim().toUpperCase();
-            const project = solution.Projects.find(project => project.Guid.toUpperCase() === solutionGuid);
-            if(project === undefined)
-            {
-                return;
-            }
+            solutionGuid = value.replace('{', '').replace('}','').trim().toUpperCase();
+            textLine = line;
+            break;
+        }
 
+        if(solutionGuid === undefined || textLine === undefined)
+        {
+            return;
+        }
+
+        const project = solution.Projects.find(project => project.Guid.toUpperCase() === solutionGuid);
+        if(project !== undefined)
+        {
             const diagnostic = new vscode.Diagnostic(
-                VscodeHelper.GetRange(line, solutionGuid, solutionGuid),
+                VscodeHelper.GetRange(textLine, solutionGuid, solutionGuid),
                 `Solution GUID is already used by project "${project.Name}" in line ${project.Line.lineNumber}`,
                 vscode.DiagnosticSeverity.Error);
-
+    
             this.diagnostics.push(diagnostic);
+        }
 
+        if(ProjectTypes.IsKnownProjectType(solutionGuid))
+        {
+            const diagnostic = new vscode.Diagnostic(
+                VscodeHelper.GetRange(textLine, solutionGuid, solutionGuid),
+                `Solution GUID is reversed for project type "${ProjectTypes.GetProjectTypeName(solutionGuid)}`,
+                vscode.DiagnosticSeverity.Error);
+    
+            this.diagnostics.push(diagnostic);
         }
     }
 

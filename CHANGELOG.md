@@ -17,11 +17,13 @@ New:
   * or `F2A71F9B-5D33-465A-A702-920D77279786` (F# SDK-style)
 * #62 - Diagnostic for file extension `*.wapproj`, must match project type GUID
   * of `C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5` (Windows Application Packaging)
-* #60 - Show error when solution GUID is already used by a project
+* #60 - Show error when `SolutionGuid` is used by a project
+* #60 - Show error when `SolutionGuid` is reversed for a project type
 
 Improvement:
 
 * #63 - Support for unfinished project lines
+  * That means that all features now working for this lines too
 
 Changes:
 
