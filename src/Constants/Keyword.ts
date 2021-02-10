@@ -1,4 +1,4 @@
-export enum Keywords
+export enum Keyword
 {
     SolutionItems = "SolutionItems",
 

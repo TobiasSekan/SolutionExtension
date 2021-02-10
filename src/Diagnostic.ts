@@ -2,12 +2,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { constants } from 'fs';
-import { Project } from './Classes/Project';
 import { ProjectTypes } from './Projects/ProjectTypes';
-import { Solution } from './Classes/Solution';
 import { VscodeHelper } from './Helper/vscodeHelper';
 import { SolutionHelper } from './Helper/SolutionHelper';
-import { Keywords } from './Constants/Keywords';
+import { Keyword } from './Constants/Keyword';
+import { Solution } from './Classes/Solution';
+import { Project } from './Classes/Project';
+import { Properties } from './Constants/Properties';
 
 export class Diagnostic
 {
@@ -73,6 +74,7 @@ export class Diagnostic
         }
 
         this.CheckForMissingConfiguration(solution);
+        this.CheckForUniqueSolutionGuid(solution);
 
         this.collection.set(textDocument.uri, this.diagnostics);
     }
@@ -149,8 +151,8 @@ export class Diagnostic
 
     private CheckForMissingConfiguration(solution: Solution): void
     {
-        var solutionConfiguration = SolutionHelper.GetGlobalSection(solution, Keywords.SolutionConfigurationPlatforms);
-        var projectConfiguration = SolutionHelper.GetGlobalSection(solution, Keywords.ProjectConfigurationPlatforms);
+        var solutionConfiguration = SolutionHelper.GetGlobalSection(solution, Keyword.SolutionConfigurationPlatforms);
+        var projectConfiguration = SolutionHelper.GetGlobalSection(solution, Keyword.ProjectConfigurationPlatforms);
 
         if(solutionConfiguration === undefined || projectConfiguration === undefined)
         {
@@ -516,6 +518,38 @@ export class Diagnostic
                     
                 this.diagnostics.push(diagnostic);
             }
+        }
+    }
+
+    private CheckForUniqueSolutionGuid(solution: Solution): void
+    {
+        const extensibilityglobals = SolutionHelper.GetGlobalSection(solution, Keyword.ExtensibilityGlobals);
+        if(extensibilityglobals === undefined)
+        {
+            return;
+        }
+
+        for(const [line, key, value] of extensibilityglobals.KeyValueList)
+        {
+            if(key.toLowerCase() !== Properties.SolutionGuid.toLowerCase())
+            {
+                continue;
+            }
+
+            const solutionGuid = value.replace('{', '').replace('}','').trim().toUpperCase();
+            const project = solution.Projects.find(project => project.Guid.toUpperCase() === solutionGuid);
+            if(project === undefined)
+            {
+                return;
+            }
+
+            const diagnostic = new vscode.Diagnostic(
+                VscodeHelper.GetRange(line, solutionGuid, solutionGuid),
+                `Solution GUID is already used by project "${project.Name}" in line ${project.Line.lineNumber}`,
+                vscode.DiagnosticSeverity.Error);
+
+            this.diagnostics.push(diagnostic);
+
         }
     }
 
