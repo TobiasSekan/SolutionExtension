@@ -15,6 +15,7 @@
         "extensibilityglobals",
         "globalsection",
         "keyof",
+        "minimumvisualstudioversion",
         "nestedprojects",
         "projectconfigurationplatforms",
         "projectdependencies",
@@ -26,6 +27,7 @@
         "solutionitems",
         "solutionproperties",
         "vcxitems",
+        "visualstudioversion",
         "wapproj"
     ]
 }

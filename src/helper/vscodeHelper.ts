@@ -104,4 +104,12 @@ export class VscodeHelper
             return  path.join(dir, filePath);
         }
     }
+
+    /**
+     * Return a empty range (use this for not found elements)
+     */
+    public static GetEmptyRange(): vscode.Range
+    {
+        return new vscode.Range(0, 0, 0, 0);
+    }
 }

@@ -4,6 +4,17 @@ All notable changes to the "SolutionExtension" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## Next version
+
+New:
+
+* #22 - Show error when line with file format is missing
+  * `Microsoft Visual Studio Solution File, Format Version`
+* #22 - Show warnings when lines with visual studio version is missing
+  * `VisualStudioVersion` and `MinimumVisualStudioVersion`
+* #22 - Show info when comment line visual studio major version is missing
+  * `# Visual Studio Version`
+
 ## [1.8.0]
 
 New:

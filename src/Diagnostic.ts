@@ -48,7 +48,7 @@ export class Diagnostic
         for(let lineNumber = 0; lineNumber < textDocument.lineCount; lineNumber++)
         {
             const textLine = textDocument.lineAt(lineNumber);
-            
+
             this.CheckForMissingProjectGuid(textLine, solution.Projects);
             this.CheckForWrongPascalCase(textLine);
         }
@@ -76,6 +76,7 @@ export class Diagnostic
 
         this.CheckForMissingConfiguration(solution);
         this.CheckForUniqueSolutionGuid(solution);
+        this.CheckForMissingVersionLines(solution);
 
         this.collection.set(textDocument.uri, this.diagnostics);
     }
@@ -610,6 +611,53 @@ export class Diagnostic
                 project.Line.range,
                 `Project in line ${project.Line.lineNumber + 1} must have a identifier (GUID).`,
                 vscode.DiagnosticSeverity.Error);
+
+            this.diagnostics.push(diagnostic);
+        }
+    }
+
+    private CheckForMissingVersionLines(solution: Solution): void
+    {
+        if(solution.FileFormat === undefined)
+        {
+            const diagnostic = new vscode.Diagnostic(
+                VscodeHelper.GetEmptyRange(),
+                `The solution must have a line with the version of the file format`
+                + `\n(e.g. Microsoft Visual Studio Solution File, Format Version 12.00)`,
+                vscode.DiagnosticSeverity.Error);
+
+            this.diagnostics.push(diagnostic);
+        }
+
+        if(solution.VersionComment === undefined)
+        {
+            const diagnostic = new vscode.Diagnostic(
+                VscodeHelper.GetEmptyRange(),
+                `The solution should have a comment line with the major Visual Studio version`
+                + `\n(e.g. # Visual Studio Version 16)`,
+                vscode.DiagnosticSeverity.Information);
+
+            this.diagnostics.push(diagnostic);
+        }
+
+        if(solution.StudioVersion === undefined)
+        {
+            const diagnostic = new vscode.Diagnostic(
+                VscodeHelper.GetEmptyRange(),
+                `The solution should have a line with the Visual Studio version`
+                + `\n(e.g. VisualStudioVersion = 16.0.28315.86)`,
+                vscode.DiagnosticSeverity.Warning);
+
+            this.diagnostics.push(diagnostic);
+        }
+
+        if(solution.MinimumStudioVersion === undefined)
+        {
+            const diagnostic = new vscode.Diagnostic(
+                VscodeHelper.GetEmptyRange(),
+                `The solution should have a line with minimal supported Visual Studio version`
+                + `\n(e.g. MinimumVisualStudioVersion = 10.0.40219.1)`,
+                vscode.DiagnosticSeverity.Warning);
 
             this.diagnostics.push(diagnostic);
         }
