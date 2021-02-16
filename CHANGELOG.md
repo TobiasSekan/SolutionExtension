@@ -14,6 +14,9 @@ New:
   * `VisualStudioVersion` and `MinimumVisualStudioVersion`
 * #22 - Show info when comment line visual studio major version is missing
   * `# Visual Studio Version`
+* #68 - Show corresponding Visual Studio name as CodeLens on version lines
+  * e.g. `VisualStudioVersion = 16.0.31004.235` show `Visual Studio 2019`
+  * e.g. `MinimumVisualStudioVersion = 10.0.40219.1` show `Visual Studio 2010`
 
 Fixes:
 
