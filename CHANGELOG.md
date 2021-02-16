@@ -15,6 +15,13 @@ New:
 * #22 - Show info when comment line visual studio major version is missing
   * `# Visual Studio Version`
 
+Fixes:
+
+* #66 - Syntax highlight was not working for configurations without `Debug` or `Release`
+  * e.g. `Checked|x64`, `Linux|Any CPU`, `CodeCoverage|x68`, `AuditMode|Any CPU`
+* #66 - Syntax highlight was not working for configurations with self-defined platforms
+  * e.g. `Release|DotNet_x64Test`, `Debug|ARM64`
+
 ## [1.8.0]
 
 New:
