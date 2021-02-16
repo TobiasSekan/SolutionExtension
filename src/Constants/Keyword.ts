@@ -11,6 +11,6 @@ export enum Keyword
     SolutionProperties = "SolutionProperties",
 
     NestedProjects = "NestedProjects",
-    
+
     ExtensibilityGlobals = "ExtensibilityGlobals",
 }

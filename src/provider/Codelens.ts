@@ -3,6 +3,7 @@ import * as path from 'path';
 import { ProjectCollector } from '../Projects/ProjectCollector';
 import { Project } from '../Classes/Project';
 import { ProjectTypes } from '../Projects/ProjectTypes';
+import { SolutionHelper } from '../Helper/SolutionHelper';
 
 export class CodelensProvider implements vscode.CodeLensProvider
 {
@@ -40,6 +41,13 @@ export class CodelensProvider implements vscode.CodeLensProvider
             {
                 const textLine = document.lineAt(lineNumber);
                 const lowerCase = textLine.text.toLowerCase();
+
+                if(lowerCase.startsWith("visualstudioversion")
+                || lowerCase.startsWith("minimumvisualstudioversion"))
+                {
+                    this.AddCodeLensForVersionLines(textLine);
+                }
+
 
                 if(lowerCase.indexOf("globalsection(") > -1
                 || lowerCase.indexOf("projectsection(") > -1)
@@ -138,7 +146,7 @@ export class CodelensProvider implements vscode.CodeLensProvider
         const dir = path.dirname(project.AbsolutePath);
         const folderName = project.GetProjectFolder();
 
-        const  command: vscode.Command =
+        const command: vscode.Command =
         {
             arguments : [vscode.Uri.file(dir)],
             command : "solutionExtension.openFolder",
@@ -171,5 +179,24 @@ export class CodelensProvider implements vscode.CodeLensProvider
             const codeLens = new vscode.CodeLens(project.Line.range, command);
             this.codeLensList.push(codeLens);
         }
+    }
+
+    private AddCodeLensForVersionLines(textLine: vscode.TextLine): void
+    {
+        const splitVersionLine = textLine.text.split("=");
+        if(splitVersionLine.length < 2)
+        {
+            return;
+        }
+
+        const version = splitVersionLine[1].trim();
+        const command: vscode.Command =
+        {
+            command: "",
+            title: SolutionHelper.GetVisualStudioName(version),
+        }
+
+        const codeLens = new vscode.CodeLens(textLine.range, command);
+        this.codeLensList.push(codeLens);
     }
 }
