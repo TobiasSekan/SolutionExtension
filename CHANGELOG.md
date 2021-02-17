@@ -17,6 +17,7 @@ New:
 * #68 - Show corresponding Visual Studio name as CodeLens on version lines
   * e.g. `VisualStudioVersion = 16.0.31004.235` show `Visual Studio 2019`
   * e.g. `MinimumVisualStudioVersion = 10.0.40219.1` show `Visual Studio 2010`
+* #52 - Code completion for header (file format + comment + version lines)
 
 Fixes:
 
