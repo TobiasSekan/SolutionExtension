@@ -10,14 +10,20 @@ New:
 
 * #22 - Show error when line with file format is missing
   * `Microsoft Visual Studio Solution File, Format Version`
-* #22 - Show warnings when lines with visual studio version is missing
+* #22 - Show warnings when lines with visual studio versions are missing
   * `VisualStudioVersion` and `MinimumVisualStudioVersion`
-* #22 - Show info when comment line visual studio major version is missing
+* #22 - Show info when comment line for visual studio major version is missing
   * `# Visual Studio Version`
 * #68 - Show corresponding Visual Studio name as CodeLens on version lines
   * e.g. `VisualStudioVersion = 16.0.31004.235` show `Visual Studio 2019`
   * e.g. `MinimumVisualStudioVersion = 10.0.40219.1` show `Visual Studio 2010`
 * #52 - Code completion for header (file format + comment + version lines)
+
+Improvements:
+
+* #36 - Code completion for configuration values now show only defined configurations
+  * Configurations must be defined under `GlobalSection(SolutionConfigurationPlatforms)`
+  * Trigger character is `=`
 
 Fixes:
 
