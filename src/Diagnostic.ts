@@ -51,6 +51,8 @@ export class Diagnostic
 
             this.CheckForMissingProjectGuid(textLine, solution.Projects);
             this.CheckForWrongPascalCase(textLine);
+
+            this.CheckForEmptyLines(textLine, textDocument);
         }
 
         for(const project of solution.Projects)
@@ -462,6 +464,29 @@ export class Diagnostic
         {
             return;
         }
+    }
+
+    private CheckForEmptyLines(textLine: vscode.TextLine, textDocument: vscode.TextDocument): void
+    {
+        // don't check last empty new line
+        if(textLine.lineNumber === (textDocument.lineCount - 1))
+        {
+            return;
+        }
+
+        const text = textLine.text.trim();
+
+        if(text.length !== 0)
+        {
+            return;
+        }
+
+        const diagnostic = new vscode.Diagnostic(
+            textLine.range,
+            `This line is empty and can removed`,
+            vscode.DiagnosticSeverity.Information);
+
+        this.diagnostics.push(diagnostic);
     }
 
     private CheckWord(textLine: vscode.TextLine, textToCheck: string, lowerCaseText: string, wordToCheck: string): boolean

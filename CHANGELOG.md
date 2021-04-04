@@ -8,6 +8,9 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 New:
 
+* #67 - Inform about empty lines
+  * Because: A hand of solution files have a empty first line
+  * This was possible a bug in the old/legacy project system
 * #77 - Support for "Docker Application"
   * Project type : `{E53339B2-1760-4266-BCC7-CA923CBCF16C}`
   * Project file extension should: `.dcproj`
