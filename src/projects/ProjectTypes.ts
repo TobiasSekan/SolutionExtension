@@ -3,7 +3,7 @@ export class ProjectTypes
     // TODO: refactor this
 
     /**
-     * List with all known "C#"" (C-Sharp) project types
+     * List with all known "C# (C-Sharp)"" project types
      */
     private static _projectTypesCSharp: Array<[string, string]> =
     [
@@ -65,6 +65,14 @@ export class ProjectTypes
     ]
 
     /**
+     * List with all known "Docker" project types
+     */
+    private static _projectTypesDocker: Array<[string, string]> =
+    [
+        [ "E53339B2-1760-4266-BCC7-CA923CBCF16C", "Docker Application" ],
+    ]
+
+    /**
      * List with all known other project types
      */
     private static _projectTypesOther: Array<[string, string]> =
@@ -120,6 +128,7 @@ export class ProjectTypes
         ...ProjectTypes._projectTypesShared,
         ...ProjectTypes._projectTypesFSharp,
         ...ProjectTypes._projectTypesPackaging,
+        ...ProjectTypes._projectTypesDocker,
         ...ProjectTypes._projectTypesOther,
     ];
 
@@ -203,6 +212,10 @@ export class ProjectTypes
 
             case ".wapproj":
                 projectList = ProjectTypes._projectTypesPackaging;
+                break;
+
+            case ".dcproj":
+                projectList = ProjectTypes._projectTypesDocker;
                 break;
 
             default:

@@ -8,13 +8,16 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 New:
 
+* #77 - Support for "Docker Application"
+  * Project type : `{E53339B2-1760-4266-BCC7-CA923CBCF16C}`
+  * Project file extension should: `.dcproj`
 * #22 - Show error when line with file format is missing
-  * `Microsoft Visual Studio Solution File, Format Version`
+  * Line start with `Microsoft Visual Studio Solution File, Format Version`
 * #22 - Show warnings when lines with visual studio versions are missing
-  * `VisualStudioVersion` and `MinimumVisualStudioVersion`
+  * Line start with `VisualStudioVersion` and `MinimumVisualStudioVersion`
 * #22 - Show info when comment line for visual studio major version is missing
-  * `# Visual Studio Version`
-* #68 - Show corresponding Visual Studio name as CodeLens on version lines
+  * Line start with `# Visual Studio Version`
+* #68 - CodeLens show corresponding Visual Studio name on version lines
   * e.g. `VisualStudioVersion = 16.0.31004.235` show `Visual Studio 2019`
   * e.g. `MinimumVisualStudioVersion = 10.0.40219.1` show `Visual Studio 2010`
 * #52 - Code completion for header (file format + comment + version lines)
