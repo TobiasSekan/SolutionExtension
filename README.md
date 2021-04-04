@@ -2,44 +2,48 @@
 
 vsCode extension for Visual Studio solution files (*.sln)
 
-## New/Changes/Fixes in Version 1.8.0
+## New/Changes/Fixes in Version 1.9.0
 
 New:
 
-* #61 - Code completion for project type `F# SDK-Style`
-  * GUID `6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705`
-* #62 - Code completion for project type `Windows Application Packaging`
-  * GUID `C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5`
-* #61 - Diagnostic for file extension `*.fsproj`, must match project type GUID
-  * of `6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705` (F#)
-  * or `F2A71F9B-5D33-465A-A702-920D77279786` (F# SDK-style)
-* #62 - Diagnostic for file extension `*.wapproj`, must match project type GUID
-  * of `C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5` (Windows Application Packaging)
-* #60 - Show error when `SolutionGuid` is used by a project
-* #60 - Show error when `SolutionGuid` is reversed by a project type
-* #64 - Show error for missing parameters in project lines
+* #22 - Show error when line with file format is missing.
+  * Line start with `Microsoft Visual Studio Solution File, Format Version`
+* #22 - Show warnings when lines with visual studio versions are missing.
+  * Line start with `VisualStudioVersion` and `MinimumVisualStudioVersion`
+* #22 - Show info when comment line for visual studio major version is missing.
+  * Line start with `# Visual Studio Version`
+* #52 - Code completion for header (file format + comment + version lines)
+* #68 - CodeLens show corresponding Visual Studio name on version lines.
+  * e.g. `VisualStudioVersion = 16.0.31004.235` show `Visual Studio 2019`
+  * e.g. `MinimumVisualStudioVersion = 10.0.40219.1` show `Visual Studio 2010`
+* #67 - Inform about empty lines
+  * Because: A hand of solution files have a empty first line
+  * This was possible a bug in the old/legacy project system
+* #77 - Code completion for project type `Docker Application`
+  * GUID `E53339B2-1760-4266-BCC7-CA923CBCF16C`
+* #77 - Diagnostic for file extension `*.dcproj`, must match project type GUID
+  * of `E53339B2-1760-4266-BCC7-CA923CBCF16C` (Docker Application)
 
-Improvement:
+Improvements:
 
-* #63 - Support for unfinished project lines
-  * That means that all features now working for this lines too
+* #36 - Code completion for configuration values now show only defined configurations.
+  * Configurations must be defined under `GlobalSection(SolutionConfigurationPlatforms)`
+  * Trigger character is `=`
+* #78 - Project extension was check against project type, but no vice versa.
+  * Now the project extension is check against the project type.
+  * And the project type is check against the project extension.
 
 Changes:
 
-* #61 - Project type `F# SDK-style` is no longer unknown
-  * GUID `6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705`
-* #62 - Project type `Windows Application Packaging` is no longer unknown
-  * GUID `C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5`
+* #77 - Project type `Docker Application` is no longer unknown
+  * GUID `E53339B2-1760-4266-BCC7-CA923CBCF16C`
 
 Fixes:
 
-* #58 - Diagnostic was not triggered when language was changed to `sln`
-* Diagnostic was not cleared when language was changed away from `sln`
-* #59 - Syntax highlight was not working for a hand of self-defined configurations
-  * e.g. `LinuxDebug|Any CPU`, `Debug-netcoreapp3_1|Any CPU`, `Code Analysis Debug|x86`
-* #65 - Syntax highlight was not working for configurations with additional points in the name
-  * e.g. `Desktop.Release|Any CPU.ActiveCfg`
-* #65 - False positive on diagnostics for configurations with additional points in the name
+* #66 - Syntax highlight was not working for configurations without `Debug` or `Release`.
+  * e.g. `Checked|x64`, `Linux|Any CPU`, `CodeCoverage|x68`, `AuditMode|Any CPU`
+* #66 - Syntax highlight was not working for configurations with self-defined platforms.
+  * e.g. `Release|DotNet_x64Test`, `Debug|ARM64`
 
 ## Picture
 
@@ -57,6 +61,7 @@ _Color Theme: Dark+ (default dark)_
   * Goto to definition + Peek definition
   * Goto to implementation + Peek implementation + Find all implementation
   * Goto to reference + Peek reference + Find all reference
+
 * Diagnostic
   * Show error for GUIDs that are not project GUIDs
   * Show error for files that was not found
@@ -64,12 +69,15 @@ _Color Theme: Dark+ (default dark)_
   * Show error for not defined configurations.
   * Show error for unknown project type GUIDs.
   * Show error for projects that have no `EndProject` entry
+  * Show error when `SolutionGuid` is used by a project
+  * Show error when `SolutionGuid` is reversed by a project type
+  * Show error for missing parameters in project lines
   * Show warning for GUIDs that are used several times in `Nested Project` declaration
   * Show warning for project names that used by another projects.
   * Show warning for project filename that differ from project name
   * Show warning for project folders that differ from project name
   * Show warning for project file extension that differ from project type
-    * Currently for `.csproj`, `.vcxproj`,`.vcxitems`, `.vbproj` and `.shproj`
+    * For `.csproj`, `.vcxproj`,`.vcxitems`, `.vbproj`, `.shproj`, `.fsproj` and `.wapproj`
   * Show warning when project path have a extension, but it is a solution folder
   * Show warning when module words have not correct PascalCase
     * For `Project`, `EndProject`, `ProjectSection`, `EndProjectSection`

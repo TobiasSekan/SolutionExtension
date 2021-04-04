@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Next version
 
+## [1.9.0]
+
 New:
 
 * #67 - Inform about empty lines
