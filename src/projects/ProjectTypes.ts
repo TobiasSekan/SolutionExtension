@@ -162,6 +162,7 @@ export class ProjectTypes
     /**
      * Check if the given project type is known.
      * @param projectType The project type (GUID) to check
+     * @returns true if its match, otherwise false
      */
     public static IsKnownProjectType(projectType: string): boolean
     {
@@ -182,6 +183,7 @@ export class ProjectTypes
      * Check if the given file extension match the given project type
      * @param extension The extension to check
      * @param projectType The project type to check
+     * @returns true if its match, otherwise false
      */
     public static FileExtensionMatchProjectType(extension: string, projectType: string): boolean
     {
@@ -224,5 +226,54 @@ export class ProjectTypes
         }
 
         return projectList.filter(([found, _]) => found === projectType).length > 0
+    }
+
+    /**
+     * Check if the given project type match the given file extension
+     * @param fileExtension The file extension to check
+     * @param projectType The project type to check
+     * @returns true if its match, otherwise false
+     */
+    public static ProjectTypeMatchFileExtension(fileExtension: string, projectType: string): boolean
+    {
+        fileExtension = fileExtension.toLowerCase();
+
+        if(ProjectTypes._projectTypesCSharp.filter(([found, _]) => found === projectType).length > 0)
+        {
+            return fileExtension === ".csproj";
+        }
+
+        if(ProjectTypes._projectTypesCPlusPlus.filter(([found, _]) => found === projectType).length > 0)
+        {
+            return fileExtension === ".vcxproj" || fileExtension === ".vcxitems";
+        }
+
+        if(ProjectTypes._projectTypesVisualBasic.filter(([found, _]) => found === projectType).length > 0)
+        {
+            return fileExtension === ".vbproj";
+        }
+
+        if(ProjectTypes._projectTypesShared.filter(([found, _]) => found === projectType).length > 0)
+        {
+            return fileExtension === ".shproj";
+        }
+
+        if(ProjectTypes._projectTypesFSharp.filter(([found, _]) => found === projectType).length > 0)
+        {
+            return fileExtension === ".fsproj";
+        }
+
+        if(ProjectTypes._projectTypesPackaging.filter(([found, _]) => found === projectType).length > 0)
+        {
+            return fileExtension === ".wapproj";
+        }
+
+        if(ProjectTypes._projectTypesDocker.filter(([found, _]) => found === projectType).length > 0)
+        {
+            return fileExtension === ".dcproj";
+        }
+
+        // ignore unknown file extensions
+        return true;
     }
 }

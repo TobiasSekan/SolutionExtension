@@ -281,17 +281,25 @@ export class Diagnostic
     {
         const fileExtension = project.GetProjectFileNameExtension();
 
-        if(ProjectTypes.FileExtensionMatchProjectType(fileExtension, project.ProjectType))
+        if(!ProjectTypes.FileExtensionMatchProjectType(fileExtension, project.ProjectType))
         {
-            return;
+            const diagnostic = new vscode.Diagnostic(
+                project.GetFileExtensionRange(),
+                `File extension "${fileExtension}" differ from project type "${ProjectTypes.GetProjectTypeName(project.ProjectType)}"`,
+                vscode.DiagnosticSeverity.Warning);
+
+            this.diagnostics.push(diagnostic);
         }
 
-        const diagnostic = new vscode.Diagnostic(
-            project.GetFileExtensionRange(),
-            `File extension "${fileExtension}" differ from project type "${ProjectTypes.GetProjectTypeName(project.ProjectType)}"`,
-            vscode.DiagnosticSeverity.Warning);
-            
-        this.diagnostics.push(diagnostic);
+        if(!ProjectTypes.ProjectTypeMatchFileExtension(fileExtension, project.ProjectType))
+        {
+            const diagnostic = new vscode.Diagnostic(
+                project.GetFileExtensionRange(),
+                `Project type "${ProjectTypes.GetProjectTypeName(project.ProjectType)}" differ from File extension "${fileExtension}"`,
+                vscode.DiagnosticSeverity.Warning);
+
+            this.diagnostics.push(diagnostic);
+        }
     }
 
     private CheckForDifferentProjectNameAndProjectPath(project: Project): void

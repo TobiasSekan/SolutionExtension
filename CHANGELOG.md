@@ -11,28 +11,31 @@ New:
 * #77 - Support for "Docker Application"
   * Project type : `{E53339B2-1760-4266-BCC7-CA923CBCF16C}`
   * Project file extension should: `.dcproj`
-* #22 - Show error when line with file format is missing
+* #22 - Show error when line with file format is missing.
   * Line start with `Microsoft Visual Studio Solution File, Format Version`
-* #22 - Show warnings when lines with visual studio versions are missing
+* #22 - Show warnings when lines with visual studio versions are missing.
   * Line start with `VisualStudioVersion` and `MinimumVisualStudioVersion`
-* #22 - Show info when comment line for visual studio major version is missing
+* #22 - Show info when comment line for visual studio major version is missing.
   * Line start with `# Visual Studio Version`
-* #68 - CodeLens show corresponding Visual Studio name on version lines
+* #68 - CodeLens show corresponding Visual Studio name on version lines.
   * e.g. `VisualStudioVersion = 16.0.31004.235` show `Visual Studio 2019`
   * e.g. `MinimumVisualStudioVersion = 10.0.40219.1` show `Visual Studio 2010`
 * #52 - Code completion for header (file format + comment + version lines)
 
 Improvements:
 
-* #36 - Code completion for configuration values now show only defined configurations
+* #78 - Project extension was check against project type, but no vice versa.
+  * Now the project extension is check against the project type.
+  * And the project type is check against the project extension.
+* #36 - Code completion for configuration values now show only defined configurations.
   * Configurations must be defined under `GlobalSection(SolutionConfigurationPlatforms)`
   * Trigger character is `=`
 
 Fixes:
 
-* #66 - Syntax highlight was not working for configurations without `Debug` or `Release`
+* #66 - Syntax highlight was not working for configurations without `Debug` or `Release`.
   * e.g. `Checked|x64`, `Linux|Any CPU`, `CodeCoverage|x68`, `AuditMode|Any CPU`
-* #66 - Syntax highlight was not working for configurations with self-defined platforms
+* #66 - Syntax highlight was not working for configurations with self-defined platforms.
   * e.g. `Release|DotNet_x64Test`, `Debug|ARM64`
 
 ## [1.8.0]
