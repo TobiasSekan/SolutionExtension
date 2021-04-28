@@ -48,13 +48,22 @@ export class RegisterEvents
      */
     public UpdateDiagnostics(textDocument: vscode.TextDocument|undefined): void
     {
-        if(!textDocument || textDocument.languageId !== this.languageId)
+        if(textDocument && textDocument.languageId === this.languageId)
         {
-            this.diagnostic.ClearDiagnostic();
+            this.diagnostic.UpdateDiagnostics(textDocument);
             return;
         }
 
-        this.diagnostic.UpdateDiagnostics(textDocument);
+        // workaround for SCM - see https://github.com/microsoft/vscode/issues/120537
+        if(textDocument
+        && textDocument.languageId === 'plaintext'
+        && textDocument.uri.fsPath.endsWith(`${this.languageId}.git`))
+        {
+            this.diagnostic.UpdateDiagnostics(textDocument);
+            return;
+        }
+
+        this.diagnostic.ClearDiagnostic();
     }
 
     //#endregion Public Methods

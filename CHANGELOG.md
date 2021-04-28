@@ -6,6 +6,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Next version
 
+## [1.9.1]
+
+Fix:
+
+* #79 - Diagnostic was not direct working when open a solution file inside a repository (SCM)
+  * It was only working after the first typo
+  * Including diff view and merge view
+
 ## [1.9.0]
 
 New:
