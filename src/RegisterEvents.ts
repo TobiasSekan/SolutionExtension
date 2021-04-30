@@ -48,22 +48,25 @@ export class RegisterEvents
      */
     public UpdateDiagnostics(textDocument: vscode.TextDocument|undefined): void
     {
-        if(textDocument && textDocument.languageId === this.languageId)
+        if(textDocument === undefined)
+        {
+            this.diagnostic.ClearDiagnostic(textDocument);
+            return;
+        }
+
+        if(textDocument.languageId === this.languageId)
         {
             this.diagnostic.UpdateDiagnostics(textDocument);
             return;
         }
 
         // workaround for SCM - see https://github.com/microsoft/vscode/issues/120537
-        if(textDocument
-        && textDocument.languageId === 'plaintext'
+        if(textDocument.languageId === 'plaintext'
         && textDocument.uri.fsPath.endsWith(`${this.languageId}.git`))
         {
             this.diagnostic.UpdateDiagnostics(textDocument);
             return;
         }
-
-        this.diagnostic.ClearDiagnostic();
     }
 
     //#endregion Public Methods
@@ -77,12 +80,7 @@ export class RegisterEvents
     {
         return textDocumentChangeEvent =>
         {
-            if(!textDocumentChangeEvent)
-            {
-                return;
-            }
-
-            this.UpdateDiagnostics(textDocumentChangeEvent.document);
+            this.UpdateDiagnostics(textDocumentChangeEvent?.document);
         }
     }
 
@@ -93,12 +91,7 @@ export class RegisterEvents
     {
         return textEditor =>
         {
-            if (!textEditor)
-            {
-                return;
-            }
-
-            this.UpdateDiagnostics(textEditor.document);
+            this.UpdateDiagnostics(textEditor?.document);
         };
     }
 
@@ -107,9 +100,9 @@ export class RegisterEvents
      */
     private OnDidCloseTextDocument(): (e: vscode.TextDocument | undefined) => any
     {
-        return _ =>
+        return textDocument =>
         {
-            this.diagnostic.ClearDiagnostic();
+            this.diagnostic.ClearDiagnostic(textDocument);
         }
     }
 

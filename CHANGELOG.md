@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## Next version
 
+## [1.9.2]
+
+Fix:
+
+* #80 - When open two or more files in different repositories the diagnostic was not working
+
 ## [1.9.1]
 
 Fix:

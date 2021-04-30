@@ -34,11 +34,26 @@ export class Diagnostic
         this.isInSharedMSBuildProjectFiles = false;
     }
 
-    public ClearDiagnostic(): void
+    /**
+     * Remove the diagnostic for the given document
+     * @param textDocument The document that don't longer need a diagnostic
+     */
+    public ClearDiagnostic(textDocument: vscode.TextDocument|undefined): void
     {
-        this.collection.clear();
+        if(textDocument)
+        {
+            this.collection.delete(textDocument.uri);
+        }
+        else
+        {
+            this.collection.clear();
+        }
     }
 
+    /**
+     * Update the diagnostic for the given document
+     * @param textDocument The text document that contains the complete file content
+     */
     public UpdateDiagnostics(textDocument: vscode.TextDocument): void
     {
         this.diagnostics.length = 0;

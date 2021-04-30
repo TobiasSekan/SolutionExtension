@@ -2,6 +2,12 @@
 
 vsCode extension for Visual Studio solution files (*.sln)
 
+## New/Changes/Fixes in Version 1.9.2
+
+Fix:
+
+* #80 - When open two or more files in different repositories the diagnostic was not working
+
 ## New/Changes/Fixes in Version 1.9.1
 
 Fix:
