@@ -115,6 +115,8 @@ export class ProjectTypes
         [ "F5B4F3BC-B597-4E2B-B552-EF5D8A32436F", "MonoTouch Binding" ],
         [ "F85E285D-A4E0-4152-9332-AB1D724D3325", "ASP.NET MVC 2.0" ],
         [ "F8810EC1-6754-47FC-A15F-DFABD2E3FA90", "SharePoint Workflow" ],
+        [ "9092AA53-FB77-4645-B42D-1CCCA6BD08BD", "Node.js" ],
+        [ "54A90642-561A-4BB1-A94E-469ADEE60C69", "Node.js SDK-style" ],
     ]
 
     /**
